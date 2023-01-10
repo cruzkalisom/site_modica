@@ -36,8 +36,6 @@ app.use(session({
 
 //Configs
 var port = 30120
-var login = 'admin'
-var password = '123456'
 
 /*Engine*/
 app.set('view engine', 'ejs');
