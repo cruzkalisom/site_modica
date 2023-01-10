@@ -46,13 +46,13 @@ app.use(express.static(__dirname+'/public'));
 //Rotas
 app.get('/', (req, res) => {
     var sql = `SELECT * FROM session WHERE chave='${req.session.key}'`
-    var resultado = connect.query(sql, function(err, result){
+    connect.query(sql, function(err, result){
         if(err){
             return console.log(err.message)
         }
 
         if(result[0]){
-            console.log(result.chave)
+            console.log(result[0].chave)
             return res.render('user/loguser')
         }
 
@@ -62,9 +62,19 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req,res) => {
-    if(req.body.login == login && req.body.password == password){
-        req.session.key = login
-        res.render('user/loguser')
+    var sql = `INSERT INTO session (chave) VALUES (?)`
+
+    
+    if(req.body.login != undefined && req.body.login != '' && req.body.password != undefined && req.body.password != ""){
+        connect.query(sql, [req.body.login], function(err){
+            if(err){
+                return console.log('Ocorreu um erro')
+            }
+
+            req.session.key = req.body.login
+            res.render('user/loguser')
+        })
+        
     } else {
         res.render('home')
     }
