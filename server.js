@@ -45,22 +45,23 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/', (req, res) => {
-    if(req.session.login == login){
-       res.render('user/loguser') 
-    }
-    else{
+    var sql = `SELECT * FROM session WHERE chave='${req.session.key}'`
+    var resultado = connect.query(sql, function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(result[0]){
+            console.log(result.chave)
+            return res.render('user/loguser')
+        }
+
         res.render('home')
-    }
+    })
     
 });
 
 app.post('/', (req,res) => {
-    var sql = `SELECT * FROM session WHERE key='${req.session.key}'`
-    connect.query(sql, function(err, result){
-        if(err){
-            return console.log('ocorreu um erro')
-        }
-    })
     if(req.body.login == login && req.body.password == password){
         req.session.key = login
         res.render('user/loguser')
