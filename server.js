@@ -36,6 +36,8 @@ app.use(session({
 
 //Configs
 var port = 30120
+var login = 'admin'
+var password = '123456'
 
 /*Engine*/
 app.set('view engine', 'ejs');
@@ -43,14 +45,28 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/', (req, res) => {
-    res.render('home')
+    if(req.session.login == login){
+       res.render('user/loguser') 
+    }
+    else{
+        res.render('home')
+    }
+    
 });
 
-app.post('/login', (req,res) => {
-    let login = req.body.login
-    let password = req.body.password
-
-    res.render('user/loguser', req.body)
+app.post('/', (req,res) => {
+    var sql = `SELECT * FROM session WHERE key='${req.session.key}'`
+    connect.query(sql, function(err, result){
+        if(err){
+            return console.log('ocorreu um erro')
+        }
+    })
+    if(req.body.login == login && req.body.password == password){
+        req.session.key = login
+        res.render('user/loguser')
+    } else {
+        res.render('home')
+    }
 });
 
 //Conexão
