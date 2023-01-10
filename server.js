@@ -42,6 +42,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/login', (req,res) => {
+    res.render('user/login')
+})
+
 app.get('/', (req, res) => {
     var sql = `SELECT * FROM session WHERE chave='${req.session.key}'`
     connect.query(sql, function(err, result){
