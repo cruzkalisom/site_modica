@@ -69,6 +69,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+
 app.post('/login', (req,res) => {
     var sql = `SELECT * FROM users WHERE user=?`
     
