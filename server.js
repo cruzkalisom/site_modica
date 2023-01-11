@@ -70,6 +70,10 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 
+app.get('/register', (req,res) => {
+    res.render('user/register')
+});
+
 app.post('/login', (req,res) => {
     var sql = `SELECT * FROM users WHERE user=?`
     
