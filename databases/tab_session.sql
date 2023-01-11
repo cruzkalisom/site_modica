@@ -1,0 +1,5 @@
+CREATE TABLE `session`(
+	`user_id` INT NOT NULL,
+	`voucher` INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(voucher)
+) DEFAULT CHARSET = UTF8;

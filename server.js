@@ -47,7 +47,7 @@ app.post('/login', (req,res) => {
 })
 
 app.get('/', (req, res) => {
-    var sql = `SELECT * FROM session WHERE chave='${req.session.key}'`
+    var sql = `SELECT * FROM session WHERE voucher='${req.session.key}'`
     connect.query(sql, function(err, result){
         if(err){
             return console.log(err.message)
