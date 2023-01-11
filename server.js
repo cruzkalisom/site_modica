@@ -42,7 +42,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
-app.get('/login', (req,res) => {
+app.post('/login', (req,res) => {
     res.render('user/login')
 })
 
