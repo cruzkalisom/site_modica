@@ -79,17 +79,17 @@ app.post('/login', (req,res) => {
             }
             
             if(!result[0]){
-                return res.send('usuário não registrado')
+                return res.render('user/login', {erro:'Usuário não encontrado!'})
             }
 
             if(result[0].password != req.body.password){
-                return res.send('Senha incorreta')
+                return res.render('user/login', {erro: 'Senha incorreta!'})
             }
 
             res.send('Logado com sucesso')
         });
     } else {
-        res.render('user/login')
+        res.render('user/login', {erro: ''})
     }
 });
 

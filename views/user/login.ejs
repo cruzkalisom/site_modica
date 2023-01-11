@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="css/adminlte.min.css">
+  <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">-->
 </head>
 <body class="hold-transition login-page" style="background-image: url('https://cdn.discordapp.com/attachments/1062558898982240346/1062558916652834886/image.png'); background-repeat: no-repeat; background-size: cover; background-position: center;">
 <div class="login-box">
@@ -23,6 +24,12 @@
   <div class="card"  style="background-color: #ffffffe5;">
     <div class="card-body ">
       <p class="login-box-msg">Faça login para iniciar sua sessão</p>
+
+      <% if(erro){ %>
+        <div class="alert alert-danger" role="alert" style="background-color: #ff0000a6;">
+          <%= erro %>
+        </div>
+      <% } %>
 
       <form action="/login" method="post">
         <div class="input-group mb-3">
@@ -87,5 +94,6 @@
 <script src="jquery/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="jquery/adminlte.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>-->
 </body>
 </html>
