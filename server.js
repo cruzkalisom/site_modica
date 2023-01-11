@@ -5,6 +5,19 @@ const BodyParser = require('body-parser');
 const db = require('mysql');
 const session = require('express-session');
 
+/* Validação de prazo
+
+const teste = new Date()
+teste2 = teste.getTime() + 86400000
+
+
+
+setInterval(function(){
+    teste3 = new Date()
+    teste3 = teste2 - teste3.getTime()
+    console.log(teste3)
+}, 1000)*/
+
 //Banco de dados
 var connect = db.createConnection({
     host: 'localhost',
@@ -20,6 +33,20 @@ connect.connect(function(err){
 
     console.log('Conectado ao bando de dados Local')
 });
+
+/* Quantos itens em um Array
+
+var sqltest = `SELECT * FROM session`
+
+connect.query(sqltest, function(err, result){
+    if(err){
+        return console.log(err.message)
+    }
+
+    var count = result
+
+    console.log(count.length)
+})*/
 
 //Criando App
 const app = express();
@@ -43,10 +70,34 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.post('/login', (req,res) => {
-    res.render('user/login')
-})
+    var sql = `SELECT * FROM users WHERE user=?`
+    
+    if(req.body.user && req.body.user != undefined){
+        connect.query(sql, [req.body.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+            
+            if(!result[0]){
+                return res.send('usuário não registrado')
+            }
 
-app.get('/', (req, res) => {
+            if(result[0].password != req.body.password){
+                return res.send('Senha incorreta')
+            }
+
+            res.send('Logado com sucesso')
+        });
+    } else {
+        res.render('user/login')
+    }
+});
+
+app.get('/forgot-password',(req,res) => {
+    res.send('Página de recuperação de senha')
+});
+
+/*app.get('/', (req, res) => {
     var sql = `SELECT * FROM session WHERE voucher='${req.session.key}'`
     connect.query(sql, function(err, result){
         if(err){
@@ -80,6 +131,14 @@ app.post('/', (req,res) => {
     } else {
         res.render('home')
     }
+});*/
+
+app.get('/dev', (req,res) => {
+    res.render('home')
+});
+
+app.get('/', (req,res) => {
+    res.render('homedev')
 });
 
 //Conexão
