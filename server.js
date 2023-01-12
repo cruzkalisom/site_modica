@@ -69,9 +69,36 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/register', (req,res) => {
+    res.render('user/register')
+});
 
 app.get('/register', (req,res) => {
     res.render('user/register')
+});
+
+app.get('/login', (req,res) => {
+    var sql = `SELECT * FROM users WHERE user=?`
+    
+    if(req.body.user && req.body.user != undefined){
+        connect.query(sql, [req.body.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+            
+            if(!result[0]){
+                return res.render('user/login', {erro:'Usuário não encontrado!'})
+            }
+
+            if(result[0].password != req.body.password){
+                return res.render('user/login', {erro: 'Senha incorreta!'})
+            }
+
+            res.send('Logado com sucesso')
+        });
+    } else {
+        res.render('user/login', {erro: ''})
+    }
 });
 
 app.post('/login', (req,res) => {
