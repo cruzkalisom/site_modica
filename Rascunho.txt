@@ -51,7 +51,7 @@ Cadastro Reserva:
 	Tipo de evento (Opções) (Se for aniversário, informar nome do Aniversariante)
 	Dados pessoais
 	Contrato (Opção confirmar e imprimir | Concordo com os termos)
-	Pagamento (Página PIX com botão de enviar no WhatsApp)
+	Pagamento (Página PIX com botão de enviar comprovante no WhatsApp)
 
 Opções:
 	Tipo de evento:
