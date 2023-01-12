@@ -70,6 +70,8 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.post('/register', (req,res) => {
+    var sql = `SELECT * FROM users WHERE user=?`
+
     if(!req.body.name || req.body.name == undefined){
         return res.render('user/register', {erro: 'Nome inválido!', terms: ''})
     }
@@ -94,7 +96,16 @@ app.post('/register', (req,res) => {
         return res.render('user/register', {erro: '', terms: 'Concorde com os termos!'})
     }
 
-    res.render('user/register', {erro: '', terms: ''})
+    connect.query(sql, [req.body.user], function(err, result){
+        if(err){
+            return console.log("erro: " + err.message)
+        }
+
+        if(result[0]){
+            console.log('foi')
+            return res.render('user/register', {erro: 'E-mail já registrado!', terms: ''})
+        }
+    })
 });
 
 app.get('/register', (req,res) => {
@@ -102,27 +113,7 @@ app.get('/register', (req,res) => {
 });
 
 app.get('/login', (req,res) => {
-    var sql = `SELECT * FROM users WHERE user=?`
-    
-    if(req.body.user && req.body.user != undefined){
-        connect.query(sql, [req.body.user], function(err, result){
-            if(err){
-                return console.log(err.message)
-            }
-            
-            if(!result[0]){
-                return res.render('user/login', {erro:'Usuário não encontrado!'})
-            }
-
-            if(result[0].password != req.body.password){
-                return res.render('user/login', {erro: 'Senha incorreta!'})
-            }
-
-            res.send('Logado com sucesso')
-        });
-    } else {
-        res.render('user/login', {erro: ''})
-    }
+    res.render('user/login', {erro: ''})
 });
 
 app.post('/login', (req,res) => {
