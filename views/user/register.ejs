@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input name="confirm_password" type="password" class="form-control" placeholder="Confirmar senha" id="form_confirm_password" required>
+          <input name="confirm_password" type="password" class="form-control" placeholder="Confirmar senha" id="form_confirm_password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -64,13 +64,13 @@
           </div>
         </div>
         <div class="row">
+          <% if(terms){ %>
+            <div class="alert alert-warning" role="alert" style="background-color: #fff3cd;">
+              <%= terms %>
+            </div>
+          <% } %>
           <div class="col-8">
             <div class="icheck-primary">
-              <% if(terms){ %>
-                <div class="alert alert-warning" role="alert">
-                  <%= terms %>
-                </div>
-              <% } %>
               <input type="checkbox" id="agreeTerms" name="terms" value="agree">
               <label for="agreeTerms">
                Eu concordo com os <a href="#">termos</a>

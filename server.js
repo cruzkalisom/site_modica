@@ -77,6 +77,23 @@ app.post('/register', (req,res) => {
     if(!req.body.user || req.body.user == undefined){
         return res.render('user/register', {erro: 'E-mail inválido!', terms: ''})
     }
+
+    if(!req.body.password || req.body.user == undefined){
+        return res.render('user/register', {erro: 'Senha inválida!', terms: ''})
+    }
+
+    if(!req.body.confirm_password || req.body.confirm_password == undefined){
+        return res.render('user/register', {erro: 'Senhas não são iguais!', terms: ''})
+    }
+
+    if(req.body.confirm_password != req.body.password){
+        return res.render('user/register', {erro: 'Senhas não são iguais!', terms: ''})
+    }
+
+    if(!req.body.terms || req.body.terms == undefined){
+        return res.render('user/register', {erro: '', terms: 'Concorde com os termos!'})
+    }
+
     res.render('user/register', {erro: '', terms: ''})
 });
 
