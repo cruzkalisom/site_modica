@@ -9,10 +9,10 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg" style="background-color: #000000cb;">
             <div class="container-fluid">
-              <div class="navbar-brand">
-                <img src="https://media.discordapp.net/attachments/1062558898982240346/1062558916652834886/image.png?width=729&height=513" alt="Logo" width="60" height="60" style="border-radius: 50%;">
+              <div class="navbar-brand" style="color: white;">
+                <img src="https://media.discordapp.net/attachments/1062558898982240346/1063177374046376056/image.png?width=740&height=513" alt="Logo" width="60" height="60" style="border-radius: 50%;">
                 DUO Eventos
               </div>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,12 +21,18 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/" style="color: white;">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="/about" style="color: white;">Sobre</a>
                   </li>
-                  <li class="nav-item dropdown">
+                  <li class="nav-item">
+                    <a class="nav-link" href="/contract" style="color: white;">Contato</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/reserve" style="color: white;">Reservar</a>
+                  </li>
+                  <!--<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Dropdown
                     </a>
@@ -39,12 +45,27 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link disabled">Disabled</a>
-                  </li>
+                  </li>-->
                 </ul>
-                <form class="d-flex" role="search">
+                <div class="dropdown d-flex" style="margin-right: 7%;">
+                    <ul class="navbar-nav">
+                      <li class="nav-item dropdown">
+                        <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                          Usuário
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                          <li><a class="dropdown-item" href="/my_data">Meus dados</a></li>
+                          <li><a class="dropdown-item" href="/my_reservations">Minhas reservas</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="/logout">Sair</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                </div>
+                <!--<form class="d-flex" role="search">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                </form>-->
               </div>
             </div>
           </nav>
