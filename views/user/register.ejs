@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DUO EVENTOS | register-box</title>
+  <title>DUO EVENTOS | Registro</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -24,9 +24,15 @@
     <div class="card-body">
       <p class="login-box-msg">Registrar uma nova conta</p>
 
+      <% if(erro){ %>
+        <div class="alert alert-danger" role="alert" style="background-color: #ff0000a6;">
+          <%= erro %>
+        </div>
+      <% } %>
+
       <form action="/register" method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Nome completo">
+          <input name="name" type="text" class="form-control" placeholder="Nome completo" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -34,7 +40,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="E-mail">
+          <input name="user" type="email" class="form-control" placeholder="E-mail" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -42,7 +48,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Senha">
+          <input name="password" type="password" class="form-control" placeholder="Senha" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -50,7 +56,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Confirmar senha">
+          <input name="confirm_password" type="password" class="form-control" placeholder="Confirmar senha" id="form_confirm_password" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -60,6 +66,11 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
+              <% if(terms){ %>
+                <div class="alert alert-warning" role="alert">
+                  <%= terms %>
+                </div>
+              <% } %>
               <input type="checkbox" id="agreeTerms" name="terms" value="agree">
               <label for="agreeTerms">
                Eu concordo com os <a href="#">termos</a>
@@ -68,7 +79,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+            <button type="submit" class="btn btn-primary btn-block" id="button_register">Registrar</button>
           </div>
           <!-- /.col -->
         </div>

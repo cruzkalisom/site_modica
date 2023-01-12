@@ -70,11 +70,18 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.post('/register', (req,res) => {
-    res.render('user/register')
+    if(!req.body.name || req.body.name == undefined){
+        return res.render('user/register', {erro: 'Nome inválido!', terms: ''})
+    }
+
+    if(!req.body.user || req.body.user == undefined){
+        return res.render('user/register', {erro: 'E-mail inválido!', terms: ''})
+    }
+    res.render('user/register', {erro: '', terms: ''})
 });
 
 app.get('/register', (req,res) => {
-    res.render('user/register')
+    res.render('user/register', {erro: '', terms: ''})
 });
 
 app.get('/login', (req,res) => {
