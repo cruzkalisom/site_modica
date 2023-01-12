@@ -1,0 +1,28 @@
+Painel Admin:
+	Agenda:
+	|	Confirmar reserva
+	|	Status reserva
+	|	ID reserva
+	|	Cancelar reserva
+	|	Verificar reserva:
+	|	|	Dados do cliente (Nome, tipo de envento, descrição)
+
+Painel Cliente:
+	Minhas reservas:
+	|	Status reserva
+	|	ID reserva
+	|	Verificar reserva
+	|	Editar reserva
+
+Opções:
+	Tipo de evento:
+	|	Aniversário
+	|	Confraternização
+	|	Show
+
+Checklist:
+	Cadeiras:
+	|	Quantidade
+
+	Mesas:
+	|	Quantidade
