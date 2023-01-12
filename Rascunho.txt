@@ -1,3 +1,37 @@
+Home:
+	Header:
+	|	LogoMarca (Canto esquerdo)
+	|	Home
+	|	Sobre
+	|	Contato
+	|	Reservar
+	|	Usuário:
+	|	|	Meu perfil (Página)
+	|	|	Minhas reservas
+	|	|	Sair
+	Cartões:
+	|	Duo Kids (Botão conhecer)
+	|	Duo (Botão conhecer)
+	|	Duo Eventos (Botão conhecer)
+	Carrousel:
+	|	Foto Duo
+	|	Foto Duo Kids
+	|	Logo Duo Eventos (Botão para fazer reserva)
+	Promoção:
+	|	Texto qualquer com imagem de fundo
+
+Meu Perfil:
+	Dados pessoais
+	Painel Admin (Página) (Somente autenticados)
+	Minhas reservas:
+	|	Status reserva
+	|	ID reserva
+	|	Verificar reserva
+	|	Editar reserva
+	Excluir contas
+	Ver reservas
+	Sair
+
 Painel Admin:
 	Agenda:
 	|	Confirmar reserva
@@ -5,14 +39,19 @@ Painel Admin:
 	|	ID reserva
 	|	Cancelar reserva
 	|	Verificar reserva:
-	|	|	Dados do cliente (Nome, tipo de envento, descrição)
-
-Painel Cliente:
-	Minhas reservas:
-	|	Status reserva
-	|	ID reserva
-	|	Verificar reserva
-	|	Editar reserva
+	|	|	Dados do cliente (Nome, tipo de envento, descrição, e-mail, contato)
+	Usuários:
+	|	Alterar permissões (Inicialmente apenas autenticar)
+	|	Ver Reservas (Lista todas as compras do usuário)
+	|	Excluir contas (Futuramente)
+	
+Cadastro Reserva:
+	Data (Verifica disponibilidade)
+	Opções (Card)
+	Tipo de evento (Opções) (Se for aniversário, informar nome do Aniversariante)
+	Dados pessoais
+	Contrato (Opção confirmar e imprimir | Concordo com os termos)
+	Pagamento (Página PIX com botão de enviar no WhatsApp)
 
 Opções:
 	Tipo de evento:
