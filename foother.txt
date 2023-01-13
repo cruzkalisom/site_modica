@@ -1,0 +1,352 @@
+<footer class="pagelayer-footer"><div pagelayer-id="q237658" class="p-q237658 pagelayer-post_props">
+<style pagelayer-style-id="q237658">body{margin-top: -5px; margin-right: -5px; margin-bottom: -5px; margin-left: -5px}
+</style></div>
+<div pagelayer-id="2ki5913" class="p-2ki5913 pagelayer-row pagelayer-row-stretch-auto pagelayer-height-default">
+<style pagelayer-style-id="2ki5913">.p-2ki5913 .pagelayer-col-holder{padding: 10px}
+.p-2ki5913 .pagelayer-background-overlay{background-color: #003e14;opacity: 0.8;-webkit-transition: all 400ms !important; transition: all 400ms !important}
+.p-2ki5913 .pagelayer-svg-top .pagelayer-shape-fill{fill:#ffffff}
+.p-2ki5913 .pagelayer-row-svg .pagelayer-svg-top{width:100%;height:80px}
+.p-2ki5913 .pagelayer-svg-bottom .pagelayer-shape-fill{fill:#e44993}
+.p-2ki5913 .pagelayer-row-svg .pagelayer-svg-bottom{width:100%;height:100px}
+.p-2ki5913{background-image: url("https://sjgroup.agr.br/wp-content/uploads/2022/09/DJI_0900-scaled.jpg");background-position-x: center;background-position-y: center;background-size: cover;padding-top: 30px; padding-right: 0px; padding-bottom: 40px; padding-left: 0px}
+</style>
+			
+			
+			<div class="pagelayer-row-shape">
+				<div class="pagelayer-row-svg">
+					
+											
+				</div>
+			</div>
+			<div class="pagelayer-background-overlay"></div>
+			<div class="pagelayer-row-holder pagelayer-row pagelayer-auto pagelayer-width-auto"><div pagelayer-id="z7l7687" class="p-z7l7687 pagelayer-col pagelayer-col-6">
+<style pagelayer-style-id="z7l7687">.p-z7l7687 .pagelayer-col-holder > div:not(:last-child){margin-bottom: 15px}
+.p-z7l7687 .pagelayer-background-overlay{-webkit-transition: all 400ms !important; transition: all 400ms !important}
+</style>
+				
+				
+				
+				<div class="pagelayer-col-holder"><div pagelayer-id="13e6631" class="p-13e6631 pagelayer-wp_title">
+<style pagelayer-style-id="13e6631">.p-13e6631 .pagelayer-wp-title-heading{font-family: Questrial; font-size: 30px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important;color:#e39426;text-align:left;padding: 0px 0px 0px 0px}
+.p-13e6631 .pagelayer-wp-title-holder{display: none}
+.p-13e6631 .pagelayer-wp-title-img{width:28%; height: auto}
+</style><div class="pagelayer-wp-title-content">
+			<div class="pagelayer-wp-title-section">
+				<a href="https://sjgroup.agr.br" class="pagelayer-wp-title-link pagelayer-ele-link pagelayer-wp-title-align-left pagelayer-wp-title-vertical-middle">
+					<img decoding="async" class="pagelayer-img pagelayer-wp-title-img" src="https://sjgroup.agr.br/wp-content/uploads/2022/10/Logo-SJ-Group-png-012.png" title="" alt="" />
+					<div class="pagelayer-wp-title-holder">
+						<div class="pagelayer-wp-title-heading">SJ Group</div>
+						
+					</div>
+				</a>
+			</div>			
+		<div></div></div></div><div pagelayer-id="acd2947" class="p-acd2947 pagelayer-heading">
+<style pagelayer-style-id="acd2947">.p-acd2947 .pagelayer-heading-holder *{color:#ffffff}
+.p-acd2947 .pagelayer-heading-holder{color:#ffffff}
+</style><div class="pagelayer-heading-holder"><p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. </p></div>
+		
+			</div><div pagelayer-id="e148405" class="p-e148405 pagelayer-social_grp pagelayer-social-shape-circle">
+<style pagelayer-style-id="e148405">.p-e148405 i{height:1em; width:1em; position: absolute; top: 50%; left: 50%; transform: translate(-50% , -50%)}
+.p-e148405 .pagelayer-icon-holder{position: relative; min-height: 1em; min-width: 1em;padding: calc(0.5em + 10px);font-size: 16px;background-color: #134a33 !important;-webkit-transition: all 400ms; transition: all 400ms}
+.p-e148405{text-align: left}
+.p-e148405 > div{display: inline-block}
+.p-e148405 .pagelayer-social{padding: 3px}
+.p-e148405 .pagelayer-social-fa{font-size: 16px;color: #e39426 !important;-webkit-transition: all 400ms; transition: all 400ms}
+.p-e148405 .pagelayer-icon-holder:hover .pagelayer-social-fa{color: #f48b2c !important}
+.p-e148405 .pagelayer-icon-holder:hover{background-color: #ffffff !important}
+</style><div pagelayer-id="f076171" class="p-f076171 pagelayer-social">
+<div class="pagelayer-icon-holder pagelayer-facebook-f" data-icon="fab fa-facebook-f">
+					<a class="pagelayer-ele-link" href="https://facebook.com/sitepad">
+						<i class="pagelayer-social-fa fab fa-facebook-f"></i>
+					</a>
+				</div></div><div pagelayer-id="x5e8982" class="p-x5e8982 pagelayer-social">
+<div class="pagelayer-icon-holder pagelayer-twitter" data-icon="fab fa-twitter">
+					<a class="pagelayer-ele-link" href="https://twitter.com/sitepad">
+						<i class="pagelayer-social-fa fab fa-twitter"></i>
+					</a>
+				</div></div><div pagelayer-id="j423058" class="p-j423058 pagelayer-social">
+<div class="pagelayer-icon-holder pagelayer-instagram" data-icon="fab fa-instagram">
+					<a class="pagelayer-ele-link" href="https://instagram.com/sitepad">
+						<i class="pagelayer-social-fa fab fa-instagram"></i>
+					</a>
+				</div></div><div pagelayer-id="c716115" class="p-c716115 pagelayer-social">
+<div class="pagelayer-icon-holder pagelayer-linkedin-in" data-icon="fab fa-linkedin-in">
+					<a class="pagelayer-ele-link" href="https://www.linkedin.com/company/sjgroup-agr">
+						<i class="pagelayer-social-fa fab fa-linkedin-in"></i>
+					</a>
+				</div></div></div><div pagelayer-id="ihz5696" class="p-ihz5696 pagelayer-heading">
+<div class="pagelayer-heading-holder"><script type="text/javascript">
+var _iub = _iub || [];
+_iub.csConfiguration = {"consentOnContinuedBrowsing":false,"cookiePolicyInOtherWindow":true,"enableGdpr":false,"enableLgpd":true,"floatingPreferencesButtonDisplay":"bottom-right","lang":"pt-BR","perPurposeConsent":true,"siteId":2896774,"cookiePolicyId":62345501, "banner":{ "acceptButtonColor":"#E39426","acceptButtonDisplay":true,"backgroundColor":"#134A33","brandBackgroundColor":"#134A33","closeButtonDisplay":false,"customizeButtonColor":"#E39426","customizeButtonDisplay":true,"explicitWithdrawal":true,"logo":"https://sjgroup.agr.br/wp-content/uploads/2022/10/Logo-SJ-Group-png-012.png","position":"float-center","rejectButtonColor":"#E39426","rejectButtonDisplay":true }};
+</script>
+<script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async="async"></script></div>
+		
+			</div></div></div><div pagelayer-id="x2n4374" class="p-x2n4374 pagelayer-col pagelayer-col-2">
+<style pagelayer-style-id="x2n4374">.p-x2n4374 .pagelayer-col-holder > div:not(:last-child){margin-bottom: 15px}
+.p-x2n4374 .pagelayer-background-overlay{-webkit-transition: all 400ms !important; transition: all 400ms !important}
+</style>
+				
+				
+				
+				<div class="pagelayer-col-holder"><div pagelayer-id="exr6552" class="p-exr6552 pagelayer-heading">
+<style pagelayer-style-id="exr6552">.p-exr6552 .pagelayer-heading-holder *{color:#e39426;font-family: Questrial !important; font-size: 20px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-exr6552 .pagelayer-heading-holder{color:#e39426;font-family: Questrial !important; font-size: 20px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+</style><div class="pagelayer-heading-holder">Links</div>
+		
+			</div><div pagelayer-id="djp7870" class="p-djp7870 pagelayer-list">
+<style pagelayer-style-id="djp7870">.p-djp7870 li{list-style-type: none;font-family: Muli; font-size: 14px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-djp7870 .pagelayer-list-icon-holder{padding-bottom: calc(20px/2); padding-top: calc(20px/2)}
+.p-djp7870 .pagelayer-list-item{color:#ffffff}
+.p-djp7870 li > a{font-family: Muli; font-size: 14px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-djp7870 .pagelayer-list-icon{color:#e39426}
+</style><ul class="pagelayer-list-ul pagelayer-list-type-none"><div pagelayer-id="v3b8044" class="p-v3b8044 pagelayer-list_item">
+<li class="pagelayer-list-li">
+				<a class="pagelayer-list-url pagelayer-ele-link" href="https://sjgroup.agr.br/">
+					<span class="pagelayer-list-icon-holder">
+						<i class="pagelayer-list-icon fas fa-home"></i>
+						<span class="pagelayer-list-item">Ínicio</span>
+					</span>
+				</a>
+			</li></div><div pagelayer-id="jby2295" class="p-jby2295 pagelayer-list_item">
+<li class="pagelayer-list-li">
+				
+					<span class="pagelayer-list-icon-holder">
+						<i class="pagelayer-list-icon fas fa-star"></i>
+						<span class="pagelayer-list-item">Institucional</span>
+					</span>
+				
+			</li></div><div pagelayer-id="hfg8341" class="p-hfg8341 pagelayer-list_item">
+<li class="pagelayer-list-li">
+				<a class="pagelayer-list-url pagelayer-ele-link" href="http://localhost/cultivares/">
+					<span class="pagelayer-list-icon-holder">
+						<i class="pagelayer-list-icon fas fa-book"></i>
+						<span class="pagelayer-list-item">Portifólio</span>
+					</span>
+				</a>
+			</li></div><div pagelayer-id="9563400" class="p-9563400 pagelayer-list_item">
+<li class="pagelayer-list-li">
+				<a class="pagelayer-list-url pagelayer-ele-link" href="https://sjgroup.agr.br/contato/">
+					<span class="pagelayer-list-icon-holder">
+						<i class="pagelayer-list-icon fas fa-phone-alt"></i>
+						<span class="pagelayer-list-item">Contatos</span>
+					</span>
+				</a>
+			</li></div></ul></div></div></div><div pagelayer-id="zpx5192" class="p-zpx5192 pagelayer-col pagelayer-col-4">
+<style pagelayer-style-id="zpx5192">.p-zpx5192 .pagelayer-col-holder > div:not(:last-child){margin-bottom: 15px}
+.p-zpx5192 .pagelayer-background-overlay{-webkit-transition: all 400ms !important; transition: all 400ms !important}
+</style>
+				
+				
+				
+				<div class="pagelayer-col-holder"><div pagelayer-id="9s38935" class="p-9s38935 pagelayer-heading">
+<style pagelayer-style-id="9s38935">.p-9s38935 .pagelayer-heading-holder *{color:#e39426;font-family: Questrial !important; font-size: 20px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-9s38935 .pagelayer-heading-holder{color:#e39426;font-family: Questrial !important; font-size: 20px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+</style><div class="pagelayer-heading-holder">Contato</div>
+		
+			</div><div pagelayer-id="5ni5348" class="p-5ni5348 pagelayer-address">
+<style pagelayer-style-id="5ni5348">.p-5ni5348 .pagelayer-address *, .p-5ni5348 .pagelayer-address{color:#ffffff;font-family: Muli; font-size: 14px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: 1.4em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-5ni5348{margin-top: 10px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px}
+</style><div class="pagelayer-address-holder">
+			<span class="pagelayer-address-icon"><i class=""></i></span>
+			<span class="pagelayer-address">Rodovia BR349- SN - Zona Rural, Correntina - BA, 47650-000 </span>
+		</div></div><div pagelayer-id="azh7650" class="p-azh7650 pagelayer-email">
+<style pagelayer-style-id="azh7650">.p-azh7650 .pagelayer-email *, .p-azh7650 .pagelayer-email{color:#ffffff;font-family: Muli; font-size: 14px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-azh7650{margin-top: 6px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px}
+</style><div class="pagelayer-email-holder">
+			<span class="pagelayer-email-icon"><i class=""></i></span>
+			<a href="mailto:ricardo@sjagropecuaria.com">
+				<span class="pagelayer-email">ricardo@sjagropecuaria.com</span></a></div>
+			
+			</div><div pagelayer-id="p1w6559" class="p-p1w6559 pagelayer-phone">
+<style pagelayer-style-id="p1w6559">.p-p1w6559 .pagelayer-phone *, .p-p1w6559 .pagelayer-phone{color:#ffffff;font-family: Muli; font-size: 14px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-p1w6559{margin-top: 10px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px}
+</style><div class="pagelayer-phone-holder">
+			<span class="pagelayer-phone-icon"><i class=""></i></span>
+			<a href="tel:+55 62 99971-8806">
+				<span class="pagelayer-phone">+55 62 99971-8806</span>
+			</a>
+			</div></div></div></div></div></div>
+<div pagelayer-id="2h36294" class="p-2h36294 pagelayer-row pagelayer-row-stretch-auto pagelayer-height-default">
+<style pagelayer-style-id="2h36294">.p-2h36294 .pagelayer-col-holder{padding: 10px}
+.p-2h36294 .pagelayer-background-overlay{opacity: 0.5;-webkit-transition: all 400ms !important; transition: all 400ms !important}
+.p-2h36294 .pagelayer-svg-top .pagelayer-shape-fill{fill:#227bc3}
+.p-2h36294 .pagelayer-row-svg .pagelayer-svg-top{width:100%;height:100px}
+.p-2h36294 .pagelayer-svg-bottom .pagelayer-shape-fill{fill:#e44993}
+.p-2h36294 .pagelayer-row-svg .pagelayer-svg-bottom{width:100%;height:100px}
+.p-2h36294{background: #033600;padding-top: 10px; padding-right: 0px; padding-bottom: 10px; padding-left: 0px}
+</style>
+			
+			
+			
+			<div class="pagelayer-background-overlay"></div>
+			<div class="pagelayer-row-holder pagelayer-row pagelayer-auto pagelayer-width-auto"><div pagelayer-id="flv6574" class="p-flv6574 pagelayer-col">
+<style pagelayer-style-id="flv6574">.p-flv6574 .pagelayer-col-holder > div:not(:last-child){margin-bottom: 15px}
+.p-flv6574 .pagelayer-background-overlay{-webkit-transition: all 400ms !important; transition: all 400ms !important}
+</style>
+				
+				
+				
+				<div class="pagelayer-col-holder"><div pagelayer-id="d1n2618" class="p-d1n2618 pagelayer-copyright">
+<style pagelayer-style-id="d1n2618">.p-d1n2618 .pagelayer-copyright *, .p-d1n2618 .pagelayer-copyright{color:#ffffff;font-family: Questrial; font-size: 16px !important; font-style:  !important; font-weight: 500 !important; font-variant:  !important; text-decoration-line:  !important; text-decoration-style: Solid !important; line-height: em !important; text-transform:  !important; letter-spacing: px !important; word-spacing: px !important}
+.p-d1n2618 .pagelayer-copyright{text-align: left}
+</style><div class="pagelayer-copyright">
+			<a href="https://sjgroup.agr.br">
+				© 2023 SJ Group
+			</a>
+		</div></div></div></div></div></div>
+
+	</footer><link rel="preload" href="https://fonts.googleapis.com/css?family=Muli%3A400%2C500%2C600%2C700%7CQuestrial%3A400%2C500%2C600" as="fetch" crossorigin="anonymous"><link rel='stylesheet' id='pagelayer-google-font-css' href='https://fonts.googleapis.com/css?family=Muli%3A400%2C500%2C600%2C700%7CQuestrial%3A400%2C500%2C600&#038;ver=1.5.9' media='all' />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<footer data-elementor-type="footer" data-elementor-id="571" class="elementor elementor-571" data-elementor-settings="[]">
+		<div class="elementor-section-wrap">
+					<section class="elementor-section elementor-top-section elementor-element elementor-element-6f26fed elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="6f26fed" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-e604889 elementor-hidden-phone" data-id="e604889" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-33244b4 elementor-widget__width-initial elementor-widget-tablet__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-image" data-id="33244b4" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-image">
+										<img decoding="async" src="https://www.centrodeeventosto.com.br/wp-content/uploads/2022/06/logoSite.png" title="Logo Centro de Eventos The One" alt="Logo Centro de Eventos The One">											</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-656cc46 3123 elementor-widget__width-initial elementor-nav-menu__align-left elementor-nav-menu--indicator-none elementor-nav-menu--dropdown-none elementor-widget-mobile__width-inherit elementor-widget elementor-widget-nav-menu" data-id="656cc46" data-element_type="widget" id="3123" data-settings="{&quot;layout&quot;:&quot;vertical&quot;}" data-widget_type="nav-menu.default">
+				<div class="elementor-widget-container">
+						<nav role="navigation" class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-vertical e--pointer-none"><ul id="menu-1-656cc46" class="elementor-nav-menu sm-vertical" data-smartmenus-id="1673618537221008"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-1211 current_page_item menu-item-1262"><a href="https://www.centrodeeventosto.com.br/" aria-current="page" class="elementor-item elementor-item-active">HOME</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-760"><a href="https://www.centrodeeventosto.com.br/sobre/" class="elementor-item">SOBRE</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-800"><a href="https://www.centrodeeventosto.com.br/estrutura/" class="elementor-item">ESTRUTURA</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1167"><a href="https://www.centrodeeventosto.com.br/local/" class="elementor-item">LOCALIZAÇÃO</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-47"><a href="#blog" class="elementor-item elementor-item-anchor">BLOG</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-48"><a href="#contato" class="elementor-item elementor-item-anchor">CONTATO</a></li>
+</ul></nav>
+					<div class="elementor-menu-toggle" role="button" tabindex="0" aria-label="Menu Toggle" aria-expanded="false">
+			<i class="eicon-menu-bar" aria-hidden="true"></i>
+			<span class="elementor-screen-only">Menu</span>
+		</div>
+			<nav class="elementor-nav-menu--dropdown elementor-nav-menu__container" role="navigation" aria-hidden="true"><ul id="menu-2-656cc46" class="elementor-nav-menu sm-vertical" data-smartmenus-id="16736185372222634"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-1211 current_page_item menu-item-1262"><a href="https://www.centrodeeventosto.com.br/" aria-current="page" class="elementor-item elementor-item-active">HOME</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-760"><a href="https://www.centrodeeventosto.com.br/sobre/" class="elementor-item">SOBRE</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-800"><a href="https://www.centrodeeventosto.com.br/estrutura/" class="elementor-item">ESTRUTURA</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1167"><a href="https://www.centrodeeventosto.com.br/local/" class="elementor-item">LOCALIZAÇÃO</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-47"><a href="#blog" class="elementor-item elementor-item-anchor">BLOG</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-48"><a href="#contato" class="elementor-item elementor-item-anchor">CONTATO</a></li>
+</ul></nav>
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-75a422a" data-id="75a422a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-4573520 elementor-widget elementor-widget-heading" data-id="4573520" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">CONTATO</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-ec007d8 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-id="ec007d8" data-element_type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-7c82662 elementor-widget__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-image" data-id="7c82662" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-image">
+											<a href="mailto:contato@centrodeeventosto.com.br">
+							<img decoding="async" src="https://www.centrodeeventosto.com.br/wp-content/uploads/2022/08/email.png" title="email" alt="email">								</a>
+											</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-5b7278b elementor-widget__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-text-editor" data-id="5b7278b" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-text-editor elementor-clearfix"><p><a href="mailto:contato@centrodeeventosto.com.br">contato@centrodeeventosto.com.br</a></p></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-511d067 elementor-widget__width-initial elementor-widget-mobile__width-inherit elementor-widget elementor-widget-image" data-id="511d067" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-image">
+											<a href="mailto:contato@centrodeeventosto.com.br">
+							<img decoding="async" src="https://www.centrodeeventosto.com.br/wp-content/uploads/2022/08/icotelefone.png" title="icotelefone" alt="icotelefone">								</a>
+											</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-8614a8e elementor-widget__width-initial elementor-widget-mobile__width-initial elementor-widget elementor-widget-text-editor" data-id="8614a8e" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-text-editor elementor-clearfix"><p>(<a href="http://wa.me/551137416525">11) 3741-6525</a></p></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-8be78ff elementor-widget__width-initial elementor-widget-mobile__width-initial elementor-widget elementor-widget-image" data-id="8be78ff" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-image">
+											<a href="https://www.google.com/maps/place/Av.+Maria+Coelho+Aguiar,+215+-+Jardim+São+Lu%C3%ADs,+São+Paulo+-+SP,+05805-000/@-23.6483443,-46.7336653,17z/data=!3m1!4b1!4m5!3m4!1s0x94ce516d80b31bd1:0xc93152697541287!8m2!3d-23.6483492!4d-46.7314766">
+							<img decoding="async" src="https://www.centrodeeventosto.com.br/wp-content/uploads/2022/08/icone-endereco.png" title="icone endereco" alt="icone endereco">								</a>
+											</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-59623c9 elementor-widget__width-initial align elementor-widget-mobile__width-initial elementor-widget elementor-widget-text-editor" data-id="59623c9" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-text-editor elementor-clearfix"><p><a href="https://www.google.com/maps/place/Av.+Maria+Coelho+Aguiar,+215+-+Jardim+São+Lu%C3%ADs,+São+Paulo+-+SP,+05805-000/@-23.6483443,-46.7336653,17z/data=!3m1!4b1!4m5!3m4!1s0x94ce516d80b31bd1:0xc93152697541287!8m2!3d-23.6483492!4d-46.7314766">Av. Maria Coelho Aguiar, 215 – Jardim São Luís, São Paulo – SP, 05805-000 – CENESP</a></p></div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-0f7bd72 elementor-view-stacked elementor-widget__width-initial elementor-shape-circle elementor-widget elementor-widget-icon" data-id="0f7bd72" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-icon-wrapper">
+			<a class="elementor-icon elementor-animation-bounce-in" href="https://www.instagram.com/centrodeeventosto/" target="_blank">
+			<i aria-hidden="true" class="fab fa-instagram"></i>			</a>
+		</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-dc9fcc9 elementor-view-stacked elementor-widget__width-initial elementor-shape-circle elementor-widget elementor-widget-icon" data-id="dc9fcc9" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-icon-wrapper">
+			<a class="elementor-icon elementor-animation-bounce-in" href="https://www.linkedin.com/company/centro-de-eventos-the-one/" target="_blank">
+			<i aria-hidden="true" class="fab fa-linkedin-in"></i>			</a>
+		</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-7320bfa elementor-view-stacked elementor-widget__width-initial elementor-shape-circle elementor-widget elementor-widget-icon" data-id="7320bfa" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-icon-wrapper">
+			<a class="elementor-icon elementor-animation-bounce-in" href="https://wa.me/551137416525" target="_blank">
+			<i aria-hidden="true" class="fab fa-whatsapp"></i>			</a>
+		</div>
+				</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-0dfdf05 elementor-hidden-phone" data-id="0dfdf05" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+								<div class="elementor-element elementor-element-a711a6a elementor-widget elementor-widget-heading" data-id="a711a6a" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-default">BLOG</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-7357e37 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-id="7357e37" data-element_type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+				</div>
+				</div>
+				<div class="elementor-element elementor-element-cc58ba1 elementor-widget elementor-widget-text-editor" data-id="cc58ba1" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-text-editor elementor-clearfix"><p>Em breve compartilharemos conteúdo sobre eventos, experiências, dicas e muito mais.</p><p>Aguarde</p></div>
+				</div>
+				</div>
+					</div>
+		</div>
+							</div>
+		</section>
+				</div>
+		</footer>
