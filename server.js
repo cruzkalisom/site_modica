@@ -121,30 +121,48 @@ app.get('/register', (req,res) => {
 });
 
 app.get('/login', (req,res) => {
-    res.render('user/login', {erro: ''})
+    if (req.session.user_id || req.session.key){
+        if(verifysession(req.session.user_id, req.session.key)){
+            return res.send('Já está logado')
+    
+        }
+        res.send('Não autenticou')
+    } else {
+        res.render('user/login', {erro: ''})
+    }
 });
 
 app.post('/login', (req,res) => {
-    var sql = `SELECT * FROM users WHERE user=?`
-    
-    if(req.body.user && req.body.user != undefined){
-        connect.query(sql, [req.body.user], function(err, result){
-            if(err){
-                return console.log(err.message)
-            }
-            
-            if(!result[0]){
-                return res.render('user/login', {erro:'Usuário não encontrado!'})
-            }
+    if(verifysession(req.session.user_id, req.session.key)){
+        res.send('Já está logado')
 
-            if(result[0].password != req.body.password){
-                return res.render('user/login', {erro: 'Senha incorreta!'})
-            }
-
-            res.send('Logado com sucesso')
-        });
     } else {
-        res.render('user/login', {erro: ''})
+        var sql = `SELECT * FROM users WHERE user=?`
+    
+        if(req.body.user && req.body.user != undefined){
+            connect.query(sql, [req.body.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+                
+                if(!result[0]){
+                    return res.render('user/login', {erro:'Usuário não encontrado!'})
+                }
+
+                if(result[0].password != req.body.password){
+                    return res.render('user/login', {erro: 'Senha incorreta!'})
+                }
+
+                if(req.body.remember){
+                    req.session.key = 1
+                    req.session.user_id = 1
+                }
+
+                res.send('Logado com sucesso')
+            });
+        } else {
+            res.render('user/login', {erro: ''})
+        }
     }
 });
 
@@ -200,3 +218,26 @@ app.get('/', (req,res) => {
 app.listen(port, function(){
     console.log("Servidor local Online na porta " + port);
 });
+
+function verifysession(user, key){
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var user = user
+
+    connect.query(sql, [user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+        console.log(result)
+
+        if(!result[0]){
+            console.log('foi')
+            return false
+        }
+
+        if(result[0].voucher != key){
+            return false
+        }
+
+        return true
+    })
+}
