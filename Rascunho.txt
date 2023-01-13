@@ -44,6 +44,8 @@ Painel Admin:
 	|	Alterar permissões (Inicialmente apenas autenticar)
 	|	Ver Reservas (Lista todas as compras do usuário)
 	|	Excluir contas (Futuramente)
+	Reservas:
+	|	Configurar Valores
 	
 Cadastro Reserva:
 	Data (Verifica disponibilidade)
