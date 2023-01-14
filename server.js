@@ -121,14 +121,21 @@ app.get('/register', (req,res) => {
 });
 
 app.get('/login', (req,res) => {
-    res.render('user/login', {erro: ''})
+    var sql = `SELECT * FROM session WHERE user_id=?`
+
+    console.log(req.session)
+
+    if(!req.session.key){
+        console.log('foi')
+        return res.render('user/login', {erro: ''})
+    }
 });
 
 app.post('/login', (req,res) => {
     var sql = `SELECT * FROM users WHERE user=?`
     var sql2 = `SELECT * FROM session WHERE user_id=?`
     var sql3 = `INSERT INTO session(user_id) VALUES (?)`
-
+    
     if(req.body.user && req.body.user != undefined){
         connect.query(sql, [req.body.user], function(err, result){
             if(err){
@@ -146,33 +153,33 @@ app.post('/login', (req,res) => {
             var user_id = result[0].id
 
             if(req.body.remember){
-                connect.query(sql2, [result[0].id], function(err, result){
+                var key = 0
+                connect.query(sql2, [req.body.user], function(err, result2){
                     if(err){
                         return console.log(err.message)
                     }
 
-                    if(result){
-                        return req.session.key = result[0].voucher
-                    }
-                    
-                    connect.query(sql3, [user_id], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-
-                        connect.query(sql2, [user_id], function(err, result){
+                    if(result2[0]){
+                        key = result2[0].voucher
+                    } else {
+                        connect.query(sql3, [result[0].id], function(err){
                             if(err){
-                                return console.log(err.message)
+                                console.log(err.message)
                             }
 
-                            req.session.key = result[0].id
+                            connect.query(sql2, [result[0].id], function(err, result3){
+                                if(err){
+                                    console.log(err.message)
+                                }
+
+                                key = result3[0].voucher
+                            })
                         })
-                    })
+                    }
+                req.session.key = key
                 })
             }
-
             req.session.user = result[0].id
-            console.log(result[0].id)
             res.send('Logado com sucesso')
         });
     } else {
