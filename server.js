@@ -121,15 +121,7 @@ app.get('/register', (req,res) => {
 });
 
 app.get('/login', (req,res) => {
-    if (req.session.user_id || req.session.key){
-        if(verifysession(req.session.user_id, req.session.key)){
-            return res.send('Já está logado')
     
-        }
-        res.send('Não autenticou')
-    } else {
-        res.render('user/login', {erro: ''})
-    }
 });
 
 app.post('/login', (req,res) => {
@@ -138,6 +130,9 @@ app.post('/login', (req,res) => {
 
     } else {
         var sql = `SELECT * FROM users WHERE user=?`
+        var sql2 = `SELECT * FROM session WHERE user_id=?`
+        var sql3 = `UPDATE session SET voucher=? WHERE user_id=?`
+        var sql4 = `INSERT INTO session(user_id) VALUES (?)`
     
         if(req.body.user && req.body.user != undefined){
             connect.query(sql, [req.body.user], function(err, result){
@@ -154,8 +149,7 @@ app.post('/login', (req,res) => {
                 }
 
                 if(req.body.remember){
-                    req.session.key = 1
-                    req.session.user_id = 1
+                    console.log('Foi')
                 }
 
                 res.send('Logado com sucesso')
@@ -217,27 +211,4 @@ app.get('/', (req,res) => {
 //Conexão
 app.listen(port, function(){
     console.log("Servidor local Online na porta " + port);
-});
-
-function verifysession(user, key){
-    var sql = `SELECT * FROM session WHERE user_id=?`
-    var user = user
-
-    connect.query(sql, [user], function(err, result){
-        if(err){
-            return console.log(err.message)
-        }
-        console.log(result)
-
-        if(!result[0]){
-            console.log('foi')
-            return false
-        }
-
-        if(result[0].voucher != key){
-            return false
-        }
-
-        return true
-    })
-}
+})
