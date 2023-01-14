@@ -122,13 +122,37 @@ app.get('/register', (req,res) => {
 
 app.get('/login', (req,res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
 
-    console.log(req.session)
-
-    if(!req.session.key){
-        console.log('foi')
+    if(!req.session.user){
         return res.render('user/login', {erro: ''})
     }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.render('user/login', {erro: ''})
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.render('user/login', {erro: ''})
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.render('user/login', {erro: ''})
+            }
+
+            res.render('home', {key: '1', name: result[0].name})
+        })
+    })
 });
 
 app.post('/login', (req,res) => {
@@ -150,19 +174,17 @@ app.post('/login', (req,res) => {
                 return res.render('user/login', {erro: 'Senha incorreta!'})
             }
 
-            var user_id = result[0].id
-
             if(req.body.remember){
-                var key = 0
-                connect.query(sql2, [req.body.user], function(err, result2){
+                connect.query(sql2, [result[0].id], function(err, result2){
                     if(err){
                         return console.log(err.message)
                     }
 
                     if(result2[0]){
+                        console.log('Foi')
                         req.session.key = result2[0].voucher
                         req.session.user = result[0].id
-                        return res.send('Logado com sucesso')
+                        return res.render('home', {key: '1', name: result[0].name})
                     } else {
                         connect.query(sql3, [result[0].id], function(err){
                             if(err){
@@ -176,12 +198,14 @@ app.post('/login', (req,res) => {
 
                                 req.session.key = result3[0].voucher
                                 req.session.user = result[0].id
-                                return res.send('Logado com sucesso')
+                                return res.render('home', {key: '1', name: result[0].name})
                             })
                         })
                     }
-                req.session.key = key
                 })
+            } else {
+                req.session.user = result[0].id
+                res.render('home', {key: '1', name: result[0].name})
             }
         });
     } else {
@@ -230,7 +254,38 @@ app.post('/', (req,res) => {
 });*/
 
 app.get('/dev', (req,res) => {
-    res.render('home')
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+
+    if(!req.session.user){
+        return res.render('home', {key: ''})
+    }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.render('home', {key: ''})
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.render('home', {key: ''})
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.render('home', {key: ''})
+            }
+
+            res.render('home', {key: '1', name: result[0].name})
+        })
+    })
 });
 
 app.get('/', (req,res) => {
