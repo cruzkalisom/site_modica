@@ -121,42 +121,62 @@ app.get('/register', (req,res) => {
 });
 
 app.get('/login', (req,res) => {
-    
+    res.render('user/login', {erro: ''})
 });
 
 app.post('/login', (req,res) => {
-    if(verifysession(req.session.user_id, req.session.key)){
-        res.send('Já está logado')
+    var sql = `SELECT * FROM users WHERE user=?`
+    var sql2 = `SELECT * FROM session WHERE user_id=?`
+    var sql3 = `INSERT INTO session(user_id) VALUES (?)`
 
+    if(req.body.user && req.body.user != undefined){
+        connect.query(sql, [req.body.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+            
+            if(!result[0]){
+                return res.render('user/login', {erro:'Usuário não encontrado!'})
+            }
+
+            if(result[0].password != req.body.password){
+                return res.render('user/login', {erro: 'Senha incorreta!'})
+            }
+
+            var user_id = result[0].id
+
+            if(req.body.remember){
+                connect.query(sql2, [result[0].id], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(result){
+                        return req.session.key = result[0].voucher
+                    }
+                    
+                    connect.query(sql3, [user_id], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        connect.query(sql2, [user_id], function(err, result){
+                            if(err){
+                                return console.log(err.message)
+                            }
+
+                            req.session.key = result[0].id
+                        })
+                    })
+                })
+            }
+
+            req.session.user = result[0].id
+            console.log(result[0].id)
+            res.send('Logado com sucesso')
+        });
     } else {
-        var sql = `SELECT * FROM users WHERE user=?`
-        var sql2 = `SELECT * FROM session WHERE user_id=?`
-        var sql3 = `UPDATE session SET voucher=? WHERE user_id=?`
-        var sql4 = `INSERT INTO session(user_id) VALUES (?)`
-    
-        if(req.body.user && req.body.user != undefined){
-            connect.query(sql, [req.body.user], function(err, result){
-                if(err){
-                    return console.log(err.message)
-                }
-                
-                if(!result[0]){
-                    return res.render('user/login', {erro:'Usuário não encontrado!'})
-                }
-
-                if(result[0].password != req.body.password){
-                    return res.render('user/login', {erro: 'Senha incorreta!'})
-                }
-
-                if(req.body.remember){
-                    console.log('Foi')
-                }
-
-                res.send('Logado com sucesso')
-            });
-        } else {
-            res.render('user/login', {erro: ''})
-        }
+        res.render('user/login', {erro: ''})
     }
 });
 
