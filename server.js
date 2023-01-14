@@ -71,10 +71,14 @@ app.use(express.static(__dirname+'/public'));
 //Rotas
 app.post('/register', (req,res) => {
     var sql = `SELECT * FROM users WHERE user=?`
-    var sql2 = `INSERT INTO users (name, user, password) VALUES (?, ?, ?)`
+    var sql2 = `INSERT INTO users (name, user, password, firstname) VALUES (?, ?, ?, ?)`
 
     if(!req.body.name || req.body.name == undefined){
         return res.render('user/register', {erro: 'Nome inválido!', terms: ''})
+    }
+
+    if(!req.body.firstname || req.body.firstname == undefined){
+        return res.render('user/register', {erro: 'Sobrenome inválido', terms: ''})
     }
 
     if(!req.body.user || req.body.user == undefined){
@@ -106,7 +110,7 @@ app.post('/register', (req,res) => {
             return res.render('user/register', {erro: 'E-mail já registrado!', terms: ''})
         }
 
-        connect.query(sql2, [req.body.name, req.body.user, req.body.password], function (err){
+        connect.query(sql2, [req.body.name, req.body.user, req.body.password, req.body.firstname], function (err){
             if(err){
                 return console.log(err.message)
             }
@@ -181,7 +185,6 @@ app.post('/login', (req,res) => {
                     }
 
                     if(result2[0]){
-                        console.log('Foi')
                         req.session.key = result2[0].voucher
                         req.session.user = result[0].id
                         return res.render('home', {key: '1', name: result[0].name})
