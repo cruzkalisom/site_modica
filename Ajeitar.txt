@@ -1,0 +1,3 @@
+Alterar imagem de fundo da página de login
+Alterar imagens do carrossel
+Alterar link de e-mail
