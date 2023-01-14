@@ -160,7 +160,9 @@ app.post('/login', (req,res) => {
                     }
 
                     if(result2[0]){
-                        key = result2[0].voucher
+                        req.session.key = result2[0].voucher
+                        req.session.user = result[0].id
+                        return res.send('Logado com sucesso')
                     } else {
                         connect.query(sql3, [result[0].id], function(err){
                             if(err){
@@ -172,15 +174,15 @@ app.post('/login', (req,res) => {
                                     console.log(err.message)
                                 }
 
-                                key = result3[0].voucher
+                                req.session.key = result3[0].voucher
+                                req.session.user = result[0].id
+                                return res.send('Logado com sucesso')
                             })
                         })
                     }
                 req.session.key = key
                 })
             }
-            req.session.user = result[0].id
-            res.send('Logado com sucesso')
         });
     } else {
         res.render('user/login', {erro: ''})
