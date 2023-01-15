@@ -69,6 +69,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/datereserve', (req,res) => {
+    res.render('reserves/date_reserve')
+});
+
 app.post('/register', (req,res) => {
     var sql = `SELECT * FROM users WHERE user=?`
     var sql2 = `INSERT INTO users (name, user, password, firstname) VALUES (?, ?, ?, ?)`
