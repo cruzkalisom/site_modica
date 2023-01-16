@@ -69,6 +69,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/datereserve', (req, res) => {
+    console.log(req.body)
+});
+
 app.get('/datereserve', (req,res) => {
     res.render('reserves/date_reserve')
 });
