@@ -69,6 +69,9 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/data', (req,res) => {
+    console.log(req.body)
+})
 app.post('/bookingdate', (req, res) => {
     var date = new Date()
     var confirm_date = new Date(req.body.date)
