@@ -81,6 +81,7 @@ app.post('/bookingdate', (req, res) => {
         return res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
     
+    req.session.bookingdate = req.body.date
     res.render('reserves/salonavaliable')
 });
 
