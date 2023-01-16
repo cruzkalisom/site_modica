@@ -70,11 +70,18 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.post('/datereserve', (req, res) => {
-    console.log(req.body)
+    var date = new Date()
+    var confirm_date = new Date(req.body.date)
+    var valid_date = date.getTime() - confirm_date.getTime()
+
+    if(valid_date > 0){
+        return res.render('reserves/date_reserve', {erro: 'Data inválida!'})
+    }
+    //var confirm_date = new Date(confirm_date)
 });
 
 app.get('/datereserve', (req,res) => {
-    res.render('reserves/date_reserve')
+    res.render('reserves/date_reserve', {erro: ''})
 });
 
 app.post('/register', (req,res) => {
