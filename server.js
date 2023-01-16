@@ -69,7 +69,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
-app.post('/datereserve', (req, res) => {
+app.post('/bookingdate', (req, res) => {
     var date = new Date()
     var confirm_date = new Date(req.body.date)
     var valid_date = date.getTime() - confirm_date.getTime()
@@ -77,10 +77,11 @@ app.post('/datereserve', (req, res) => {
     if(valid_date > 0){
         return res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
-    //var confirm_date = new Date(confirm_date)
+    
+    res.render('reserves/salonavaliable')
 });
 
-app.get('/datereserve', (req,res) => {
+app.get('/bookingdate', (req,res) => {
     res.render('reserves/date_reserve', {erro: ''})
 });
 

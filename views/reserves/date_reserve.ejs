@@ -21,7 +21,7 @@
   </div>
   <!-- /.login-logo -->
   <div class="card" style="background-color: #ffffffe5;">
-    <div class="card-body ">
+    <div class="card-body">
         <h5 class="login-box-msg">Escolha uma data</h5>
 
         <% if(erro){ %>
@@ -30,7 +30,7 @@
           </div>
         <% } %>
 
-        <form action="/datereserve" method="post">
+        <form action="/bookingdate" method="post">
             <div class="input-group mb-3">
                 <input name="date" type="date" class="form-control" required>
             </div>
