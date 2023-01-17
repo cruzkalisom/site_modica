@@ -22,6 +22,7 @@ USE `test`;
 -- Copiando estrutura para tabela test.reservations
 CREATE TABLE IF NOT EXISTS `reservations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `auth` int(11) NOT NULL,
   `timepag` int(11) NOT NULL,

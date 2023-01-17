@@ -72,10 +72,9 @@ app.use(express.static(__dirname+'/public'));
 app.post('/data', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE dateres=?`
     var date = new Date(req.session.bookingdate)
+    var dateconvert = date.getTime()/100000
 
-    console.log(date)
-
-    connect.query(sql, [date.getTime], function(err, result){
+    connect.query(sql, [dateconvert], function(err, result){
         if(err){
             console.log(err.message)
         }
@@ -96,7 +95,7 @@ app.post('/bookingdate', (req, res) => {
     }
     
     req.session.bookingdate = req.body.date
-    res.render('reserves/salonavaliable', {erro: 'Indisponível para a data escolhida! bv'})
+    res.render('reserves/salonavaliable', {erro: ''})
 });
 
 app.get('/bookingdate', (req,res) => {
