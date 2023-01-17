@@ -78,33 +78,42 @@ app.post('/data', (req,res) => {
     var type_tree = ''
     var combo_type = ''
 
-    if(req.session.bookingdate || req.session.bookingdate != undefined){
+    console.log(dateconvert)
+
+    if(req.session.bookingdate && req.session.bookingdate != undefined){
         connect.query(sql, [dateconvert], function(err, result){
+
             if(err){
                 return console.log(err.message)
             }
     
             for(var i = 0; i < result.length; i++){
-                if(result[i].type == 1){
+                if(result[i].type == 1 && result[i].auth <= 2){
                     type_one = 'indisponível'
                     combo_type = 'indisponível'
                 }
     
-                if(result[i].type == 2){
+                if(result[i].type == 2 && result[i].auth <= 2){
                     type_two = 'indisponível'
                     combo_type = 'indisponível'
                 }
     
-                if(result[i].type == 3){
+                if(result[i].type == 3 && result[i].auth <= 2){
                     type_tree = 'indisponível'
                     break
                 }
             }
+
+            console.log(type_one)
     
             if(type_tree == 'indisponível'){
                 return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
             }
-            
+    
+            if(type_one == 'indisponível' && type_two == 'indisponível'){
+                return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+            }
+
             res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
         })
     } else {
@@ -133,17 +142,17 @@ app.post('/bookingdate', (req, res) => {
         }
 
         for(var i = 0; i < result.length; i++){
-            if(result[i].type == 1){
+            if(result[i].type == 1 && result[i].auth <= 2){
                 type_one = 'indisponível'
                 combo_type = 'indisponível'
             }
 
-            if(result[i].type == 2){
+            if(result[i].type == 2 && result[i].auth <= 2){
                 type_two = 'indisponível'
                 combo_type = 'indisponível'
             }
 
-            if(result[i].type == 3){
+            if(result[i].type == 3 && result[i].auth <= 2){
                 type_tree = 'indisponível'
                 break
             }
@@ -153,6 +162,9 @@ app.post('/bookingdate', (req, res) => {
             return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
         }
 
+        if(type_one == 'indisponível' && type_two == 'indisponível'){
+            return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+        }
         req.session.bookingdate = req.body.date
         res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
     })
