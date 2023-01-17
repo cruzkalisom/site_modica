@@ -68,4 +68,4 @@ Checklist:
 	Mesas:
 	|	Quantidade
 
-RESERVAS(ID, Cliente, Auth, tempo de pagamento)
+RESERVAS(ID, Cliente, Auth, tempo de pagamento, data)

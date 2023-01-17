@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           10.4.22-MariaDB - mariadb.org binary distribution
+-- Versão do servidor:           10.4.27-MariaDB - mariadb.org binary distribution
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              12.0.0.6468
+-- HeidiSQL Versão:              12.3.0.6589
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,15 +16,27 @@
 
 
 -- Copiando estrutura do banco de dados para test
-CREATE DATABASE IF NOT EXISTS `test` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE IF NOT EXISTS `test` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
 USE `test`;
+
+-- Copiando estrutura para tabela test.reservations
+CREATE TABLE IF NOT EXISTS `reservations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `auth` int(11) NOT NULL,
+  `timepag` int(11) NOT NULL,
+  `dateres` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Copiando dados para a tabela test.reservations: ~0 rows (aproximadamente)
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
   `user_id` int(11) NOT NULL,
   `voucher` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`voucher`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela test.session: ~0 rows (aproximadamente)
 INSERT INTO `session` (`user_id`, `voucher`) VALUES
@@ -38,11 +50,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.users: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.users: ~2 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `firstname`, `user`, `password`) VALUES
-	(1, 'Kalisom', 'Cruz', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003');
+	(1, 'Kalisom', 'Cruz', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003'),
+	(2, 'Deisielle', 'Lacerda', 'deisielle.lacerda@outlook.com', '248299');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
