@@ -24,6 +24,12 @@
     <div class="card-body">
       <h5 class="login-box-msg">Escolha um tipo de reserva</h5>
 
+      <% if(erro){ %>
+        <div class="alert alert-danger" role="alert" style="background-color: #ff0000a6;">
+          <%= erro %>
+        </div>
+      <% } %>
+
       <form action="/data" method="post">
         <select name="bookingtype" class="form-control" aria-label="Default select example" required>
             <option selected>Nenhuma</option>

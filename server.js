@@ -70,8 +70,22 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.post('/data', (req,res) => {
-    console.log(req.body)
-})
+    var sql = `SELECT * FROM reservations WHERE dateres=?`
+    var date = new Date(req.session.bookingdate)
+
+    console.log(date)
+
+    connect.query(sql, [date.getTime], function(err, result){
+        if(err){
+            console.log(err.message)
+        }
+
+        if(result[0]){
+            return res.render('reserves/salonavaliable', {erro: 'Indisponível para a data escolhida!'})
+        }
+    })
+});
+
 app.post('/bookingdate', (req, res) => {
     var date = new Date()
     var confirm_date = new Date(req.body.date)
@@ -82,7 +96,7 @@ app.post('/bookingdate', (req, res) => {
     }
     
     req.session.bookingdate = req.body.date
-    res.render('reserves/salonavaliable')
+    res.render('reserves/salonavaliable', {erro: 'Indisponível para a data escolhida! bv'})
 });
 
 app.get('/bookingdate', (req,res) => {
