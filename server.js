@@ -104,16 +104,34 @@ app.post('/bookingdate', (req, res) => {
         var type_one = ''
         var type_two = ''
         var type_tree = ''
-        
+
         if(err){
             return console.log(err.message)
         }
 
         for(var i = 0; i < result.length; i++){
             if(result[i].type == 1){
+                return type_one = 'indisponível'
+                return type_tree = 'indisponível'
+            }
 
+            if(result[i].type == 2){
+                return type_two = 'indisponível'
+                return type_tree = 'indisponível'
+            }
+
+            if(result[i].type == 3){
+                type_tree = 'indisponível'
+                break
             }
         }
+
+        if(type_tree == 'indisponível'){
+            return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+        }
+
+        req.session.bookingdate = req.body.date
+        res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two})
     })
     
     req.session.bookingdate = req.body.date
