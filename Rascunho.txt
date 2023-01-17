@@ -60,6 +60,8 @@ Opções:
 	|	Aniversário
 	|	Confraternização
 	|	Show
+	|	casamento
+	|	Chá de Revelação
 
 Checklist:
 	Cadeiras:

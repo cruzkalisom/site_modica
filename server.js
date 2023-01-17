@@ -73,16 +73,39 @@ app.post('/data', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE dateres=?`
     var date = new Date(req.session.bookingdate)
     var dateconvert = date.getTime()/100000
+    var type_one = ''
+    var type_two = ''
+    var type_tree = ''
+    var combo_type = ''
 
     if(req.session.bookingdate || req.session.bookingdate != undefined){
         connect.query(sql, [dateconvert], function(err, result){
             if(err){
-                console.log(err.message)
+                return console.log(err.message)
             }
-
-            if(result[0]){
-                return res.render('reserves/salonavaliable', {erro: 'Indisponível para a data escolhida!'})
+    
+            for(var i = 0; i < result.length; i++){
+                if(result[i].type == 1){
+                    type_one = 'indisponível'
+                    combo_type = 'indisponível'
+                }
+    
+                if(result[i].type == 2){
+                    type_two = 'indisponível'
+                    combo_type = 'indisponível'
+                }
+    
+                if(result[i].type == 3){
+                    type_tree = 'indisponível'
+                    break
+                }
             }
+    
+            if(type_tree == 'indisponível'){
+                return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+            }
+            
+            res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
         })
     } else {
         res.render('reserves/date_reserve', {erro: 'Data inválida!'})
@@ -95,29 +118,29 @@ app.post('/bookingdate', (req, res) => {
     var valid_date = date.getTime() - confirm_date.getTime()
     var dateconvert = confirm_date.getTime()/100000
     var sql = `SELECT * FROM reservations WHERE dateres=?`
+    var type_one = ''
+    var type_two = ''
+    var type_tree = ''
+    var combo_type = ''
 
     if(valid_date > 0){
         return res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
 
     connect.query(sql, [dateconvert], function(err, result){
-        var type_one = ''
-        var type_two = ''
-        var type_tree = ''
-
         if(err){
             return console.log(err.message)
         }
 
         for(var i = 0; i < result.length; i++){
             if(result[i].type == 1){
-                return type_one = 'indisponível'
-                return type_tree = 'indisponível'
+                type_one = 'indisponível'
+                combo_type = 'indisponível'
             }
 
             if(result[i].type == 2){
-                return type_two = 'indisponível'
-                return type_tree = 'indisponível'
+                type_two = 'indisponível'
+                combo_type = 'indisponível'
             }
 
             if(result[i].type == 3){
@@ -131,11 +154,8 @@ app.post('/bookingdate', (req, res) => {
         }
 
         req.session.bookingdate = req.body.date
-        res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two})
+        res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
     })
-    
-    req.session.bookingdate = req.body.date
-    res.render('reserves/salonavaliable', {erro: ''})
 });
 
 app.get('/bookingdate', (req,res) => {
@@ -366,6 +386,12 @@ app.get('/dev', (req,res) => {
 
 app.get('/', (req,res) => {
     res.render('homedev')
+});
+
+app.get('/devtest', (req,res) => {
+    var date = new Date(req.body.bookingdate)
+
+    res.send(date.getTime())
 });
 
 //Conexão

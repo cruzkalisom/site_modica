@@ -33,9 +33,21 @@
       <form action="/data" method="post">
         <select name="bookingtype" class="form-control" aria-label="Default select example" required>
             <option selected>Nenhuma</option>
-            <option value="1">Adulto</option>
-            <option value="2">Kids</option>
-            <option value="3">Combo</option>
+            <option value="1">Adulto
+                <%if (typeone){ %>
+                    (<%= typeone %>)
+                <% } %>
+            </option>
+            <option value="2">Kids
+                <%if (typetwo){ %>
+                    (<%= typetwo %>)
+                <% } %>
+            </option>
+            <option value="3">Combo
+                <%if (combotype){ %>
+                    (<%= combotype %>)
+                <% } %>
+            </option>
         </select>
 
         <div class="row" style="margin-top: 12px;">
