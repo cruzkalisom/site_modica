@@ -400,7 +400,7 @@ app.get('/dev', (req,res) => {
 });
 
 app.get('/', (req,res) => {
-    res.render('homedev')
+    res.render('developer/homedev')
 });
 
 app.get('/devtest', (req,res) => {
