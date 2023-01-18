@@ -70,7 +70,7 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/painel', (req,res) => {
-    res.render('admin/panel.ejs', {admin:''})
+    res.render('admin/panel.ejs', {admin:'on'})
 })
 
 app.post('/data', (req,res) => {

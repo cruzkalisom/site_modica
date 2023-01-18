@@ -36,12 +36,13 @@ CREATE TABLE IF NOT EXISTS `reservations` (
 CREATE TABLE IF NOT EXISTS `session` (
   `user_id` int(11) NOT NULL,
   `voucher` int(11) NOT NULL AUTO_INCREMENT,
+  `date` int(11) NOT NULL,
   PRIMARY KEY (`voucher`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.session: ~0 rows (aproximadamente)
-INSERT INTO `session` (`user_id`, `voucher`) VALUES
-	(1, 9);
+-- Copiando dados para a tabela test.session: ~1 rows (aproximadamente)
+INSERT INTO `session` (`user_id`, `voucher`, `date`) VALUES
+	(1, 9, 0);
 
 -- Copiando estrutura para tabela test.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -56,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Copiando dados para a tabela test.users: ~2 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `firstname`, `user`, `password`) VALUES
 	(1, 'Kalisom', 'Cruz', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003'),
-	(2, 'Deisielle', 'Lacerda', 'deisielle.lacerda@outlook.com', '248299');
+	(2, 'Deisielle', 'Lacerda', 'deisielle.lacerda@outlook.com', '248299'),
+	(3, 'adoro', 'pinto', 'adoropinto@hotmail.com', '216345');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
