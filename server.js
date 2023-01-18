@@ -76,6 +76,10 @@ app.post('/data', (req,res) => {
     var dateconvert = date.getTime()/100000
     var type = Number(req.body.bookingtype)
 
+    if(!type || type == undefined) {
+        return res.render('reserves/date_reserve', {erro: 'Opção inválida!'})
+    }
+
     if(req.session.bookingdate && req.session.bookingdate != undefined){
         if(type != 3){
             connect.query(sql, [type], function(err, result){
@@ -85,7 +89,7 @@ app.post('/data', (req,res) => {
     
                 if(!result[0]){
                     req.session.bookingtype = req.body.bookingtype
-                    return res.send('Tipos de eventos')
+                    return res.render('reserves/typeevent', {erro: ''})
                 }
     
                 for(var i = 0; i < result.length; i++){
@@ -96,7 +100,7 @@ app.post('/data', (req,res) => {
                 }
     
                 req.session.bookingtype = req.body.bookingtype
-                res.send('Tipos de eventos')
+                res.render('reserves/typeevent', {erro: ''})
             })
         } else {
             connect.query(sql2, [dateconvert], function(err, result){
@@ -108,7 +112,7 @@ app.post('/data', (req,res) => {
                     return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
                 }
 
-                res.send('Tipos de eventos')
+                res.render('reserves/typeevent', {erro: ''})
             })
         }
     } else {
