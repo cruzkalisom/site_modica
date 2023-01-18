@@ -70,52 +70,47 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.post('/data', (req,res) => {
-    var sql = `SELECT * FROM reservations WHERE dateres=?`
+    var sql = `SELECT * FROM reservations WHERE type=?`
+    var sql2 = `SELECT * FROM reservations WHERE dateres=?`
     var date = new Date(req.session.bookingdate)
     var dateconvert = date.getTime()/100000
-    var type_one = ''
-    var type_two = ''
-    var type_tree = ''
-    var combo_type = ''
-
-    console.log(dateconvert)
+    var type = Number(req.body.bookingtype)
 
     if(req.session.bookingdate && req.session.bookingdate != undefined){
-        connect.query(sql, [dateconvert], function(err, result){
-
-            if(err){
-                return console.log(err.message)
-            }
-    
-            for(var i = 0; i < result.length; i++){
-                if(result[i].type == 1 && result[i].auth <= 2){
-                    type_one = 'indisponível'
-                    combo_type = 'indisponível'
+        if(type != 3){
+            connect.query(sql, [type], function(err, result){
+                if(err){
+                    return console.log(err.message)
                 }
     
-                if(result[i].type == 2 && result[i].auth <= 2){
-                    type_two = 'indisponível'
-                    combo_type = 'indisponível'
+                if(!result[0]){
+                    req.session.bookingtype = req.body.bookingtype
+                    return res.send('Tipos de eventos')
                 }
     
-                if(result[i].type == 3 && result[i].auth <= 2){
-                    type_tree = 'indisponível'
-                    break
+                for(var i = 0; i < result.length; i++){
+                    if(result[i].dateres == dateconvert && result[i].auth <= 2){
+                        return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
+                        break
+                    }
                 }
-            }
-
-            console.log(type_one)
     
-            if(type_tree == 'indisponível'){
-                return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
-            }
-    
-            if(type_one == 'indisponível' && type_two == 'indisponível'){
-                return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
-            }
+                req.session.bookingtype = req.body.bookingtype
+                res.send('Tipos de eventos')
+            })
+        } else {
+            connect.query(sql2, [dateconvert], function(err, result){
+                if(err){
+                    console.log(err.message)
+                }
 
-            res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
-        })
+                if(result[0]){
+                    return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
+                }
+
+                res.send('Tipos de eventos')
+            })
+        }
     } else {
         res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
