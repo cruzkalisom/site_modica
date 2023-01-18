@@ -25,6 +25,31 @@ var connect = db.createConnection({
     database: 'test'
 });
 
+setInterval(function(){
+    console.log('Checando Session')
+    var sql = `SELECT * FROM session`
+    var sql2 = `DELETE FROM session WHERE voucher=?`
+    var date = new Date()
+    var dateconvert = new Date(date).getTime()/100000
+
+    connect.query(sql, function(err, result){
+        if(err){
+            console.log(err.message)
+        }
+
+        for(var i = 0; i < result.length; i++){
+            var checkdate = result[i].date - dateconvert
+            if(checkdate <= 0){
+                connect.query(sql2, [result[i].voucher], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+        }
+    })
+}, 1*60000)
+
 connect.connect(function(err){
     if(err){
         console.log('Erro de conexão:' + err);
@@ -268,9 +293,12 @@ app.get('/login', (req,res) => {
 });
 
 app.post('/login', (req,res) => {
+    var date = new Date()
+    var dateconvert = new Date(date).getTime() + 86400000
+    var calcdate = dateconvert/100000
     var sql = `SELECT * FROM users WHERE user=?`
     var sql2 = `SELECT * FROM session WHERE user_id=?`
-    var sql3 = `INSERT INTO session(user_id) VALUES (?)`
+    var sql3 = `INSERT INTO session(user_id, date) VALUES (?,?)`
     
     if(req.body.user && req.body.user != undefined){
         connect.query(sql, [req.body.user], function(err, result){
@@ -297,7 +325,7 @@ app.post('/login', (req,res) => {
                         req.session.user = result[0].id
                         return res.render('home', {key: '1', name: result[0].name})
                     } else {
-                        connect.query(sql3, [result[0].id], function(err){
+                        connect.query(sql3, [result[0].id, calcdate], function(err){
                             if(err){
                                 console.log(err.message)
                             }
