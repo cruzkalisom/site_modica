@@ -69,6 +69,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/painel', (req,res) => {
+    res.render('admin/panel.ejs')
+})
+
 app.post('/data', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE type=?`
     var sql2 = `SELECT * FROM reservations WHERE dateres=?`
