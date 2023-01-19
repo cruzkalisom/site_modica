@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const BodyParser = require('body-parser');
 const db = require('mysql');
 const session = require('express-session');
+const { type } = require("jquery");
 
 /* Validação de prazo
 
@@ -98,6 +99,8 @@ app.get('/painel', (req,res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM reservations WHERE user_id=?`
+    var datareserves = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -125,6 +128,49 @@ app.get('/painel', (req,res) => {
                 var name = result[0].name
                 var firstname = result[0].firstname
                 var admin = ''
+
+                connect.query(sql4, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        var converttype = ''
+                        var statustype = ''
+                        var badgetype = ''
+                        if(result[i].type == 1){
+                            converttype = 'Adulto'
+                        }
+                        if(result[i].type == 2){
+                            converttype = 'Kids'
+                        }
+                        if(result[i].type == 3){
+                            converttype = 'Combo'
+                        }
+
+                        if(result[i].auth == 1){
+                            statustype = 'Aguardando'
+                            badgetype = 'badge-warning'
+                        }
+                        if(result[i].auth == 2){
+                            statustype = 'Aprovado'
+                            badgetype = 'badge-success'
+                        }
+                        if(result[i].auth == 3){
+                            statustype = 'Expirado'
+                            badgetype = 'badge-danger'
+                        }
+                        if(result[i].auth == 4){
+                            statustype = 'Finalizado'
+                            badgetype = 'badge-secondary'
+                        }
+
+                        var date_reserves = new Date(result[i].dateres)
+                        var datereserves_convert = `${date_reserves.getDate()}/${date_reserves.getMonth()}/${date_reserves.getFullYear()}`
+                        var cachereserve = {id: result[i].id, status: statustype, type: converttype, date: datereserves_convert, badge: badgetype}
+                        datareserves.push(cachereserve)
+                    }
+                })
 
                 connect.query(sql3, [req.session.user], function(err, result){
                     if(err){
@@ -366,7 +412,7 @@ app.post('/login', (req,res) => {
             if(result[0].password != req.body.password){
                 return res.render('user/login', {erro: 'Senha incorreta!'})
             }
-            
+
             connect.query(sql2, [result[0].id], function(err, result2){
                 if(err){
                     return console.log(err.message)
@@ -480,9 +526,12 @@ app.get('/', (req,res) => {
 });
 
 app.get('/devtest', (req,res) => {
-    var date = new Date(req.body.bookingdate)
+    var date = new Date()
+    var date = new Date(date).getTime() + 86400000
 
-    res.send(date.getTime())
+    var newdate = new Date(date)
+
+    res.send(newdate)
 });
 
 //Conexão
