@@ -19,6 +19,16 @@
 CREATE DATABASE IF NOT EXISTS `test` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
 USE `test`;
 
+-- Copiando estrutura para tabela test.permissions
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `name` varchar(30) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Copiando dados para a tabela test.permissions: ~1 rows (aproximadamente)
+INSERT INTO `permissions` (`name`, `user_id`) VALUES
+	('admin', 1);
+
 -- Copiando estrutura para tabela test.reservations
 CREATE TABLE IF NOT EXISTS `reservations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -38,11 +48,12 @@ CREATE TABLE IF NOT EXISTS `session` (
   `voucher` int(11) NOT NULL AUTO_INCREMENT,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`voucher`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.session: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela test.session: ~0 rows (aproximadamente)
 INSERT INTO `session` (`user_id`, `voucher`, `date`) VALUES
-	(1, 9, 0);
+	(1, 12, 16741607),
+	(2, 13, 16742201);
 
 -- Copiando estrutura para tabela test.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -52,9 +63,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.users: ~2 rows (aproximadamente)
+-- Copiando dados para a tabela test.users: ~3 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `firstname`, `user`, `password`) VALUES
 	(1, 'Kalisom', 'Cruz', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003'),
 	(2, 'Deisielle', 'Lacerda', 'deisielle.lacerda@outlook.com', '248299'),

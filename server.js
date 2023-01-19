@@ -48,11 +48,11 @@ setInterval(function(){
             }
         }
     })
-}, 1*60000)
+}, 5*60000)
 
 connect.connect(function(err){
     if(err){
-        console.log('Erro de conexão:' + err);
+        console.log('Erro de conexão: ' + err);
         return
     }
 
@@ -95,8 +95,61 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/painel', (req,res) => {
-    res.render('admin/panel.ejs', {admin:'on'})
-})
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+
+                var name = result[0].name
+                var firstname = result[0].firstname
+                var admin = ''
+
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(!result[0]){
+                        return res.render('admin/panel', {name: name, firstname: firstname, admin: admin})
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            admin = 'on'
+                            break
+                        }
+                    }
+
+                    res.render('admin/panel', {name: name, firstname: firstname, admin: admin})
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
 
 app.post('/data', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE type=?`
@@ -313,39 +366,34 @@ app.post('/login', (req,res) => {
             if(result[0].password != req.body.password){
                 return res.render('user/login', {erro: 'Senha incorreta!'})
             }
+            
+            connect.query(sql2, [result[0].id], function(err, result2){
+                if(err){
+                    return console.log(err.message)
+                }
 
-            if(req.body.remember){
-                connect.query(sql2, [result[0].id], function(err, result2){
-                    if(err){
-                        return console.log(err.message)
-                    }
+                if(result2[0]){
+                    req.session.key = result2[0].voucher
+                    req.session.user = result[0].id
+                    return res.redirect('/dev')
+                } else {
+                    connect.query(sql3, [result[0].id, calcdate], function(err){
+                        if(err){
+                            console.log(err.message)
+                        }
 
-                    if(result2[0]){
-                        req.session.key = result2[0].voucher
-                        req.session.user = result[0].id
-                        return res.render('home', {key: '1', name: result[0].name})
-                    } else {
-                        connect.query(sql3, [result[0].id, calcdate], function(err){
+                        connect.query(sql2, [result[0].id], function(err, result3){
                             if(err){
                                 console.log(err.message)
                             }
 
-                            connect.query(sql2, [result[0].id], function(err, result3){
-                                if(err){
-                                    console.log(err.message)
-                                }
-
-                                req.session.key = result3[0].voucher
-                                req.session.user = result[0].id
-                                return res.render('home', {key: '1', name: result[0].name})
-                            })
+                            req.session.key = result3[0].voucher
+                            req.session.user = result[0].id
+                            return res.redirect('/dev')
                         })
-                    }
-                })
-            } else {
-                req.session.user = result[0].id
-                res.render('home', {key: '1', name: result[0].name})
-            }
+                    })
+                }
+            })
         });
     } else {
         res.render('user/login', {erro: ''})
