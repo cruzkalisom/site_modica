@@ -165,8 +165,8 @@ app.get('/painel', (req,res) => {
                             badgetype = 'badge-secondary'
                         }
 
-                        var date_reserves = new Date(result[i].dateres)
-                        var datereserves_convert = `${date_reserves.getDate()}/${date_reserves.getMonth()}/${date_reserves.getFullYear()}`
+                        var date_reserves = new Date(result[i].dateres*100000)
+                        var datereserves_convert = `${date_reserves.getDate()}/${date_reserves.getMonth() + 1}/${date_reserves.getFullYear()}`
                         var cachereserve = {id: result[i].id, status: statustype, type: converttype, date: datereserves_convert, badge: badgetype}
                         datareserves.push(cachereserve)
                     }
@@ -178,7 +178,7 @@ app.get('/painel', (req,res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('admin/panel', {name: name, firstname: firstname, admin: admin})
+                        return res.render('admin/panel', {name: name, firstname: firstname, admin: admin, datas: datareserves})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -188,7 +188,7 @@ app.get('/painel', (req,res) => {
                         }
                     }
 
-                    res.render('admin/panel', {name: name, firstname: firstname, admin: admin})
+                    res.render('admin/panel', {name: name, firstname: firstname, admin: admin, datas: datareserves})
                 })
             })
         })
@@ -529,9 +529,7 @@ app.get('/devtest', (req,res) => {
     var date = new Date()
     var date = new Date(date).getTime() + 86400000
 
-    var newdate = new Date(date)
-
-    res.send(newdate)
+    res.send(String(date/100000))
 });
 
 //Conexão

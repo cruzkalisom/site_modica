@@ -125,50 +125,32 @@
                 </div>
               </div>
               <div class="card-body">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Tipo</th>
-                      <th scope="col">Data</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Adulto</td>
-                      <td>12/12/2024</td>
-                      <td>
-                        <span class="badge badge-success"  style="padding: 5px;">Aprovado</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Criança</td>
-                      <td>13/12/2024</td>
-                      <td>
-                        <span class="badge badge-warning"  style="padding: 5px;">Aguardando</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Combo</td>
-                      <td>14/12/2024</td>
-                      <td>
-                        <span class="badge badge-danger" style=" padding: 5px;">Expirado</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">4</th>
-                      <td>Combo</td>
-                      <td>15/12/2024</td>
-                      <td>
-                        <span class="badge badge-secondary" style="padding: 5px;">Finalizado</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <% if(datas[0]){ %>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0;i<datas.length; i++){ %>
+                          <tr>
+                            <th scope="row"><%=datas[i].id %> </th>
+                            <td><%=datas[i].type %></td>
+                            <td><%=datas[i].date %></td>
+                            <td>
+                              <span class="badge <%=datas[i].badge %>"  style="padding: 5px;"><%=datas[i].status %></span>
+                            </td>
+                          </tr>
+                        <% } %>
+                    </tbody>
+                  </table>
+                <% } else {%>
+                  <p>Nenhuma reserva</p>
+                <% } %>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
