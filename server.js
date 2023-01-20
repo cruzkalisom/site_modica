@@ -129,6 +129,8 @@ app.get('/my_datas', (req, res) => {
                 var age = result[0].age
                 var country = result[0].nationality
                 var email = result[0].user
+                var rg = result[0].rg
+                var cpf = result[0].cpf
                 var admin = ''
                 var address = ''
 
@@ -148,7 +150,7 @@ app.get('/my_datas', (req, res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('user/mydatas', {email: email, country: country, address: address, age: age, admin: admin, name: result})
+                        return res.render('user/mydatas', {cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -158,7 +160,7 @@ app.get('/my_datas', (req, res) => {
                         }
                     }
 
-                    res.render('user/mydatas', {email: email, country: country, address: address, age: age, admin: admin, name: name, firstname: firstname})
+                    res.render('user/mydatas', {cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: name, firstname: firstname})
                 })
             })
         })

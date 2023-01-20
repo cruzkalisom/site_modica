@@ -24,13 +24,16 @@ CREATE TABLE IF NOT EXISTS `address` (
   `user_id` int(11) NOT NULL,
   `street` varchar(100) NOT NULL,
   `number` int(11) NOT NULL DEFAULT 0,
-  `complement` varchar(100) DEFAULT NULL,
+  `complement` varchar(100) NOT NULL,
   `district` varchar(100) NOT NULL,
   `cep` int(11) NOT NULL,
-  `city` varchar(100) NOT NULL
+  `city` varchar(100) NOT NULL,
+  `state` varchar(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.address: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.address: ~1 rows (aproximadamente)
+INSERT INTO `address` (`user_id`, `street`, `number`, `complement`, `district`, `cep`, `city`, `state`) VALUES
+	(1, 'Maranhão', 423, '', 'Mimoso 1', 47850200, 'Luis Eduardo Magalhães', 'BA');
 
 -- Copiando estrutura para tabela test.permissions
 CREATE TABLE IF NOT EXISTS `permissions` (
@@ -77,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(100) NOT NULL,
   `age` int(11) DEFAULT NULL,
   `firstname` varchar(100) NOT NULL,
-  `cpf` int(11) DEFAULT NULL,
+  `cpf` varchar(30) DEFAULT NULL,
   `rg` int(11) DEFAULT NULL,
   `genre` enum('M','F') DEFAULT NULL,
   `nationality` varchar(20) DEFAULT 'Brasil',
@@ -89,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Copiando dados para a tabela test.users: ~1 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `age`, `firstname`, `cpf`, `rg`, `genre`, `nationality`, `marital`, `user`, `password`) VALUES
-	(1, 'Kalisom', NULL, 'Cruz', NULL, NULL, NULL, 'Brasil', NULL, 'kalisom.cruz@vumer.com.br', 'kalisomsoares003');
+	(1, 'Kalisom', 20, 'Cruz', '07695471178', 1455938, 'M', 'Brasil', 'Solteiro', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
