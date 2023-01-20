@@ -95,12 +95,17 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/my_datas', (req, res) => {
+    res.send('Página com dados do usuário')
+});
+
 app.get('/painel', (req,res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
     var sql4 = `SELECT * FROM reservations WHERE user_id=?`
     var datareserves = []
+    var contreserves = 0
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -115,6 +120,8 @@ app.get('/painel', (req,res) => {
             if(req.session.key != result[0].voucher){
                 return res.redirect('/login')
             }
+
+            contreserves = result.length + 1
 
             connect.query(sql2, [req.session.user], function(err, result){
                 if(err){
@@ -179,7 +186,7 @@ app.get('/painel', (req,res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('admin/panel', {age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                        return res.render('admin/panel', {reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -189,7 +196,7 @@ app.get('/painel', (req,res) => {
                         }
                     }
 
-                    res.render('admin/panel', {age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                    res.render('admin/panel', {reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                 })
             })
         })
