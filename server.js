@@ -131,6 +131,7 @@ app.get('/my_datas', (req, res) => {
                 var email = result[0].user
                 var rg = result[0].rg
                 var cpf = result[0].cpf
+                var marital = result[0].marital
                 var genre = ''
                 var admin = ''
                 var address = ''
@@ -159,7 +160,7 @@ app.get('/my_datas', (req, res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('user/mydatas', {genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result})
+                        return res.render('user/mydatas', {marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -169,7 +170,7 @@ app.get('/my_datas', (req, res) => {
                         }
                     }
 
-                    res.render('user/mydatas', {genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: name, firstname: firstname})
+                    res.render('user/mydatas', {marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: name, firstname: firstname})
                 })
             })
         })
