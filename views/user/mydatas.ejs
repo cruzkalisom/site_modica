@@ -101,108 +101,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Página inicial</h1>
+            <h1>Meus dados</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Main content -->
-    <section class="content">
-
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <!-- Default box -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Minhas reservas</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <strong>&#8722</strong>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <% if(datas[0]){ %>
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Data</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i = 0;i<datas.length; i++){ %>
-                          <tr>
-                            <th scope="row"><%=datas[i].id %> </th>
-                            <td><%=datas[i].type %></td>
-                            <td><%=datas[i].date %></td>
-                            <td>
-                              <span class="badge <%=datas[i].badge %>"  style="padding: 5px;"><%=datas[i].status %></span>
-                            </td>
-                          </tr>
-                        <% } %>
-                    </tbody>
-                  </table>
-                <% } else {%>
-                  <p>Nenhuma reserva </p>
-                <% } %>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-              </div>
-              <!-- /.card-footer-->
-            </div>
-            <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">Meus dados</h3>
-  
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                      <strong>&#8722</strong>
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <p>
-                        <strong>Nome: </strong><%= name %>
-                        <strong>Sobrenome: </strong><%= firstname %>
-                      </p>
-                      <p>
-                        <strong>Idade: </strong><%= age %>
-                      </p>
-                    </div>
-                    <div class="col">
-                      <p>
-                        <strong>Endereço: </strong> <!--Rua Maranhão, N°: 423, Mimoso 1, 478350-200, Luís Eduardo magalhães - BA-->
-                      </p>
-                      <p>
-                        <strong>País: </strong><%= country %>
-                      </p>
-                    </div>
-                    <div class="col">
-                      <P>
-                        <strong>Reservas: </strong><%= reserves %>
-                      </P>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                </div>
-                <!-- /.card-footer-->
-              </div>
-            <!-- /.card -->
-          </div>
-        </div>
-      </div>
-    </section>
+    
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

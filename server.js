@@ -96,7 +96,58 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/my_datas', (req, res) => {
-    res.send('Página com dados do usuário')
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users  WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var admin = ''
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+
+                var name = result[0].name
+                var firstname = result[0].firstname
+
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(!result[0]){
+                        return res.render('user/mydatas', {admin: admin, name: result})
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            admin = 'on'
+                            break
+                        }
+                    }
+                })
+
+                res.render('user/mydatas', {admin: admin, name: name, firstname: firstname})
+            })
+        })
+    }
 });
 
 app.get('/painel', (req,res) => {
@@ -121,8 +172,6 @@ app.get('/painel', (req,res) => {
                 return res.redirect('/login')
             }
 
-            contreserves = result.length + 1
-
             connect.query(sql2, [req.session.user], function(err, result){
                 if(err){
                     console.log(err.message)
@@ -135,12 +184,15 @@ app.get('/painel', (req,res) => {
                 var name = result[0].name
                 var firstname = result[0].firstname
                 var age = result[0].age
+                var country = result[0].nationality
                 var admin = ''
 
                 connect.query(sql4, [req.session.user], function(err, result){
                     if(err){
                         return console.log(err.message)
                     }
+
+                    contreserves = result.length
 
                     for(var i = 0; i < result.length; i++){
                         var converttype = ''
@@ -186,7 +238,7 @@ app.get('/painel', (req,res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('admin/panel', {reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                        return res.render('admin/panel', {country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -196,7 +248,7 @@ app.get('/painel', (req,res) => {
                         }
                     }
 
-                    res.render('admin/panel', {reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                    res.render('admin/panel', {country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                 })
             })
         })
