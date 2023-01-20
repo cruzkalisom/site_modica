@@ -25,8 +25,9 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.permissions: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela test.permissions: ~2 rows (aproximadamente)
 INSERT INTO `permissions` (`name`, `user_id`) VALUES
+	('admin', 2),
 	('admin', 1);
 
 -- Copiando estrutura para tabela test.reservations
@@ -38,9 +39,12 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `timepag` int(11) NOT NULL,
   `dateres` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.reservations: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.reservations: ~2 rows (aproximadamente)
+INSERT INTO `reservations` (`id`, `type`, `user_id`, `auth`, `timepag`, `dateres`) VALUES
+	(5, 2, 1, 2, 100000000, 16742398),
+	(6, 3, 1, 4, 1, 16742398);
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
@@ -48,28 +52,32 @@ CREATE TABLE IF NOT EXISTS `session` (
   `voucher` int(11) NOT NULL AUTO_INCREMENT,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`voucher`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.session: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.session: ~2 rows (aproximadamente)
 INSERT INTO `session` (`user_id`, `voucher`, `date`) VALUES
-	(1, 12, 16741607),
-	(2, 13, 16742201);
+	(1, 14, 16743010),
+	(2, 15, 16743067);
 
 -- Copiando estrutura para tabela test.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `age` int(11) DEFAULT NULL,
   `firstname` varchar(100) NOT NULL,
+  `cpf` int(11) DEFAULT NULL,
+  `rg` int(11) DEFAULT NULL,
+  `genre` enum('M','F') DEFAULT NULL,
+  `nationality` varchar(20) DEFAULT 'Brasil',
+  `marital` varchar(20) DEFAULT NULL,
   `user` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.users: ~3 rows (aproximadamente)
-INSERT INTO `users` (`id`, `name`, `firstname`, `user`, `password`) VALUES
-	(1, 'Kalisom', 'Cruz', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003'),
-	(2, 'Deisielle', 'Lacerda', 'deisielle.lacerda@outlook.com', '248299'),
-	(3, 'adoro', 'pinto', 'adoropinto@hotmail.com', '216345');
+-- Copiando dados para a tabela test.users: ~1 rows (aproximadamente)
+INSERT INTO `users` (`id`, `name`, `age`, `firstname`, `cpf`, `rg`, `genre`, `nationality`, `marital`, `user`, `password`) VALUES
+	(1, 'Kalisom', NULL, 'Cruz', NULL, NULL, NULL, 'Brasil', NULL, 'kalisom.cruz@vumer.com.br', 'kalisomsoares003');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

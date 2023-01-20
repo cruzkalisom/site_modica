@@ -82,7 +82,7 @@ app.use(BodyParser.json());
 
 //Sessões
 app.use(session({
-    secret:'TROCARASECRET',
+    secret:'oiajfoinhsaduijsdipuofjadijfpasiçodfe0hewugo-0fjíeghfcu',
     resave: true,
     saveUninitialized: true
 }))
@@ -127,6 +127,7 @@ app.get('/painel', (req,res) => {
 
                 var name = result[0].name
                 var firstname = result[0].firstname
+                var age = result[0].age
                 var admin = ''
 
                 connect.query(sql4, [req.session.user], function(err, result){
@@ -178,7 +179,7 @@ app.get('/painel', (req,res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('admin/panel', {name: name, firstname: firstname, admin: admin, datas: datareserves})
+                        return res.render('admin/panel', {age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -188,7 +189,7 @@ app.get('/painel', (req,res) => {
                         }
                     }
 
-                    res.render('admin/panel', {name: name, firstname: firstname, admin: admin, datas: datareserves})
+                    res.render('admin/panel', {age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                 })
             })
         })
