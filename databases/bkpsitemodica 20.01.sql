@@ -19,6 +19,19 @@
 CREATE DATABASE IF NOT EXISTS `test` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
 USE `test`;
 
+-- Copiando estrutura para tabela test.address
+CREATE TABLE IF NOT EXISTS `address` (
+  `user_id` int(11) NOT NULL,
+  `street` varchar(100) NOT NULL,
+  `number` int(11) NOT NULL DEFAULT 0,
+  `complement` varchar(100) DEFAULT NULL,
+  `district` varchar(100) NOT NULL,
+  `cep` int(11) NOT NULL,
+  `city` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Copiando dados para a tabela test.address: ~0 rows (aproximadamente)
+
 -- Copiando estrutura para tabela test.permissions
 CREATE TABLE IF NOT EXISTS `permissions` (
   `name` varchar(30) NOT NULL,
@@ -39,12 +52,11 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `timepag` int(11) NOT NULL,
   `dateres` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.reservations: ~2 rows (aproximadamente)
+-- Copiando dados para a tabela test.reservations: ~1 rows (aproximadamente)
 INSERT INTO `reservations` (`id`, `type`, `user_id`, `auth`, `timepag`, `dateres`) VALUES
-	(5, 2, 1, 2, 100000000, 16742398),
-	(6, 3, 1, 4, 1, 16742398);
+	(7, 2, 1, 1, 1, 1);
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
