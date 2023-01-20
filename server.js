@@ -99,7 +99,7 @@ app.get('/my_datas', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users  WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
-    var admin = ''
+    var sql4 = `SELECT * FROM address WHERE user_id=?`
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -126,6 +126,19 @@ app.get('/my_datas', (req, res) => {
 
                 var name = result[0].name
                 var firstname = result[0].firstname
+                var age = result[0].age
+                var admin = ''
+                var address = ''
+
+                connect.query(sql4, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(result[0]){
+                        address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                    }
+                })
 
                 connect.query(sql3, [req.session.user], function(err, result){
                     if(err){
@@ -133,7 +146,7 @@ app.get('/my_datas', (req, res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('user/mydatas', {admin: admin, name: result})
+                        return res.render('user/mydatas', {address: address, age: age, admin: admin, name: result})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -142,11 +155,13 @@ app.get('/my_datas', (req, res) => {
                             break
                         }
                     }
-                })
 
-                res.render('user/mydatas', {admin: admin, name: name, firstname: firstname})
+                    res.render('user/mydatas', {address: address, admin: admin, name: name, firstname: firstname})
+                })
             })
         })
+    } else {
+        res.redirect('/login')
     }
 });
 
@@ -155,6 +170,7 @@ app.get('/painel', (req,res) => {
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
     var sql4 = `SELECT * FROM reservations WHERE user_id=?`
+    var sql5 = `SELECT * FROM address WHERE user_id=?`
     var datareserves = []
     var contreserves = 0
 
@@ -186,6 +202,7 @@ app.get('/painel', (req,res) => {
                 var age = result[0].age
                 var country = result[0].nationality
                 var admin = ''
+                var address = ''
 
                 connect.query(sql4, [req.session.user], function(err, result){
                     if(err){
@@ -232,13 +249,23 @@ app.get('/painel', (req,res) => {
                     }
                 })
 
+                connect.query(sql5, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err)
+                    }
+
+                    if(result[0]){
+                        address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                    }
+                })
+
                 connect.query(sql3, [req.session.user], function(err, result){
                     if(err){
                         return console.log(err.message)
                     }
 
                     if(!result[0]){
-                        return res.render('admin/panel', {country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                        return res.render('admin/panel', {address: address, country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -248,7 +275,7 @@ app.get('/painel', (req,res) => {
                         }
                     }
 
-                    res.render('admin/panel', {country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                    res.render('admin/panel', {address: address, country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
                 })
             })
         })
