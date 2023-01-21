@@ -109,44 +109,49 @@
 
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col" style="background-color: #e7e7e7b6; margin: 5px; border-radius: 12px; padding: 12px;">
-            <p>
-              <strong>Nome: </strong><%= name %>
-              <strong>Sobrenome: </strong><%= firstname %>
-            </p>
-            <p>
-              <strong>Idade: </strong><%= age %>
-            </p>
-            <p>
-              <strong>RG: </strong><%= rg %>
-            </p>
-            <p>
-              <strong>CPF: </strong><%= cpf %>
-            </p>
-            <p>
-              <strong>Gênero: </strong><%= genre %>
-            </p>
-            <p>
-              <strong>Estado Civil: </strong><%= marital %>
-            </p>
+        <% if(confirmaddress){ %>
+          <div class="row">
+            <div class="col" style="background-color: #e7e7e7b6; margin: 5px; border-radius: 12px; padding: 12px;">
+              <p>
+                <strong>Nome: </strong><%= name %>
+                <strong>Sobrenome: </strong><%= firstname %>
+              </p>
+              <p>
+                <strong>Idade: </strong><%= age %>
+              </p>
+              <p>
+                <strong>RG: </strong><%= rg %>
+              </p>
+              <p>
+                <strong>CPF: </strong><%= cpf %>
+              </p>
+              <p>
+                <strong>Gênero: </strong><%= genre %>
+              </p>
+              <p>
+                <strong>Estado Civil: </strong><%= marital %>
+              </p>
+            </div>
+            <div class="col" style="background-color: #e7e7e7b6; margin: 5px; border-radius: 12px; padding: 12px;">
+              <p>
+                <strong>Endereço: </strong><%= address %>
+              </p>
+              <p>
+                <strong>País: </strong><%= country %>
+              </p>
+            </div>
+            <div class="col" style="background-color: #e7e7e7b6; margin: 5px; border-radius: 12px; padding: 12px;">
+              <address>
+                <strong>E-mail: </strong><%= email %>
+              </address>
+            </div>
           </div>
-          <div class="col" style="background-color: #e7e7e7b6; margin: 5px; border-radius: 12px; padding: 12px;">
-            <p>
-              <strong>Endereço: </strong><%= address %>
-            </p>
-            <p>
-              <strong>País: </strong><%= country %>
-            </p>
-          </div>
-          <div class="col" style="background-color: #e7e7e7b6; margin: 5px; border-radius: 12px; padding: 12px;">
-            <address>
-              <strong>E-mail: </strong><%= email %>
-            </address>
-          </div>
-        </div>
+
+        <% } else { %>
+          <h2>Atualize seus dados</h2>
+        <% } %>
         <a href="/change_data" class="btn btn-primary">Alterar dados</a>
-        <a href="#" class="btn btn-danger">Excluir conta</a>
+        <a href="#" class="btn btn-danger">Excluir conta</a>        
       </div>
     </section>
     <!-- /.content -->

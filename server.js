@@ -192,6 +192,7 @@ app.get('/my_datas', (req, res) => {
                 var genre = ''
                 var admin = ''
                 var address = ''
+                var confirmaddress = ''
 
                 if(result[0].genre == 'M'){
                     genre = 'Masculino'
@@ -206,28 +207,31 @@ app.get('/my_datas', (req, res) => {
                         return console.log(err.message)
                     }
 
-                    if(result[0]){
-                        address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
-                    }
-                })
-
-                connect.query(sql3, [req.session.user], function(err, result){
-                    if(err){
-                        return console.log(err.message)
-                    }
-
                     if(!result[0]){
-                        return res.render('user/mydatas', {marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result,  firstname: firstname})
+                        return res.render('user/mydatas', {admin:admin, name: name, firstname: firstname, confirmaddress: confirmaddress})
                     }
 
-                    for(var i = 0; i < result.length; i++){
-                        if(result[i].name == 'admin'){
-                            admin = 'on'
-                            break
+                    confirmaddress = 'on'
+                    address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                    
+                    connect.query(sql3, [req.session.user], function(err, result){
+                        if(err){
+                            return console.log(err.message)
                         }
-                    }
-
-                    res.render('user/mydatas', {marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: name, firstname: firstname})
+    
+                        if(!result[0]){
+                            return res.render('user/mydatas', {confirmaddress: confirmaddress, marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result,  firstname: firstname})
+                        }
+    
+                        for(var i = 0; i < result.length; i++){
+                            if(result[i].name == 'admin'){
+                                admin = 'on'
+                                break
+                            }
+                        }
+    
+                        res.render('user/mydatas', {confirmaddress: confirmaddress, marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: name, firstname: firstname})
+                    })
                 })
             })
         })
