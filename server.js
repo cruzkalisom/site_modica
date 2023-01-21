@@ -135,6 +135,15 @@ app.get('/change_data', (req, res) => {
                     if(!result[0]){
                         return res.render('user/changedata', {name: name, firstname: firstname, admin: admin})
                     }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            admin = 'on'
+                            break
+                        }
+                    }
+
+                    res.render('user/changedata', {name: name, firstname: firstname, admin, admin})
                 })
             })
         })
