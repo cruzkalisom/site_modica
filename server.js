@@ -96,8 +96,52 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/change_data', (req, res) => {
-    res.send('Página para alterar dados do usuário')
-})
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+    
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+    
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console,log(err.message)
+                }
+    
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+    
+                var name = result[0].name
+                var firstname = result[0].firstname
+                var admin = ''
+    
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+    
+                    if(!result[0]){
+                        return res.render('user/changedata', {name: name, firstname: firstname, admin: admin})
+                    }
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
 
 app.get('/my_datas', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
@@ -164,7 +208,7 @@ app.get('/my_datas', (req, res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('user/mydatas', {marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result})
+                        return res.render('user/mydatas', {marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result,  firstname: firstname})
                     }
 
                     for(var i = 0; i < result.length; i++){
