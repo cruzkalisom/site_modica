@@ -95,6 +95,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/change_data', (req, res) => {
+    res.send('Página para alterar dados do usuário')
+})
+
 app.get('/my_datas', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users  WHERE id=?`
