@@ -108,7 +108,12 @@
     </section>
 
     <section class="content">
-      <form action="" method="post">
+      <% if(erro){ %>
+        <div class="alert alert-danger text-center col-3" role="alert" style="background-color: #ff000080;">
+          <%= erro %>
+        </div>
+      <% } %>
+      <form action="/changedata" method="post">
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Pessoais</h3>
