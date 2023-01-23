@@ -99,8 +99,7 @@ app.post('/changedata', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
-
-    
+    var sql4 = `UPDATE address SET street=?, number=?, complement=?, district=?, cep=?, city, state=? WHERE user_id=?`
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -125,20 +124,7 @@ app.post('/changedata', (req, res) => {
                     return res.redirect('/login')
                 }
 
-                var name = result[0].name
-                var firstname = result[0].firstname
-                var admin = ''
-                var erro = ''
-
-                if(!req.body.name){
-                    erro = 'Nome inválido!'
-                }
-
-                connect.query(sql3, [req.session.user], function(err, result){
-                    if(err){
-                        return console.log(err.message)
-                    }
-                })
+                res.redirect('/painel')
             })
         })
     } else {
