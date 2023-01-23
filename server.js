@@ -99,7 +99,26 @@ app.post('/changedata', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
-    var sql4 = `UPDATE address SET street=?, number=?, complement=?, district=?, cep=?, city, state=? WHERE user_id=?`
+    var sql4 = `UPDATE address SET street=?, number=?, complement=?, district=?, cep=?, city=?, state=? WHERE user_id=?`
+    var sql5 = `SELECT * FROM address WHERE user_id=?`
+    var sql6 = `INSERT INTO address (user_id, street, number, complement, district, cep, city, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    var sql7 = `UPDATE users SET name=?, firstname=?, rg=?, cpf=?, genre=?, marital=?, user=? WHERE id=?`
+
+
+    var name = req.body.name
+    var firstname = req.body.firstname
+    var rg = String(req.body.rg)
+    var cpf = String(req.body.cpf)
+    var genre = req.body.genre
+    var marital = req.body.marital
+    var street = req.body.street
+    var number = ''
+    var complement = ''
+    var cep = req.body.cep
+    var city = req.body.city
+    var state = req.body.state
+    var user = req.body.email
+    var district = req.body.district
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -124,7 +143,37 @@ app.post('/changedata', (req, res) => {
                     return res.redirect('/login')
                 }
 
-                res.redirect('/painel')
+                connect.query(sql5, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(req.body.number){
+                        number = req.body.number
+                    }
+
+                    if(req.body.complement){
+                        complement = req.body.complement
+                    }
+
+                    if(result[0]){
+                        connect.query(sql7, [name, firstname, rg, cpf, genre, marital, user, req.session.user], function(err){
+                            if(err)
+                            return console.log(err.message)
+                        })
+
+                        connect.query(sql4, [street, number, complement, district, cep, city, state, req.session.user], function(err){
+                            if(err){
+                                return console.log(err.message)
+                            }
+                        })
+
+                        res.redirect('/painel')
+                        return
+                    }
+
+                    
+                })
             })
         })
     } else {
@@ -220,7 +269,6 @@ app.get('/my_datas', (req, res) => {
 
                 var name = result[0].name
                 var firstname = result[0].firstname
-                var age = result[0].age
                 var country = result[0].nationality
                 var email = result[0].user
                 var rg = result[0].rg
@@ -257,7 +305,7 @@ app.get('/my_datas', (req, res) => {
                         }
     
                         if(!result[0]){
-                            return res.render('user/mydatas', {confirmaddress: confirmaddress, marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: result,  firstname: firstname})
+                            return res.render('user/mydatas', {confirmaddress: confirmaddress, marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, admin: admin, name: result,  firstname: firstname})
                         }
     
                         for(var i = 0; i < result.length; i++){
@@ -267,7 +315,7 @@ app.get('/my_datas', (req, res) => {
                             }
                         }
     
-                        res.render('user/mydatas', {confirmaddress: confirmaddress, marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, age: age, admin: admin, name: name, firstname: firstname})
+                        res.render('user/mydatas', {confirmaddress: confirmaddress, marital: marital, genre: genre, cpf: cpf, rg: rg, email: email, country: country, address: address, admin: admin, name: name, firstname: firstname})
                     })
                 })
             })
@@ -311,7 +359,6 @@ app.get('/painel', (req,res) => {
 
                 var name = result[0].name
                 var firstname = result[0].firstname
-                var age = result[0].age
                 var country = result[0].nationality
                 var admin = ''
                 var address = ''
@@ -377,7 +424,7 @@ app.get('/painel', (req,res) => {
                     }
 
                     if(!result[0]){
-                        return res.render('admin/panel', {address: address, country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                        return res.render('admin/panel', {address: address, country: country, reserves: contreserves, name: name, firstname: firstname, admin: admin, datas: datareserves})
                     }
 
                     for(var i = 0; i < result.length; i++){
@@ -387,7 +434,7 @@ app.get('/painel', (req,res) => {
                         }
                     }
 
-                    res.render('admin/panel', {address: address, country: country, reserves: contreserves, age: age, name: name, firstname: firstname, admin: admin, datas: datareserves})
+                    res.render('admin/panel', {address: address, country: country, reserves: contreserves, name: name, firstname: firstname, admin: admin, datas: datareserves})
                 })
             })
         })
