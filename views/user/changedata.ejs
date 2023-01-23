@@ -120,7 +120,37 @@
             </div>
           </div>
           <div class="card-body">
+            <label for="name" class="form-label">Nome:</label>
+            <input required type="text" name="name" id="name" class="form-control-sm form-control col-4" placeholder="Ex: Kalisom">
             
+            <label for="firstname" class="form-label">Sobrenome:</label>
+            <input required type="text" name="firstname" id="firstname" class="form-control-sm form-control col-6" placeholder="Ex: Soares da Cruz">
+            
+            <label for="age" class="form-label">Data de nascimento:</label>
+            <input required type="date" class="form-control form-control-sm col-2" name="age" id="age">
+            
+            <label for="rg" class="form-label">RG:</label>
+            <input required type="number" name="rg" id="rg" class="form-control form-control-sm col-2" placeholder="Somente números">
+            
+            <label for="cpf" class="form-label">CPF:</label>
+            <input required type="number" name="cpf" id="cpf" placeholder="Somente números" class="form-control-sm form-control col-3">
+
+            <label for="genre">Gênero</label>
+            <select required name="genre" id="genre" class="form-select form-control col-3">
+              <option value="0" selected>Escolha o gênero</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+            </select>
+
+            <label for="marital">Estado Civil</label>
+            <select name="marital" id="marital">
+              <option value="0" selected>Escolha o estado civíl</option>
+              <option value="Solteiro">Solteiro</option>
+              <option value="Casado">Casado</option>
+              <option value="Separado">Separado</option>
+              <option value="Divorciado">Divorciado</option>
+              <option value="Viúvo">Viúvo</option>
+            </select>
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
