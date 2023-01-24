@@ -140,6 +140,8 @@ app.get('/delete', (req, res) =>{
                 }
             })
         })
+
+        res.redirect('/')
     }
 });
 
