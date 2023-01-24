@@ -95,6 +95,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/delete_account', (req, res) => {
+    if(req.session.key && req.session.key != undefined){
+        res.render('user/deleteaccount')
+    } else {
+        res.redirect('/')
+    }
+});
+
 app.post('/changedata', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
@@ -633,7 +641,7 @@ app.get('/login', (req,res) => {
                 return res.render('user/login', {erro: ''})
             }
 
-            res.render('home', {key: '1', name: result[0].name})
+            res.redirect('/')
         })
     })
 });
@@ -668,7 +676,7 @@ app.post('/login', (req,res) => {
                 if(result2[0]){
                     req.session.key = result2[0].voucher
                     req.session.user = result[0].id
-                    return res.redirect('/dev')
+                    return res.redirect('/')
                 } else {
                     connect.query(sql3, [result[0].id, calcdate], function(err){
                         if(err){
@@ -682,7 +690,7 @@ app.post('/login', (req,res) => {
 
                             req.session.key = result3[0].voucher
                             req.session.user = result[0].id
-                            return res.redirect('/dev')
+                            return res.redirect('/')
                         })
                     })
                 }
