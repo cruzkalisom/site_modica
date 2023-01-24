@@ -156,12 +156,12 @@ app.post('/changedata', (req, res) => {
                         complement = req.body.complement
                     }
 
-                    if(result[0]){
-                        connect.query(sql7, [name, firstname, rg, cpf, genre, marital, user, req.session.user], function(err){
-                            if(err)
-                            return console.log(err.message)
-                        })
+                    connect.query(sql7, [name, firstname, rg, cpf, genre, marital, user, req.session.user], function(err){
+                        if(err)
+                        return console.log(err.message)
+                    })
 
+                    if(result[0]){
                         connect.query(sql4, [street, number, complement, district, cep, city, state, req.session.user], function(err){
                             if(err){
                                 return console.log(err.message)
@@ -172,7 +172,8 @@ app.post('/changedata', (req, res) => {
                         return
                     }
 
-                    
+                    connect.query(sql6, [req.session.user, street, number, complement, district, cep, city, state])
+                    res.redirect('/painel')
                 })
             })
         })
