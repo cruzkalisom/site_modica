@@ -112,6 +112,7 @@ app.post('/my_reservations', (req, res) => {
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
     var sql4 = `SELECT * FROM reservations WHERE id=?`
     var dataresult = []
+    var dataresult2 = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -184,8 +185,8 @@ app.post('/my_reservations', (req, res) => {
                                 badgetype = 'badge-secondary'
                             }
                             
-                            var date = new Date(result[0].dateres)
-                            var dateconvert = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+                            var date = new Date(result[0].dateres*100000)
+                            var dateconvert = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
                             dataresult = {status: convertstatus, badge: badgetype, id: result[0].id, type: converttype, date: dateconvert}
                         }
 
@@ -202,7 +203,7 @@ app.post('/my_reservations', (req, res) => {
                                     }
                                 }
                             }
-                            res.render('user/myreservations', {data: dataresult, name: name, firstname: firstname, admin: admin})
+                            res.render('user/myreservations', {data2: dataresult2, data: dataresult, name: name, firstname: firstname, admin: admin})
                         })
                     })
                 } else {
@@ -220,7 +221,7 @@ app.post('/my_reservations', (req, res) => {
                             }
                             console.log(admin)
                         }
-                        res.render('user/myreservations', {data: dataresult, name: name, firstname: firstname, admin: admin})
+                        res.render('user/myreservations', {data2: dataresult2, data: dataresult, name: name, firstname: firstname, admin: admin})
                     })
                 }
 
@@ -236,6 +237,8 @@ app.get('/my_reservations', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM reservations WHERE user_id=?`
+    var dataresult2 = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -264,6 +267,51 @@ app.get('/my_reservations', (req, res) => {
                 var firstname = result[0].firstname
                 var admin = ''
 
+                connect.query(sql4, [req.session.user], function(err, result){
+                    
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        var converttype = ''
+                        var convertstatus = ''
+                        var badgetype = ''
+                        var date = new Date(result[i].dateres*100000)
+
+                        if(result[i].type == 1){
+                            converttype = 'Adulto'
+                        }
+                        if(result[i].type == 2){
+                            converttype = 'Kids'
+                        }
+                        if(result[i].type == 3){
+                            converttype = 'Combo'
+                        }
+
+                        if(result[i].auth == 1){
+                            convertstatus = 'Aguardando'
+                            badgetype = 'badge-warning'
+                        }
+                        if(result[i].auth == 2){
+                            convertstatus = 'Aprovado'
+                            badgetype = 'badge-success'
+                        }
+                        if(result[i].auth == 3){
+                            convertstatus = 'Expirado'
+                            badgetype = 'badge-danger'
+                        }
+                        if(result[i].auth == 4){
+                            convertstatus = 'Finalizado'
+                            badgetype = 'badge-secondary'
+                        }
+
+                        var dateconvert = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                        var cachereserve = {id: result[i].id, type: converttype, date: dateconvert, status: convertstatus, badge: badgetype}
+                        dataresult2.push(cachereserve)
+                    }
+                })
+
                 connect.query(sql3, [req.session.user], function(err, result){
                     if(err){
                         return console.log(err.message)
@@ -277,7 +325,7 @@ app.get('/my_reservations', (req, res) => {
                             }
                         }
                     }
-                    res.render('user/myreservations', {data: [], name: name, firstname: firstname, admin: admin})
+                    res.render('user/myreservations', {data2: dataresult2, data: [], name: name, firstname: firstname, admin: admin})
                 })
             })
         })

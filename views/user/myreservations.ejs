@@ -156,7 +156,7 @@
                         <td><%= data.type %></td>
                         <td><%= data.date %></td>
                         <td>
-                          <span class="badge <%=data.badge %>"  style="padding: 5px;"><%=data.status %></span>
+                          <span class="badge <%= data.badge %>"  style="padding: 5px;"><%=data.status %></span>
                         </td>
                       </tr>
                     </tbody>
@@ -179,7 +179,30 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  
+                  <% if(data2[0]){ %>
+                    <table class="table table-header">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Tipo</th>
+                          <th scope="col">Data</th>
+                          <th scope="col">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% for(var i = 0; i < data2.length; i++){ %>
+                          <tr>
+                            <th scope="row"><%= data2[i].id %></th>
+                            <td><%= data2[i].type %></td>
+                            <td><%= data2[i].date %></td>
+                            <td>
+                              <span class="badge <%= data2[i].badge %>"  style="padding: 5px;"><%=data2[i].status %></span>
+                            </td>
+                          </tr>
+                        <% } %>
+                      </tbody>
+                    </table>
+                  <% } %>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
