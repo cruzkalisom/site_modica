@@ -106,6 +106,43 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/delete', (req, res) =>{
+    var sql = `SELECT * FROM deletes WHERE user_id=?`
+    var sql2 = `DELETE FROM users WHERE id=?`
+    var sql3 = `DELETE FROM address WHERE user_id=?`
+    var sql4 = `DELETE FROM permissions WHERE user_id=?`
+
+    if(req.session.user && req.session.user != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/')
+            }
+
+            connect.query(sql2, [req.session.user], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+            })
+
+            connect.query(sql3, [req.session.user], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+            })
+
+            connect.query(sql4, [req.session.user], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+            })
+        })
+    }
+});
+
 app.get('/delete_account', (req, res) => {
     var sql = 'INSERT INTO deletes (user_id) VALUES (?)'
     if(req.session.key && req.session.key != undefined){
