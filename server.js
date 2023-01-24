@@ -111,6 +111,7 @@ app.post('/my_reservations', (req, res) => {
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
     var sql4 = `SELECT * FROM reservations WHERE id=?`
+    var sql5 = `SELECT * FROM reservations WHERE user_id=?`
     var dataresult = []
     var dataresult2 = []
 
@@ -144,6 +145,51 @@ app.post('/my_reservations', (req, res) => {
                 var converttype = ''
                 var convertstatus = ''
                 var badgetype = ''
+
+                connect.query(sql5, [req.session.user], function(err, result){
+                    
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        var converttype2 = ''
+                        var convertstatus2 = ''
+                        var badgetype2 = ''
+                        var date = new Date(result[i].dateres*100000)
+
+                        if(result[i].type == 1){
+                            converttype2 = 'Adulto'
+                        }
+                        if(result[i].type == 2){
+                            converttype2 = 'Kids'
+                        }
+                        if(result[i].type == 3){
+                            converttype2 = 'Combo'
+                        }
+
+                        if(result[i].auth == 1){
+                            convertstatus2 = 'Aguardando'
+                            badgetype2 = 'badge-warning'
+                        }
+                        if(result[i].auth == 2){
+                            convertstatus2 = 'Aprovado'
+                            badgetype2 = 'badge-success'
+                        }
+                        if(result[i].auth == 3){
+                            convertstatus2 = 'Expirado'
+                            badgetype2 = 'badge-danger'
+                        }
+                        if(result[i].auth == 4){
+                            convertstatus2 = 'Finalizado'
+                            badgetype2 = 'badge-secondary'
+                        }
+
+                        var dateconvert2 = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                        var cachereserve2 = {id: result[i].id, type: converttype2, date: dateconvert2, status: convertstatus2, badge: badgetype2}
+                        dataresult2.push(cachereserve2)
+                    }
+                })
 
                 if(req.body.search){
                     var search_id = parseInt(req.body.search)
