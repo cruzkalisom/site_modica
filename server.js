@@ -106,6 +106,12 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/logout', (req, res) =>{
+    req.session.user = 0
+    req.sessionID.key = 0
+    res.redirect('/dev')
+});
+
 app.get('/delete', (req, res) =>{
     var sql = `SELECT * FROM deletes WHERE user_id=?`
     var sql2 = `DELETE FROM users WHERE id=?`
