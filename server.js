@@ -106,6 +106,94 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/my_reservations', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM reservations WHERE id=?`
+    var dataresult = []
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+
+                var name = result[0].name
+                var firstname = result[0].firstname
+                var admin = ''
+
+                if(req.body.search){
+                    var search_id = parseInt(req.body.search)
+                    connect.query(sql4, [search_id], function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        if(result[0]){
+                            dataresult = result
+                        }
+
+                        connect.query(sql3, [req.session.user], function(err, result){
+                            if(err){
+                                return console.log(err.message)
+                            }
+        
+                            if(result[0]){
+                                for(var i = 0; i < result.length; i++){
+                                    if(result[i].name == 'admin'){
+                                        admin = 'on'
+                                        break
+                                    }
+                                }
+                            }
+                            res.render('user/myreservations', {data: dataresult, name: name, firstname: firstname, admin: admin})
+                        })
+                    })
+                } else {
+                    connect.query(sql3, [req.session.user], function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+    
+                        if(result[0]){
+                            for(var i = 0; i < result.length; i++){
+                                if(result[i].name == 'admin'){
+                                    admin = 'on'
+                                    break
+                                }
+                            }
+                            console.log(admin)
+                        }
+                        res.render('user/myreservations', {data: dataresult, name: name, firstname: firstname, admin: admin})
+                    })
+                }
+
+                
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.get('/my_reservations', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
@@ -151,9 +239,8 @@ app.get('/my_reservations', (req, res) => {
                             }
                         }
                     }
+                    res.render('user/myreservations', {data: [], name: name, firstname: firstname, admin: admin})
                 })
-
-                res.render('user/myreservations', {name: name, firstname: firstname, admin: admin})
             })
         })
     } else {
