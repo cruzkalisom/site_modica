@@ -139,6 +139,10 @@ app.post('/my_reservations', (req, res) => {
                 var name = result[0].name
                 var firstname = result[0].firstname
                 var admin = ''
+                var dataresult = []
+                var converttype = ''
+                var convertstatus = ''
+                var badgetype = ''
 
                 if(req.body.search){
                     var search_id = parseInt(req.body.search)
@@ -148,7 +152,41 @@ app.post('/my_reservations', (req, res) => {
                         }
 
                         if(result[0]){
-                            dataresult = result
+                            if(result[0].type == 1){
+                                converttype = 'Adulto'
+                            }
+
+                            if(result[0].type == 2){
+                                converttype = 'Kids'
+                            }
+
+                            if(result[0].type == 3){
+                                converttype = 'Combo'
+                            }
+
+                            if(result[0].auth == 1){
+                                convertstatus = 'Aguardando'
+                                badgetype = 'badge-warning'
+                            }
+
+                            if(result[0].auth == 2){
+                                convertstatus = 'Aprovado'
+                                badgetype = 'badge-success'
+                            }
+
+                            if(result[0].auth == 3){
+                                convertstatus = 'Expirado'
+                                badgetype = 'badge-danger'
+                            }
+
+                            if(result[0].auth == 4){
+                                convertstatus = 'Finalizado'
+                                badgetype = 'badge-secondary'
+                            }
+                            
+                            var date = new Date(result[0].dateres)
+                            var dateconvert = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+                            dataresult = {status: convertstatus, badge: badgetype, id: result[0].id, type: converttype, date: dateconvert}
                         }
 
                         connect.query(sql3, [req.session.user], function(err, result){

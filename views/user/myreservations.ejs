@@ -140,7 +140,7 @@
                 </div>
               </div>
               <div class="card-body">
-                <% if(data[0]){ %>
+                <% if(data.id){ %>
                   <table class="table table-hover">
                     <thead>
                       <tr>
@@ -150,6 +150,11 @@
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><%= data.id %></th>
+                      </tr>
+                    </tbody>
                   </table>
                 <% } %>
               </div>
