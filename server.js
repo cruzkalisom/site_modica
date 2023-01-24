@@ -659,7 +659,7 @@ app.post('/register', (req,res) => {
                 return console.log(err.message)
             }
 
-            res.send('Conta criada com sucesso')
+            res.redirect('/')
         })
     })
 });
