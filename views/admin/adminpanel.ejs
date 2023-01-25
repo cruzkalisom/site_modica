@@ -54,37 +54,22 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="/painel" class="nav-link">
-                <i class="nav-icon fas">&#8863</i>
+            <a href="/admin" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
                 <p>
                     Página inicial
                 </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="/admin" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+            <a href="/painel" class="nav-link">
+                <i class="nav-icon fas">&#8863</i>
                 <p>
                     Painel Cliente
                 </p>
             </a>
-            </li>
-          <li class="nav-item">
-            <a href="/my_datas" class="nav-link">
-              <i class="nav-icon fas">&#164</i>
-              <p>
-                Meus dados
-              </p>
-            </a>
           </li>
-          <li class="nav-item">
-            <a href="/my_reservations" class="nav-link">
-                <i class="nav-icon fas">📆</i>
-                <p>
-                    Minhas reservas
-                </p>
-            </a>
-          </li>
+          
           <li class="nav-item">
             <a href="/logout" class="nav-link">
                 <p>
@@ -120,11 +105,11 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>9999</h3>
+                  <h3><%= contreserve %></h3>
   
                   <p>Reservas</p>
                 </div>
-                <a href="#" class="small-box-footer">More info <i>&#187</i></a>
+                <a href="#" class="small-box-footer">Mais informações <i>&#187</i></a>
               </div>
             </div>
             <!-- ./col -->
@@ -132,11 +117,11 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>9999</h3>
+                  <h3><%= contusers %></h3>
   
                   <p>Usuários</p>
                 </div>
-                <a href="#" class="small-box-footer">More info <i>&#187</i></a>
+                <a href="#" class="small-box-footer">Mais informações <i>&#187</i></a>
               </div>
             </div>
             <!-- ./col -->
@@ -144,11 +129,11 @@
               <!-- small box -->
               <div class="small-box bg-warning">
                 <div class="inner">
-                  <h3>9999</h3>
+                  <h3><%= pendencies %></h3>
   
-                  <p>Administradores</p>
+                  <p>Reservas Pendentes</p>
                 </div>
-                <a href="#" class="small-box-footer">More info <i>&#187</i></a>
+                <a href="#" class="small-box-footer">Mais informações <i>&#187</i></a>
               </div>
             </div>
             <!-- ./col -->
@@ -156,11 +141,11 @@
               <!-- small box -->
               <div class="small-box bg-danger">
                 <div class="inner">
-                  <h3>9999</h3>
+                  <h3><%= expired %></h3>
   
                   <p>Reservas expiradas</p>
                 </div>
-                <a href="#" class="small-box-footer">More info <i>&#187</i></a>
+                <a href="#" class="small-box-footer">Mais informações <i>&#187</i></a>
               </div>
             </div>
             <!-- ./col -->

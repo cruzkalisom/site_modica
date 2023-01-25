@@ -110,6 +110,8 @@ app.get('/admin', (req, res) => {
     var sql = `SELECT * FROM permissions WHERE user_id=?`
     var sql2 = `SELECT * FROM session WHERE user_id=?`
     var sql3 = `SELECT * FROM users WHERE id=?`
+    var sql4 = `SELECT * FROM reservations`
+    var sql5 = `SELECT * FROM users`
     var admin = false
 
     if(req.session.key && req.session.key != undefined){
@@ -137,6 +139,10 @@ app.get('/admin', (req, res) => {
 
                 var name = result[0].name
                 var firstname = result[0].firstname
+                var contusers = 0
+                var contpendencies = 0
+                var contreserve = 0
+                var contexpired = 0
 
                 connect.query(sql, [req.session.user], function(err, result){
                     if(err){
@@ -154,7 +160,33 @@ app.get('/admin', (req, res) => {
                         return res.redirect('/')
                     }
 
-                    res.render('admin/adminpanel', {name: name, firstname: firstname})
+                    connect.query(sql4, function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        contreserve = result.length
+
+                        for(var i = 0; i < result.length; i++){
+                            if(result[i].auth == 1){
+                                contpendencies++
+                            }
+
+                            if(result[i].auth == 3){
+                                contexpired++
+                            }
+                        }
+
+                        connect.query(sql5, function(err, result){
+                            if(err){
+                                return console.log(err.message)
+                            }
+
+                            contusers = result.length
+
+                            res.render('admin/adminpanel', {expired: contexpired, pendencies: contpendencies, contusers: contusers, contreserve: contreserve, name: name, firstname: firstname})
+                        })
+                    })
                 })
             })
         })
