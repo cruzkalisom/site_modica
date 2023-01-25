@@ -68,7 +68,7 @@ connect.connect(function(err){
         return
     }
 
-    console.log('Conectado ao bando de dados Local')
+    console.log('Conectado ao banco de dados Local')
 });
 
 /* Quantos itens em um Array
@@ -99,7 +99,7 @@ app.use(session({
 }))
 
 //Configs
-var port = 30120
+var port = 50553
 
 /*Engine*/
 app.set('view engine', 'ejs');
@@ -161,7 +161,7 @@ app.get('/admin', (req, res) => {
     } else {
         res.redirect('/login')
     }
-})
+});
 
 app.post('/my_reservations', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
