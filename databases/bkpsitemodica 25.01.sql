@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `state` varchar(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.address: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.address: ~1 rows (aproximadamente)
 INSERT INTO `address` (`user_id`, `street`, `number`, `complement`, `district`, `cep`, `city`, `state`) VALUES
 	(4, 'Maranhão', 423, '', 'Mimoso 1', 47850200, 'Luís Eduardo Magalhães', 'BA');
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `deletes` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.deletes: ~3 rows (aproximadamente)
+-- Copiando dados para a tabela test.deletes: ~0 rows (aproximadamente)
 
 -- Copiando estrutura para tabela test.permissions
 CREATE TABLE IF NOT EXISTS `permissions` (
@@ -48,9 +48,10 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.permissions: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela test.permissions: ~2 rows (aproximadamente)
 INSERT INTO `permissions` (`name`, `user_id`) VALUES
-	('admin', 4);
+	('admin', 4),
+	('admin', 5);
 
 -- Copiando estrutura para tabela test.reservations
 CREATE TABLE IF NOT EXISTS `reservations` (
@@ -65,8 +66,8 @@ CREATE TABLE IF NOT EXISTS `reservations` (
 
 -- Copiando dados para a tabela test.reservations: ~2 rows (aproximadamente)
 INSERT INTO `reservations` (`id`, `type`, `user_id`, `auth`, `timepag`, `dateres`) VALUES
-	(7, 2, 4, 2, 1, 16746746),
-	(8, 1, 4, 4, 22, 16746746);
+	(7, 2, 4, 3, 1, 16746746),
+	(8, 1, 4, 3, 22, 16746746);
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
@@ -74,14 +75,11 @@ CREATE TABLE IF NOT EXISTS `session` (
   `voucher` int(11) NOT NULL AUTO_INCREMENT,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`voucher`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela test.session: ~4 rows (aproximadamente)
 INSERT INTO `session` (`user_id`, `voucher`, `date`) VALUES
-	(2, 19, 16745940),
-	(3, 20, 16746504),
-	(4, 21, 16746505),
-	(5, 22, 16746514);
+	(4, 23, 16747402);
 
 -- Copiando estrutura para tabela test.users
 CREATE TABLE IF NOT EXISTS `users` (
