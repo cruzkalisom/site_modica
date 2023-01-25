@@ -112,7 +112,11 @@ app.get('/admin', (req, res) => {
     var sql3 = `SELECT * FROM users WHERE id=?`
     var sql4 = `SELECT * FROM reservations`
     var sql5 = `SELECT * FROM users`
+
     var admin = false
+    var daterecent = new Date()
+    var daterecent = daterecent.getTime()
+    var recentreserves = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql2, [req.session.user], function(err, result){
@@ -168,6 +172,8 @@ app.get('/admin', (req, res) => {
                         contreserve = result.length
 
                         for(var i = 0; i < result.length; i++){
+                            var timedate = result[i].timepag*100000
+
                             if(result[i].auth == 1){
                                 contpendencies++
                             }

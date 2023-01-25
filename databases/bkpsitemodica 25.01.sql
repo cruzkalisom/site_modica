@@ -61,13 +61,11 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `auth` int(11) NOT NULL,
   `timepag` int(11) NOT NULL,
   `dateres` int(11) NOT NULL,
+  `datereq` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.reservations: ~2 rows (aproximadamente)
-INSERT INTO `reservations` (`id`, `type`, `user_id`, `auth`, `timepag`, `dateres`) VALUES
-	(7, 2, 4, 3, 1, 16746746),
-	(8, 1, 4, 3, 22, 16746746);
+-- Copiando dados para a tabela test.reservations: ~0 rows (aproximadamente)
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
@@ -77,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `session` (
   PRIMARY KEY (`voucher`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.session: ~4 rows (aproximadamente)
+-- Copiando dados para a tabela test.session: ~1 rows (aproximadamente)
 INSERT INTO `session` (`user_id`, `voucher`, `date`) VALUES
 	(4, 23, 16747402);
 
