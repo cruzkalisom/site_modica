@@ -106,6 +106,60 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/admin/edit/reserve/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var admin = false
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            admin = true
+                            break
+                        }
+                    }
+
+                    if(!admin){
+                        return res.redirect('/')
+                    }
+
+                    res.send(req.params.id)
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
 app.get('/admin', (req, res) => {
     var sql = `SELECT * FROM permissions WHERE user_id=?`
     var sql2 = `SELECT * FROM session WHERE user_id=?`
@@ -244,7 +298,7 @@ app.get('/admin', (req, res) => {
                                 }
 
                                 convertdate = `${dateres2.getDate()}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
-                                reserveday = {date: convertdate, id: result[i].id, user_id: result[i].user_id, type: result[i].type, status: convertstatus, badge: badgetype}
+                                reserveday = {date: convertdate, id: result[i].id, user_id: result[i].user_id, type: converttype, status: convertstatus, badge: badgetype}
                             }
 
                             if(result[i].auth == 1){
