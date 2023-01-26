@@ -178,7 +178,7 @@ app.get('/admin', (req, res) => {
                             var timedate = result[i].datereq*100000
                             var timedate = timedate + 259200000
 
-                            if(timedate - daterecent > 0){
+                            if(timedate - daterecent <= 259200000){
                                 var converttype = ''
                                 var convertstatus = ''
                                 var badgetype = ''
@@ -243,7 +243,8 @@ app.get('/admin', (req, res) => {
                                     badgetype = 'badge-secondary'
                                 }
 
-                                reserveday = {id: result[i].id, user_id: result[i].user_id, type: result[i].type, status: convertstatus, badge: badgetype}
+                                convertdate = `${dateres2.getDate()}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
+                                reserveday = {date: convertdate, id: result[i].id, user_id: result[i].user_id, type: result[i].type, status: convertstatus, badge: badgetype}
                             }
 
                             if(result[i].auth == 1){
@@ -261,8 +262,7 @@ app.get('/admin', (req, res) => {
                             }
 
                             contusers = result.length
-
-                            res.render('admin/adminpanel', {data: recentreserves, expired: contexpired, pendencies: contpendencies, contusers: contusers, contreserve: contreserve, name: name, firstname: firstname})
+                            res.render('admin/adminpanel', {reserveday: reserveday, data: recentreserves, expired: contexpired, pendencies: contpendencies, contusers: contusers, contreserve: contreserve, name: name, firstname: firstname})
                         })
                     })
                 })
