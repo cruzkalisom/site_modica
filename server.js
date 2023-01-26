@@ -115,8 +115,10 @@ app.get('/admin', (req, res) => {
 
     var admin = false
     var daterecent = new Date()
+    var dateday = new Date(daterecent)
     var daterecent = daterecent.getTime()
     var recentreserves = []
+    var reserveday = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql2, [req.session.user], function(err, result){
@@ -172,6 +174,7 @@ app.get('/admin', (req, res) => {
                         contreserve = result.length
 
                         for(var i = 0; i < result.length; i++){
+                            var dateres2 = new Date(result[i].dateres*100000)
                             var timedate = result[i].datereq*100000
                             var timedate = timedate + 259200000
 
@@ -207,10 +210,40 @@ app.get('/admin', (req, res) => {
                                     badgetype = 'badge-secondary'
                                 }
 
-                                var dateres2 = new Date(result[i].dateres*100000)
                                 var convertdate = `${dateres2.getDate()}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
                                 var cachereserve = {type: converttype, status: convertstatus, badge: badgetype, id: result[i].id, user_id: result[i].user_id, date: convertdate}
                                 recentreserves.push(cachereserve)
+                            }
+
+                            if(dateres2.getFullYear() == dateday.getFullYear() && dateres2.getMonth() == dateday.getMonth() && dateres2.getDate() == dateday.getDate()){
+                                if(result[i].type == 1){
+                                    converttype = 'Adulto'
+                                }
+                                if(result[i].type == 2){
+                                    converttype = 'Kids'
+                                }
+                                if(result[i].type == 3){
+                                    converttype = 'Combo'
+                                }
+
+                                if(result[i].auth == 1){
+                                    convertstatus = 'Aguardando'
+                                    badgetype = 'badge-warning'
+                                }
+                                if(result[i].auth == 2){
+                                    convertstatus = 'Aprovado'
+                                    badgetype = 'badge-success'
+                                }
+                                if(result[i].auth == 3){
+                                    convertstatus = 'Expirado'
+                                    badgetype = 'badge-danger'
+                                }
+                                if(result[i].auth == 4){
+                                    convertstatus = 'Finalizado'
+                                    badgetype = 'badge-secondary'
+                                }
+
+                                reserveday = {id: result[i].id, user_id: result[i].user_id, type: result[i].type, status: convertstatus, badge: badgetype}
                             }
 
                             if(result[i].auth == 1){
