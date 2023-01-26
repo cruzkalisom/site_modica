@@ -32,7 +32,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-      <img src="../../../img/home/logo_white.png" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
+      <img src="../../../img/home/logo_white.png" alt="DUO Logo" class="brand-image" style="opacity: .8">
       <span class="brand-text font-weight-light">Administrador</span>
     </a>
 
@@ -124,7 +124,35 @@
                 </div>
               </div>
               <div class="card-body">
-               
+                <form action="" method="post">
+                    <p><strong>ID: </strong>2</p>
+                    <div class="card col-4">
+                        <div class="card-header">
+                            <h6 class="card-title"><strong>Descrição:</strong></h6>
+                        </div>
+                        <div class="card-body">
+                            <p>Uma descrição qualquer</p>
+                        </div>
+                    </div>
+
+                    <label for="type" class="form-label"><strong>Tipo:</strong></label>
+                    <select class="form-control form-select form-control-sm col-4" name="type" id="type">
+                        <option value="1">Adulto</option>
+                        <option value="2">Kids</option>
+                        <option value="3">Combo</option>
+                    </select>
+
+                    <label for="date" class="form-label">Data:</label>
+                    <input type="date" name="date" id="date" class="form-control form-control-sm col-4">
+
+                    <label for="status" class="form-label">Status:</label>
+                    <select name="status" class="form-control form-select form-control-sm col-4" id="status">
+                        <option value="1">Aguardando</option>
+                        <option value="2">Aprovado</option>
+                        <option value="3">Expirado</option>
+                        <option value="4">Finalizado</option>
+                    </select>
+                </form>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
