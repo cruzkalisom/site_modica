@@ -172,7 +172,46 @@ app.get('/admin', (req, res) => {
                         contreserve = result.length
 
                         for(var i = 0; i < result.length; i++){
-                            var timedate = result[i].timepag*100000
+                            var timedate = result[i].datereq*100000
+                            var timedate = timedate + 259200000
+
+                            if(timedate - daterecent > 0){
+                                var converttype = ''
+                                var convertstatus = ''
+                                var badgetype = ''
+
+                                if(result[i].type == 1){
+                                    converttype = 'Adulto'
+                                }
+                                if(result[i].type == 2){
+                                    converttype = 'Kids'
+                                }
+                                if(result[i].type == 3){
+                                    converttype = 'Combo'
+                                }
+
+                                if(result[i].auth == 1){
+                                    convertstatus = 'Aguardando'
+                                    badgetype = 'badge-warning'
+                                }
+                                if(result[i].auth == 2){
+                                    convertstatus = 'Aprovado'
+                                    badgetype = 'badge-success'
+                                }
+                                if(result[i].auth == 3){
+                                    convertstatus = 'Expirado'
+                                    badgetype = 'badge-danger'
+                                }
+                                if(result[i].auth == 4){
+                                    convertstatus = 'Finalizado'
+                                    badgetype = 'badge-secondary'
+                                }
+
+                                var dateres2 = new Date(result[i].dateres*100000)
+                                var convertdate = `${dateres2.getDate()}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
+                                var cachereserve = {type: converttype, status: convertstatus, badge: badgetype, id: result[i].id, user_id: result[i].user_id, date: convertdate}
+                                recentreserves.push(cachereserve)
+                            }
 
                             if(result[i].auth == 1){
                                 contpendencies++
@@ -190,7 +229,7 @@ app.get('/admin', (req, res) => {
 
                             contusers = result.length
 
-                            res.render('admin/adminpanel', {expired: contexpired, pendencies: contpendencies, contusers: contusers, contreserve: contreserve, name: name, firstname: firstname})
+                            res.render('admin/adminpanel', {data: recentreserves, expired: contexpired, pendencies: contpendencies, contusers: contusers, contreserve: contreserve, name: name, firstname: firstname})
                         })
                     })
                 })
@@ -1214,9 +1253,9 @@ app.get('/', (req,res) => {
 
 app.get('/devtest', (req,res) => {
     var date = new Date()
-    var date = new Date(date).getTime() + 86400000
+    var date2 = new Date(date).getTime() + 86400000
 
-    res.send(String(date/100000))
+    res.send(`${String(date2/100000)}, ${String(date.getTime()/100000)}`)
 });
 
 //Conexão
