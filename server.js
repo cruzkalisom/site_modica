@@ -135,6 +135,9 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
                     return res.redirect('/login')
                 }
 
+                var name = result[0].name
+                var firstname = result[0].firstname
+
                 connect.query(sql3, [req.session.user], function(err, result){
                     if(err){
                         return console.log(err.message)
@@ -151,7 +154,7 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
                         return res.redirect('/')
                     }
 
-                    res.send(req.params.id)
+                    res.render('admin/editreserve', {name:name, firstname: firstname})
                 })
             })
         })
