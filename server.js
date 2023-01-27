@@ -1347,7 +1347,7 @@ app.post('/', (req,res) => {
     }
 });*/
 
-app.get('/dev', (req,res) => {
+app.get('/', (req,res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
 
@@ -1380,10 +1380,6 @@ app.get('/dev', (req,res) => {
             res.render('home', {key: '1', name: result[0].name})
         })
     })
-});
-
-app.get('/', (req,res) => {
-    res.render('developer/homedev')
 });
 
 app.get('/devtest', (req,res) => {
