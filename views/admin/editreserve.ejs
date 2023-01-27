@@ -124,7 +124,7 @@
                 </div>
               </div>
               <div class="card-body">
-                <form action="" method="post">
+                <form action="/edit/reserve/<%= id %>" method="post">
                   <div class="card col-4">
                       <div class="card-header">
                         <h6 class="card-title"><strong>Descrição:</strong></h6>
@@ -189,6 +189,7 @@
               <!-- /.card-footer-->
             </div>
             <div class="card">
+              <% if(nuser[0]){ %>
                 <div class="card-header">
                   <h3 class="card-title">Usuário: <%= nuser[0].nuser_id %></h3>
   
@@ -208,7 +209,10 @@
                 <div class="card-footer">
                 </div>
                 <!-- /.card-footer-->
-              </div>
+              <% } else { %>
+                <h5>A reserva não está vinculada a nenhum usuário registrado</h5>
+              <% } %>
+            </div>
             <!-- /.card -->
           </div>
         </div>

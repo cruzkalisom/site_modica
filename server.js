@@ -106,6 +106,63 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/admin/approve/reserve/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `UPDATE reservations SET auth=2 WHERE id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.params.id], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                res.redirect('/admin')
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
+app.post('/edit/reserve/:id', (req, res) => {
+    var sql = `UPDATE reservations SET type=?, dateres=?, auth=? WHERE id=?`
+    var sql2 = `UPDATE reservations SET type=?, auth=? WHERE id=?`
+
+    if(!req.body.date){
+        connect.query(sql2, [req.body.type, req.body.status, req.params.id], function(err){
+            if(err){
+                return console.log('Erro:' + err.message)
+            }
+        })
+        var convert_link = `/admin/edit/reserve/${req.params.id}`
+        return res.redirect(convert_link)
+    }
+
+    var datenow = new Date(req.body.date)
+    datenow = datenow.getTime()
+     var newdatenow = datenow/100000
+    connect.query(sql, [req.body.type, newdatenow, req.body.status, req.params.id], function(err){
+        if(err){
+            return console.log(err.message)
+        }
+    })
+    var convert_link = `/admin/edit/reserve/${req.params.id}`
+    return res.redirect(convert_link)
+});
+
 app.get('/admin/edit/reserve/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
@@ -173,7 +230,7 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
                         var id = result[0].id
 
                         var convertdate = new Date(result[0].dateres*100000)
-                        convertdate = `${convertdate.getDate()}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
+                        convertdate = `${convertdate.getDate() + 1}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
 
                         connect.query(sql2, [result[0].user_id], function(err, result){
                             if(err){
@@ -193,9 +250,15 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
                                         return console.log(err.message)
                                     }
 
-                                    var convert_nuser_address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
-                                    res.render('admin/editreserve', {nuser_address: convert_nuser_address, nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
+                                    if(result[0]){
+                                        var convert_nuser_address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                                        res.render('admin/editreserve', {nuser_address: convert_nuser_address, nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
+                                    } else {
+                                        res.render('admin/editreserve', {nuser_address: 'Endereço não registrado', nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
+                                    }
                                 })
+                            } else {
+                                res.render('admin/editreserve', {nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
                             }
                         })
                     })
@@ -276,6 +339,8 @@ app.get('/admin', (req, res) => {
 
                         for(var i = 0; i < result.length; i++){
                             var dateres2 = new Date(result[i].dateres*100000)
+                            console.log(dateres2.getDate())
+                            console.log(dateday.getDate())
                             var timedate = result[i].datereq*100000
                             var timedate = timedate + 259200000
 
@@ -311,12 +376,12 @@ app.get('/admin', (req, res) => {
                                     badgetype = 'badge-secondary'
                                 }
 
-                                var convertdate = `${dateres2.getDate()}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
+                                var convertdate = `${dateres2.getDate() + 1}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
                                 var cachereserve = {type: converttype, status: convertstatus, badge: badgetype, id: result[i].id, user_id: result[i].user_id, date: convertdate}
                                 recentreserves.push(cachereserve)
                             }
 
-                            if(dateres2.getFullYear() == dateday.getFullYear() && dateres2.getMonth() == dateday.getMonth() && dateres2.getDate() == dateday.getDate()){
+                            if(dateres2.getFullYear() == dateday.getFullYear() && dateres2.getMonth() == dateday.getMonth() && dateres2.getDate() + 1 == dateday.getDate()){
                                 if(result[i].type == 1){
                                     converttype = 'Adulto'
                                 }
@@ -344,7 +409,7 @@ app.get('/admin', (req, res) => {
                                     badgetype = 'badge-secondary'
                                 }
 
-                                convertdate = `${dateres2.getDate()}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
+                                convertdate = `${dateres2.getDate() + 1}/${dateres2.getMonth() + 1}/${dateres2.getFullYear()}`
                                 reserveday = {date: convertdate, id: result[i].id, user_id: result[i].user_id, type: converttype, status: convertstatus, badge: badgetype}
                             }
 
@@ -1017,7 +1082,7 @@ app.get('/painel', (req,res) => {
                         }
 
                         var date_reserves = new Date(result[i].dateres*100000)
-                        var datereserves_convert = `${date_reserves.getDate()}/${date_reserves.getMonth() + 1}/${date_reserves.getFullYear()}`
+                        var datereserves_convert = `${date_reserves.getDate() + 1}/${date_reserves.getMonth() + 1}/${date_reserves.getFullYear()}`
                         var cachereserve = {id: result[i].id, status: statustype, type: converttype, date: datereserves_convert, badge: badgetype}
                         datareserves.push(cachereserve)
                     }
@@ -1113,8 +1178,7 @@ app.post('/bookingdate', (req, res) => {
     var date = new Date()
     var confirm_date = new Date(req.body.date)
     var valid_date = date.getTime() - confirm_date.getTime()
-    var dateconvert = confirm_date.getTime()/100000
-    var sql = `SELECT * FROM reservations WHERE dateres=?`
+    var sql = `SELECT * FROM reservations`
     var type_one = ''
     var type_two = ''
     var type_tree = ''
@@ -1124,25 +1188,29 @@ app.post('/bookingdate', (req, res) => {
         return res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
 
-    connect.query(sql, [dateconvert], function(err, result){
+    connect.query(sql, function(err, result){
         if(err){
             return console.log(err.message)
         }
 
         for(var i = 0; i < result.length; i++){
-            if(result[i].type == 1 && result[i].auth <= 2){
-                type_one = 'indisponível'
-                combo_type = 'indisponível'
-            }
+            var cachedate = new Date(result[i].dateres*100000)
 
-            if(result[i].type == 2 && result[i].auth <= 2){
-                type_two = 'indisponível'
-                combo_type = 'indisponível'
-            }
-
-            if(result[i].type == 3 && result[i].auth <= 2){
-                type_tree = 'indisponível'
-                break
+            if(cachedate.getDate() + 1 == confirm_date.getDate() + 1 && cachedate.getMonth() + 1 == confirm_date.getMonth() + 1 && cachedate.getFullYear() == confirm_date.getFullYear()){
+                if(result[i].type == 1 && result[i].auth <= 2){
+                    type_one = 'indisponível'
+                    combo_type = 'indisponível'
+                }
+    
+                if(result[i].type == 2 && result[i].auth <= 2){
+                    type_two = 'indisponível'
+                    combo_type = 'indisponível'
+                }
+    
+                if(result[i].type == 3 && result[i].auth <= 2){
+                    type_tree = 'indisponível'
+                    break
+                }
             }
         }
 
