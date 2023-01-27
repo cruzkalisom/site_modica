@@ -110,7 +110,11 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM reservations WHERE id=?`
+    var sql5 = `SELECT * FROM address WHERE user_id=?`
     var admin = false
+    var newdate = new Date()
+    var nuser_data = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -154,7 +158,47 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
                         return res.redirect('/')
                     }
 
-                    res.render('admin/editreserve', {name:name, firstname: firstname})
+                    connect.query(sql4, [req.params.id], function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        if(!result[0]){
+                            res.redirect('/')
+                        }
+
+                        var description = result[0].description
+                        var type = result[0].type
+                        var status = result[0].auth
+                        var id = result[0].id
+
+                        var convertdate = new Date(result[0].dateres*100000)
+                        convertdate = `${convertdate.getDate()}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
+
+                        connect.query(sql2, [result[0].user_id], function(err, result){
+                            if(err){
+                                return console.log(err.message)
+                            }
+
+                            if(result[0]){
+                                var nuser_cachename = `${result[0].name} ${result[0].firstname}`
+                                var nuser_id = result[0].id
+                                var nuser_contact = result[0].contact
+                                var nuser_email = result[0].user
+                                var cache_nuser = {nuser_contact: nuser_contact, nuser_email: nuser_email, nuser_id: nuser_id, nuser_name: nuser_cachename}
+                                nuser_data.push(cache_nuser)
+
+                                connect.query(sql5, [result[0].id], function(err, result){
+                                    if(err){
+                                        return console.log(err.message)
+                                    }
+
+                                    var convert_nuser_address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                                    res.render('admin/editreserve', {nuser_address: convert_nuser_address, nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
+                                })
+                            }
+                        })
+                    })
                 })
             })
         })
@@ -671,7 +715,7 @@ app.post('/changedata', (req, res) => {
     var sql4 = `UPDATE address SET street=?, number=?, complement=?, district=?, cep=?, city=?, state=? WHERE user_id=?`
     var sql5 = `SELECT * FROM address WHERE user_id=?`
     var sql6 = `INSERT INTO address (user_id, street, number, complement, district, cep, city, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-    var sql7 = `UPDATE users SET name=?, firstname=?, rg=?, cpf=?, genre=?, marital=?, user=? WHERE id=?`
+    var sql7 = `UPDATE users SET name=?, firstname=?, rg=?, cpf=?, genre=?, marital=?, user=?, contact=? WHERE id=?`
 
 
     var name = req.body.name
@@ -688,6 +732,7 @@ app.post('/changedata', (req, res) => {
     var state = req.body.state
     var user = req.body.email
     var district = req.body.district
+    var contact = String(req.body.contact)
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -725,7 +770,7 @@ app.post('/changedata', (req, res) => {
                         complement = req.body.complement
                     }
 
-                    connect.query(sql7, [name, firstname, rg, cpf, genre, marital, user, req.session.user], function(err){
+                    connect.query(sql7, [name, firstname, rg, cpf, genre, marital, user, contact, req.session.user], function(err){
                         if(err)
                         return console.log(err.message)
                     })
