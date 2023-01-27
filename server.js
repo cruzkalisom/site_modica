@@ -339,8 +339,6 @@ app.get('/admin', (req, res) => {
 
                         for(var i = 0; i < result.length; i++){
                             var dateres2 = new Date(result[i].dateres*100000)
-                            console.log(dateres2.getDate())
-                            console.log(dateday.getDate())
                             var timedate = result[i].datereq*100000
                             var timedate = timedate + 259200000
 
