@@ -106,6 +106,37 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/admin/cancel/reserve/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `UPDATE reservations SET auth=4 WHERE id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.params.id], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                res.redirect('/admin')
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.get('/admin/approve/reserve/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `UPDATE reservations SET auth=2 WHERE id=?`
