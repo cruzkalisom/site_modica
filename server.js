@@ -106,6 +106,137 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/admin/view/reserve/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM reservations WHERE id=?`
+    var sql5 = `SELECT * FROM address WHERE user_id=?`
+    var admin = false
+    var newdate = new Date()
+    var nuser_data = []
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+
+                var name = result[0].name
+                var firstname = result[0].firstname
+
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            admin = true
+                            break
+                        }
+                    }
+
+                    if(!admin){
+                        return res.redirect('/')
+                    }
+
+                    connect.query(sql4, [req.params.id], function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        if(!result[0]){
+                            res.redirect('/')
+                        }
+
+                        var type = ''
+                        var status = ''
+
+                        if(result[0].type == 1){
+                            type = 'Adulto'
+                        }
+                        if(result[0].type == 2){
+                            type = 'Kids'
+                        }
+                        if(result[0].type == 3){
+                            type = 'Combo'
+                        }
+
+                        if(result[0].auth == 1){
+                            status = 'Aguardando'
+                        }
+                        if(result[0].auth == 2){
+                            status = 'Aprovado'
+                        }
+                        if(result[0].auth == 3){
+                            status = 'Expirado'
+                        }
+                        if(result[0].auth == 4){
+                            status = 'Finalizado'
+                        }
+
+                        var description = result[0].description
+                        var id = result[0].id
+
+                        var convertdate = new Date(result[0].dateres*100000)
+                        convertdate = `${convertdate.getDate() + 1}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
+
+                        connect.query(sql2, [result[0].user_id], function(err, result){
+                            if(err){
+                                return console.log(err.message)
+                            }
+
+                            if(result[0]){
+                                var nuser_cachename = `${result[0].name} ${result[0].firstname}`
+                                var nuser_id = result[0].id
+                                var nuser_contact = result[0].contact
+                                var nuser_email = result[0].user
+                                var cache_nuser = {nuser_contact: nuser_contact, nuser_email: nuser_email, nuser_id: nuser_id, nuser_name: nuser_cachename}
+                                nuser_data.push(cache_nuser)
+
+                                connect.query(sql5, [result[0].id], function(err, result){
+                                    if(err){
+                                        return console.log(err.message)
+                                    }
+
+                                    if(result[0]){
+                                        var convert_nuser_address = `Rua ${result[0].street}, N° ${result[0].number}, ${result[0].district} ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                                        res.render('admin/viewreserve', {nuser_address: convert_nuser_address, nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
+                                    } else {
+                                        res.render('admin/viewreserve', {nuser_address: 'Endereço não registrado', nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
+                                    }
+                                })
+                            } else {
+                                res.render('admin/editreserve', {nuser: nuser_data, date: convertdate, id: id, description: description, type: type, status: status, name:name, firstname: firstname})
+                            }
+                        })
+                    })
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.get('/admin/cancel/reserve/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `UPDATE reservations SET auth=4 WHERE id=?`

@@ -1,4 +1,3 @@
-Alterar imagem de fundo da página de login
 Alterar imagens do carrossel
 Alterar link de e-mail
-Retornar com o value dos formulários
+Adicionar opção na barra da viewreserve, editreserve e adminpanel
