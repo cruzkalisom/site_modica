@@ -106,6 +106,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/values', (req, res) => {
+    res.render('admin/valuesreserve')
+});
+
 app.get('/admin/view/reserve/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
