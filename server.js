@@ -110,6 +110,7 @@ app.get('/reserves', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
     var sql3 = `SELECT * FROM users WHERE id=?`
+    var sql4 = `SELECT * FROM reservations`
     var admin = false
 
     if(req.session.key && req.session.key != undefined){
@@ -154,7 +155,13 @@ app.get('/reserves', (req, res) => {
                     var name = result[0].name
                     var firstname = result[0].firstname
 
-                    res.render('admin/reserves', {name: name, firstname: firstname})
+                    connect.query(sql4, function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        res.render('admin/reserves', {name: name, firstname: firstname, all: result})
+                    })
                 })
             })
         })
