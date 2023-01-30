@@ -118,7 +118,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Reservas</h1>
+            <h1>Usuários</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -136,7 +136,7 @@
   
                   <form action="" method="post" class="row g-3">
                     <div class="col-auto">
-                      <input type="search" name="search" id="search" class="form-control form-control-sm" placeholder="ID da reserva">
+                      <input type="search" name="search" id="search" class="form-control form-control-sm" placeholder="ID do usuário">
                     </div>
                     <div class="col-auto">
                       <button type="submit" class="btn btn-primary btn-sm">Pesquisar</button>
@@ -150,34 +150,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                    <% if(data.id){ %>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row"><%= data.id %></th>
-                                    <td><%= data.type %></td>
-                                    <td><%= data.date %></td>
-                                    <td>
-                                        <span class="badge <%= data.badge %>"  style="padding: 5px;"><%=data.status %></span>
-                                    </td>
-                                    <td class="project-actions text-right">
-                                        <a href="/admin/edit/reserve/<%= data.id %>" class="btn btn-sm btn-primary">Editar</a>
-                                        <a href="/admin/approve/reserve/<%= data.id %>" class="btn btn-sm btn-success">Aprovar</a>
-                                        <a href="/admin/cancel/reserve/<%= data.id %>" class="btn btn-danger btn-sm">Cancelar</a>
-                                        <a href="#" class="btn btn-secondary btn-sm">Pagamento</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                      <% } %>
+                    
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -186,8 +159,39 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Todas</h3>
-                    
+                  <h3 class="card-title">Todos</h3>
+                  <% if(users[0]){ %>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Contato</th>
+                                <th scope="col">E-mail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < users.length; i++){ %> 
+                                <tr>
+                                    <th scope="row"><%= users[i].id %></th>
+                                    <td>
+                                        <%= users[i].name %>
+                                        <%= users[i].firstname %>
+                                    </td>
+                                    <td><%= users[i].contact %></td>
+                                    <td><%= users[i].user %></td>
+                                    <td class="project-actions text-right">
+                                        <a href="#" class="btn btn-primary btn-sm">informações</a>
+                                        <a href="#" class="btn btn-success btn-sm">Promover Admin</a>
+                                        <a href="#" class="btn btn-danger btn-sm">Remover Admin</a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <h5>Nenhum usuário encontrado</h5>
+                <% } %>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                       <strong>&#8722</strong>
@@ -195,40 +199,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                    <% if(all[0]){ %>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Usuário</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for(var i = 0; i < all.length; i++){ %> 
-                                    <tr>
-                                        <th scope="row"><%= all[i].id %></th>
-                                        <td><%= all[i].user_id %></td>
-                                        <td><%= all[i].type %></td>
-                                        <td><%= all[i].date %></td>
-                                        <td>
-                                            <span class="badge <%=all[i].badge %>"  style="padding: 5px;"><%= all[i].status %></span>
-                                        </td>
-                                        <td class="project-actions text-right">
-                                            <a href="/admin/edit/reserve/<%= all[i].id %>" class="btn btn-sm btn-primary">Editar</a>
-                                            <a href="/admin/approve/reserve/<%= all[i].id %>" class="btn btn-sm btn-success">Aprovar</a>
-                                            <a href="/admin/cancel/reserve/<%= all[i].id %>" class="btn btn-danger btn-sm">Cancelar</a>
-                                            <a href="#" class="btn btn-secondary btn-sm">Pagamento</a>
-                                        </td>
-                                    </tr>
-                                <% } %>
-                            </tbody>
-                        </table>
-                    <% } else { %>
-                        <h5>Nenhuma reserva</h5>
-                    <% } %>
+                   
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
