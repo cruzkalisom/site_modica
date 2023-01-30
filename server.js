@@ -112,6 +112,7 @@ app.get('/reserves', (req, res) => {
     var sql3 = `SELECT * FROM users WHERE id=?`
     var sql4 = `SELECT * FROM reservations`
     var admin = false
+    var dataresult = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -160,7 +161,44 @@ app.get('/reserves', (req, res) => {
                             return console.log(err.message)
                         }
 
-                        res.render('admin/reserves', {name: name, firstname: firstname, all: result})
+                        for(var i = 0; i < result.length; i++){
+                            var converttype = ''
+                            var convertstatus = ''
+                            var badgetype = ''
+                            if(result[i].type == 1){
+                                converttype = 'Adulto'
+                            }
+                            if(result[i].type == 2){
+                                converttype = 'Kids'
+                            }
+                            if(result[i].type == 3){
+                                converttype = 'Combo'
+                            }
+
+                            if(result[i].auth == 1){
+                                convertstatus = 'Aguardando'
+                                badgetype = 'badge-warning'
+                            }
+                            if(result[i].auth == 2){
+                                convertstatus = 'Aprovado'
+                                badgetype = 'badge-success'
+                            }
+                            if(result[i].auth == 3){
+                                convertstatus = 'Expirado'
+                                badgetype = 'badge-danger'
+                            }
+                            if(result[i].auth == 4){
+                                convertstatus = 'Finalizado'
+                                badgetype = 'badge-secondary'
+                            }
+
+                            var convertdate = new Date(result[i].dateres*100000)
+                            var convertdate = `${convertdate.getDate() + 1}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
+                            var cachedata = {badge: badgetype, name: name, firstname: firstname, id: result[i].id, user_id: result[i].user_id, type: converttype, date: convertdate, status: convertstatus}
+                            dataresult.push(cachedata)
+                        }
+
+                        res.render('admin/reserves', {all: dataresult, name: name, firstname: firstname})
                     })
                 })
             })
