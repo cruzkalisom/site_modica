@@ -106,6 +106,63 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/reserves', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `SELECT * FROM users WHERE id=?`
+    var admin = false
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/admin')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                for(var i = 0; i < result.length; i++){
+                    if(result[0].name == 'admin'){
+                        admin = true
+                        break
+                    }
+                }
+
+                if(!admin){
+                    return res.redirect('/')
+                }
+
+                connect.query(sql3, [req.session.user],  function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(!result[0]){
+                        return res.redirect('/login')
+                    }
+
+                    var name = result[0].name
+                    var firstname = result[0].firstname
+
+                    res.render('admin/reserves', {name: name, firstname: firstname})
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.post('/admin/edit/value/:day', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql_monday = `UPDATE values_reserve SET monday=?`
@@ -1052,7 +1109,7 @@ app.get('/my_reservations', (req, res) => {
 app.get('/logout', (req, res) =>{
     req.session.user = 0
     req.sessionID.key = 0
-    res.redirect('/dev')
+    res.redirect('/')
 });
 
 app.get('/delete', (req, res) =>{
