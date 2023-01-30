@@ -106,11 +106,12 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
-app.get('/reserves', (req, res) => {
+app.post('/reserves', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
     var sql3 = `SELECT * FROM users WHERE id=?`
     var sql4 = `SELECT * FROM reservations`
+    var sql5 = `SELECT * FROM reservations WHERE id=?`
     var admin = false
     var dataresult = []
 
@@ -198,7 +199,157 @@ app.get('/reserves', (req, res) => {
                             dataresult.push(cachedata)
                         }
 
-                        res.render('admin/reserves', {all: dataresult, name: name, firstname: firstname})
+                        if(req.body.search && req.body.search != undefined){
+                            connect.query(sql5, [req.body.search], function(err, result){
+                                var converttype2 = ''
+                                var convertstatus2 = ''
+                                var badgetype2 = ''
+                                if(err){
+                                    return console.log(err.message)
+                                }
+
+                                if(!result[0]){
+                                    return res.render('admin/reserves', {data: [], all: dataresult, name: name, firstname: firstname})
+                                }
+
+                                if(result[0].type == 1){
+                                    converttype2 = 'Adulto'
+                                }
+                                if(result[0].type == 2){
+                                    converttype2 = 'Kids'
+                                }
+                                if(result[0].type == 3){
+                                    converttype2 = 'Combo'
+                                }
+
+                                if(result[0].auth == 1){
+                                    convertstatus2 = 'Aguardando'
+                                    badgetype2 = 'badge-warning'
+                                }
+                                if(result[0].auth == 2){
+                                    convertstatus2 = 'Aprovado'
+                                    badgetype2 = 'badge-success'
+                                }
+                                if(result[0].auth == 3){
+                                    convertstatus2 = 'Expirado'
+                                    badgetype2 = 'badge-danger'
+                                }
+                                if(result[0].auth == 4){
+                                    convertstatus2 = 'Finalizado'
+                                    badgetype2 = 'badge-secondary'
+                                }
+
+                                var convertdate2 = new Date(result[0].dateres*100000)
+                                convertdate2 = `${convertdate2.getDate() + 1}/${convertdate2.getMonth() + 1}/${convertdate2.getFullYear()}`
+                                var cachedata2 = {id: result[0].id, user_id: result[0].user_id, type: converttype2, date: convertdate2, status: convertstatus2, badge: badgetype2}
+                                res.render('admin/reserves', {data: cachedata2, all: dataresult, name: name, firstname: firstname})
+                            })
+                        } else {
+                            res.render('admin/reserves', {data: [], all: dataresult, name: name, firstname: firstname})
+                        }
+                    })
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
+app.get('/reserves', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `SELECT * FROM users WHERE id=?`
+    var sql4 = `SELECT * FROM reservations`
+    var sql5 = `SELECT * FROM reservations WHERE id=?`
+    var admin = false
+    var dataresult = []
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/admin')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                for(var i = 0; i < result.length; i++){
+                    if(result[0].name == 'admin'){
+                        admin = true
+                        break
+                    }
+                }
+
+                if(!admin){
+                    return res.redirect('/')
+                }
+
+                connect.query(sql3, [req.session.user],  function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(!result[0]){
+                        return res.redirect('/login')
+                    }
+
+                    var name = result[0].name
+                    var firstname = result[0].firstname
+
+                    connect.query(sql4, function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        for(var i = 0; i < result.length; i++){
+                            var converttype = ''
+                            var convertstatus = ''
+                            var badgetype = ''
+                            if(result[i].type == 1){
+                                converttype = 'Adulto'
+                            }
+                            if(result[i].type == 2){
+                                converttype = 'Kids'
+                            }
+                            if(result[i].type == 3){
+                                converttype = 'Combo'
+                            }
+
+                            if(result[i].auth == 1){
+                                convertstatus = 'Aguardando'
+                                badgetype = 'badge-warning'
+                            }
+                            if(result[i].auth == 2){
+                                convertstatus = 'Aprovado'
+                                badgetype = 'badge-success'
+                            }
+                            if(result[i].auth == 3){
+                                convertstatus = 'Expirado'
+                                badgetype = 'badge-danger'
+                            }
+                            if(result[i].auth == 4){
+                                convertstatus = 'Finalizado'
+                                badgetype = 'badge-secondary'
+                            }
+
+                            var convertdate = new Date(result[i].dateres*100000)
+                            var convertdate = `${convertdate.getDate() + 1}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
+                            var cachedata = {badge: badgetype, name: name, firstname: firstname, id: result[i].id, user_id: result[i].user_id, type: converttype, date: convertdate, status: convertstatus}
+                            dataresult.push(cachedata)
+                        }
+
+                        res.render('admin/reserves', {data: [], all: dataresult, name: name, firstname: firstname})
                     })
                 })
             })

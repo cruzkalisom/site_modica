@@ -150,7 +150,34 @@
                   </div>
                 </div>
                 <div class="card-body">
-                
+                    <% if(data.id){ %>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><%= data.id %></th>
+                                    <td><%= data.type %></td>
+                                    <td><%= data.date %></td>
+                                    <td>
+                                        <span class="badge <%= data.badge %>"  style="padding: 5px;"><%=data.status %></span>
+                                    </td>
+                                    <td class="project-actions text-right">
+                                        <a href="/admin/edit/reserve/<%= data.id %>" class="btn btn-sm btn-primary">Editar</a>
+                                        <a href="/admin/approve/reserve/<%= data.id %>" class="btn btn-sm btn-success">Aprovar</a>
+                                        <a href="/admin/cancel/reserve/<%= data.id %>" class="btn btn-danger btn-sm">Cancelar</a>
+                                        <a href="#" class="btn btn-secondary btn-sm">Pagamento</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                      <% } %>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
