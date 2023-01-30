@@ -106,10 +106,119 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/admin/edit/value/:day', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql_monday = `UPDATE values_reserve SET monday=?`
+    var sql_tuesday = `UPDATE values_reserve SET tuesday=?`
+    var sql_wednesday = `UPDATE values_reserve SET wednesday=?`
+    var sql_thursday = `UPDATE values_reserve SET thursday=?`
+    var sql_friday = `UPDATE values_reserve SET friday=?`
+    var sql_saturday = `UPDATE values_reserve SET saturday=?`
+    var sql_sunday = `UPDATE values_reserve SET sunday=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            if(req.params.day == 'monday'){
+                if(!req.body.monday || req.body.monday == undefined){
+                    return
+                }
+                connect.query(sql_monday, [req.body.monday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(req.params.day == 'tuesday'){
+                if(!req.body.tuesday || req.body.tuesday == undefined){
+                    return
+                }
+                connect.query(sql_tuesday, [req.body.tuesday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(req.params.day == 'wednesday'){
+                if(!req.body.wednesday || req.body.wednesday == undefined){
+                    return
+                }
+                connect.query(sql_wednesday, [req.body.wednesday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(req.params.day == 'thursday'){
+                if(!req.body.thursday || req.body.thursday == undefined){
+                    return
+                }
+                connect.query(sql_thursday, [req.body.thursday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(req.params.day == 'friday'){
+                if(!req.body.friday || req.body.friday == undefined){
+                    return
+                }
+                connect.query(sql_friday, [req.body.friday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(req.params.day == 'saturday'){
+                if(!req.body.saturday || req.body.saturday == undefined){
+                    return
+                }
+                connect.query(sql_saturday, [req.body.saturday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(req.params.day == 'sunday'){
+                if(!req.body.sunday || req.body.sunday == undefined){
+                    return
+                }
+                connect.query(sql_sunday, [req.body.sunday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            res.redirect('/values')
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.get('/values', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
     var sql3 = `SELECT * FROM users WHERE id=?`
+    var sql4 = `SELECT * FROM values_reserve`
 
     var admin = false
 
@@ -158,7 +267,13 @@ app.get('/values', (req, res) => {
                     var name = result[0].name
                     var firstname = result[0].firstname
 
-                    res.render('admin/valuesreserve', {name: name, firstname: firstname})
+                    connect.query(sql4, function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        res.render('admin/valuesreserve', {name: name, firstname: firstname, values: result})
+                    })
                 })
             })
         })
@@ -444,7 +559,7 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
                         }
 
                         if(!result[0]){
-                            res.redirect('/')
+                            return res.redirect('/')
                         }
 
                         var description = result[0].description
