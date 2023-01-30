@@ -109,6 +109,7 @@ app.use(express.static(__dirname+'/public'));
 app.get('/values', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `SELECT * FROM users WHERE id=?`
 
     var admin = false
 
@@ -145,7 +146,20 @@ app.get('/values', (req, res) => {
                     return res.redirect('/')
                 }
 
-                res.render('admin/valuesreserve')
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(!result[0]){
+                        return res.redirect('/login')
+                    }
+
+                    var name = result[0].name
+                    var firstname = result[0].firstname
+
+                    res.render('admin/valuesreserve', {name: name, firstname: firstname})
+                })
             })
         })
     } else {
