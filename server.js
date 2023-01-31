@@ -106,6 +106,99 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/admin/view_users/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_Id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var admin = false
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.get('/admin/to_remove_admin/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `DELETE FROM permissions WHERE user_id=?`
+    var admin = false
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+            
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+            
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                for(var i = 0; i < result.length; i++){
+                    if(result[i].name == 'admin'){
+                        admin = true
+                        break
+                    }
+                }
+
+                if(!admin){
+                    return res.redirect('/')
+                }
+
+                connect.query(sql2, [req.params.id], function(err, result2){
+                    var isadmin = false
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result2.length; i++){
+                        if(result[i].name == 'admin'){
+                            isadmin = true
+                            break
+                        }
+                    }
+
+                    if(!isadmin){
+                        return res.redirect('/users')
+                    }
+
+                    connect.query(sql3, [req.params.id], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        res.redirect('/users')
+                    })
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.post('/users', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
