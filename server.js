@@ -202,7 +202,6 @@ app.get('/admin/view_users/:id', (req, res) => {
                                             cachereserves += `${result3[i].id}` 
                                         }
                                     }
-
                                     res.render('admin/viewusers', {reserves: cachereserves, address: '', name: name, firstname: firstname, nuser: result})
                                 })
                             }
