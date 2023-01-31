@@ -106,6 +106,84 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/users', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM users`
+    var admin = false
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+
+                var name = result[0].name
+                var firstname = result[0].firstname
+
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            admin = true
+                            break
+                        }
+                    }
+
+                    if(!admin){
+                        return res.redirect('/')
+                    }
+
+                    connect.query(sql4, function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        if(!req.body.search || req.body.search == undefined){
+                            return res.render('admin/adminusers', {data: [], users: result, name: name, firstname: firstname})
+                        }
+
+                        connect.query(sql2, [req.body.search], function(err, result2){
+                            if(err){
+                                return console.log(err.message)
+                            }
+
+                            if(!result[0]){
+                                return res.render('admin/adminusers', {data: [], users: result, name: name, firstname: firstname})
+                            }
+
+                            res.render('admin/adminusers', {data: result2, users: result, name: name, firstname: firstname})
+                        })
+                    })
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.get('/admin/promote_admin/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
@@ -226,7 +304,7 @@ app.get('/users', (req, res) => {
                             return console.log(err.message)
                         }
 
-                        res.render('admin/adminusers', {users: result, name: name, firstname: firstname})
+                        res.render('admin/adminusers', {data: [], users: result, name: name, firstname: firstname})
                     })
                 })
             })
