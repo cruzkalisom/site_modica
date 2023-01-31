@@ -106,6 +106,72 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/admin/promote_admin/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `INSERT INTO permissions (name, user_id) VALUES ('admin', ?)`
+    var admin = false
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                for(var i = 0; i < result.length; i++){
+                    if(result[i].name == 'admin'){
+                        admin = true
+                    }
+                }
+
+                if(!admin){
+                    return res.redirect('/')
+                }
+
+                connect.query(sql2, [req.params.id], function(err, result){
+                    var isadmin = false
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            isadmin = true
+                        }
+                    }
+
+                    if(isadmin){
+                        return res.redirect('/users')
+                    }
+
+                    connect.query(sql3, [req.params.id], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        res.redirect('/users')
+                    })
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.get('/users', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
