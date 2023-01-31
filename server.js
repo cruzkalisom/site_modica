@@ -110,6 +110,8 @@ app.get('/admin/view_users/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_Id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM address WHERE user_id=?`
+    var sql5 = `SELECT * FROM reservations WHERE user_id=?`
     var admin = false
 
     if(req.session.key && req.session.key != undefined){
@@ -125,6 +127,91 @@ app.get('/admin/view_users/:id', (req, res) => {
             if(req.session.key != result[0].voucher){
                 return res.redirect('/login')
             }
+
+            connect.query(sql3, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                for(var i = 0; i < result.length; i++){
+                    if(result[i].name == 'admin'){
+                        admin = true
+                    }
+                }
+
+                if(!admin){
+                    return res.redirect('/')
+                }
+
+                connect.query(sql2, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(!result[0]){
+                        return res.redirect('/login')
+                    }
+
+                    var name =  result[0].name 
+                    var firstname =  result[0].firstname
+
+                    connect.query(sql2, [req.params.id], function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        if(!result[0]){
+                            return res.redirect('/users')
+                        }
+
+                        connect.query(sql4, [req.params.id], function(err, result2){
+                            if(err){
+                                return console.log(err.message)
+                            }
+
+                            if(result2[0]){
+                                var convert_address = `Rua ${result2[0].street}, N° ${result2[0].number}, ${result2[0].district} ${result2[0].complement}, ${result2[0].cep}, ${result2[0].city} - ${result2[0].state}`
+
+                                connect.query(sql5, [req.params.id], function(err, result3){
+                                    var cachereserves = ``
+                                    if(err){
+                                        return console.log(err.message)
+                                    }
+
+                                    for(var i = 0; i < result3.length; i++){
+                                        if(i < result3.length - 1){
+                                            cachereserves += `${result3[i].id}, `
+                                        } else {
+                                            cachereserves += `${result3[i].id}` 
+                                        }
+                                    }
+
+                                    res.render('admin/viewusers', {reserves: cachereserves, address: convert_address, name: name, firstname: firstname, nuser: result})
+                                })
+                            } else {
+                                connect.query(sql5, [req.params.id], function(err, result3){
+                                    var cachereserves = ``
+                                    if(err){
+                                        return console.log(err.message)
+                                    }
+
+                                    for(var i = 0; i < result3.length; i++){
+                                        if(i < result3.length - 1){
+                                            cachereserves += `${result3[i].id}, `
+                                        } else {
+                                            cachereserves += `${result3[i].id}` 
+                                        }
+                                    }
+
+                                    res.render('admin/viewusers', {reserves: cachereserves, address: '', name: name, firstname: firstname, nuser: result})
+                                })
+                            }
+
+                            
+                        })
+                    })
+                })
+            })
         })
     } else {
         res.redirect('/login')
