@@ -2275,8 +2275,9 @@ app.post('/data', (req,res) => {
                 }
     
                 req.session.bookingtype = req.body.bookingtype
-                res.redirect('/register_reserve')
+                res.render('reserves/typeevent', {erro: ''})
             })
+
         } else {
             connect.query(sql2, [dateconvert], function(err, result){
                 if(err){
@@ -2287,7 +2288,7 @@ app.post('/data', (req,res) => {
                     return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
                 }
 
-                res.redirect('/register_reserve')
+                res.render('reserves/typeevent', {erro: ''})
             })
         }
     } else {
@@ -2296,7 +2297,19 @@ app.post('/data', (req,res) => {
 });
 
 app.post('/register_reserve', (req, res) => {
+    var datereserve = new Date(req.session.bookingdate)
+    console.log(datereserve.getDay())
     var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT monday FROM values_reserve`
+    var sql3 = `SELECT tuesday FROM values_reserve`
+    var sql4 = `SELECT wednesday FROM values_reserve`
+    var sql5 = `SELECT thursday FROM values_reserve`
+    var sql6 = `SELECT friday FROM values_reserve`
+    var sql7 = `SELECT saturday FROM values_reserve`
+    var sql8 = `SELECT sunday FROM values_reserve`
+    var converttype = ''
+    var convertevent = ''
+    var valueres = 0
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -2312,10 +2325,125 @@ app.post('/register_reserve', (req, res) => {
                 return res.redirect('/login')
             }
 
-            var datereserve = new Date(req.session.bookingdate)
-            datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
+            if(req.session.bookingtype == 1){
+                converttype = 'Adulto'
+            }
+            if(req.session.bookingtype == 2){
+                converttype = 'Kids'
+            }
+            if(req.session.bookingtype == 3){
+                converttype = 'Combo'
+            }
 
-            res.render('reserves/registerreserve', {date: datereserve})
+            if(req.body.bookingtype == 1){
+                convertevent = 'Aniversário'
+            }
+            if(req.body.bookingtype == 2){
+                convertevent = 'Confraternização'
+            }
+            if(req.body.bookingtype == 3){
+                convertevent = 'Show'
+            }
+            if(req.body.bookingtype == 4){
+                convertevent = 'Casamento'
+            }
+            if(req.body.bookingtype == 5){
+                convertevent = 'Chá de Revelação'
+            }
+            if(req.body.bookingtype == 6){
+                convertevent = 'Outros'
+            }
+
+            if(datereserve.getDay() == 0){
+                connect.query(sql2, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                    valueres = result[0].monday
+
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+
+                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                })
+            }
+
+            if(datereserve.getDay() == 1){
+                connect.query(sql3, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                    valueres = result[0].tuesday
+
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+
+                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                })
+            }
+
+            if(datereserve.getDay() == 2){
+                connect.query(sql4, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                    valueres = result[0].wednesday
+
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+
+                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                })
+            }
+
+            if(datereserve.getDay() == 3){
+                connect.query(sql5, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                    valueres = result[0].thursday
+
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+
+                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                })
+            }
+
+            if(datereserve.getDay() == 4){
+                connect.query(sql6, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                    valueres = result[0].friday
+
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+
+                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                })
+            }
+
+            if(datereserve.getDay() == 5){
+                connect.query(sql7, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                    valueres = result[0].saturday
+
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+
+                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                })
+            }
+
+            if(datereserve.getDay() == 6){
+                connect.query(sql8, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                    valueres = result[0].sunday
+
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+
+                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                })
+            }
         })
     } else {
         res.redirect('login')
