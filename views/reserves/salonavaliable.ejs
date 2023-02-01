@@ -30,9 +30,8 @@
         </div>
       <% } %>
 
-      <form action="/data" method="post">
+      <form action="/register_reserve" method="post">
         <select name="bookingtype" class="form-control" aria-label="Default select example" required>
-            <option selected>Nenhuma</option>
             <option value="1">Adulto
                 <%if (typeone){ %>
                     (<%= typeone %>)

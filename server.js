@@ -2099,7 +2099,7 @@ app.get('/painel', (req,res) => {
     }
 });
 
-app.post('/data', (req,res) => {
+/*app.post('/data', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE type=?`
     var sql2 = `SELECT * FROM reservations WHERE dateres=?`
     var date = new Date(req.session.bookingdate)
@@ -2148,6 +2148,10 @@ app.post('/data', (req,res) => {
     } else {
         res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
+});*/
+
+app.post('/register_reserve', (req, res) => {
+    res.send('Página de registro de reservas.')
 });
 
 app.post('/bookingdate', (req, res) => {
