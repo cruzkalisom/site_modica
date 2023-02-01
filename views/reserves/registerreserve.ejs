@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUO EVENTOS | Reservas</title>
+
+     <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+</head>
+<body  style="background-color: black;">
+    <main>
+        <div style="border-radius: 0px 0px 12px 12px; background-color: #ffffff; box-shadow: 3px 3px 20px #ffffff6e; padding: 20px;" class="container">
+            <h1 class="text-center">Confirme os dados da reserva</h1>
+            <p><strong>Data: </strong>00/00/0000</p>
+            <a href="#" class="btn btn-primary btn-sm">Alterar</a>
+
+            <p><strong>Tipo de reserva: </strong>Adulto</p>
+            <a href="#" class="btn btn-primary btn-sm">Alterar</a>
+            <p><strong>Tipo de evento: </strong>Aniversário</p>
+            <a href="#" class="btn btn-primary btn-sm">Alterar</a>
+
+            
+            <form action="" method="post">
+                <div class="card" style="margin: 12px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Descrição</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <strong>&#8722</strong>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-floating mb-3">
+                            <textarea aria-describedby="descriptionhelp" class="form-control" type="text" name="description" id="description" placeholder="..."></textarea>
+                            <label class="form-label" for="description">Descrição:</label>
+                            <div id="descriptionhelp" class="form-text">
+                                <p>Informe o nome do aniversariante caso o tipo de envento seja "Aniversário"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin: 12px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Valor</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <strong>&#8722</strong>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <p aria-describedby="valuehelp"><strong>R$: </strong>7000,00</p>
+                        <div id="valuehelp" class="form-text">Valor Baseado na data escolhida para o envento.</div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+</body>
+</html>

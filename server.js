@@ -1837,6 +1837,94 @@ app.post('/changedata', (req, res) => {
     }
 });
 
+app.post('/changedataorc', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `UPDATE address SET street=?, number=?, complement=?, district=?, cep=?, city=?, state=? WHERE user_id=?`
+    var sql5 = `SELECT * FROM address WHERE user_id=?`
+    var sql6 = `INSERT INTO address (user_id, street, number, complement, district, cep, city, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    var sql7 = `UPDATE users SET name=?, firstname=?, rg=?, cpf=?, genre=?, marital=?, user=?, contact=? WHERE id=?`
+
+
+    var name = req.body.name
+    var firstname = req.body.firstname
+    var rg = String(req.body.rg)
+    var cpf = String(req.body.cpf)
+    var genre = req.body.genre
+    var marital = req.body.marital
+    var street = req.body.street
+    var number = ''
+    var complement = ''
+    var cep = req.body.cep
+    var city = req.body.city
+    var state = req.body.state
+    var user = req.body.email
+    var district = req.body.district
+    var contact = String(req.body.contact)
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+
+                connect.query(sql5, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(req.body.number){
+                        number = req.body.number
+                    }
+
+                    if(req.body.complement){
+                        complement = req.body.complement
+                    }
+
+                    connect.query(sql7, [name, firstname, rg, cpf, genre, marital, user, contact, req.session.user], function(err){
+                        if(err)
+                        return console.log(err.message)
+                    })
+
+                    if(result[0]){
+                        connect.query(sql4, [street, number, complement, district, cep, city, state, req.session.user], function(err){
+                            if(err){
+                                return console.log(err.message)
+                            }
+                        })
+
+                        res.redirect('/bookingdate')
+                        return
+                    }
+
+                    connect.query(sql6, [req.session.user, street, number, complement, district, cep, city, state])
+                    res.redirect('/bookingdate')
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
 app.get('/change_data', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
@@ -1886,6 +1974,63 @@ app.get('/change_data', (req, res) => {
                     }
 
                     res.render('user/changedata', {erro: '', name: name, firstname: firstname, admin, admin})
+                })
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
+});
+
+app.get('/change_data_orc', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+    
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+    
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console,log(err.message)
+                }
+    
+                if(!result[0]){
+                    return res.redirect('/login')
+                }
+    
+                var name = result[0].name
+                var firstname = result[0].firstname
+                var admin = ''
+    
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+    
+                    if(!result[0]){
+                        return res.render('user/changedataorc', {erro: '', name: name, firstname: firstname, admin: admin})
+                    }
+
+                    for(var i = 0; i < result.length; i++){
+                        if(result[i].name == 'admin'){
+                            admin = 'on'
+                            break
+                        }
+                    }
+
+                    res.render('user/changedataorc', {erro: '', name: name, firstname: firstname, admin, admin})
                 })
             })
         })
@@ -2099,7 +2244,7 @@ app.get('/painel', (req,res) => {
     }
 });
 
-/*app.post('/data', (req,res) => {
+app.post('/data', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE type=?`
     var sql2 = `SELECT * FROM reservations WHERE dateres=?`
     var date = new Date(req.session.bookingdate)
@@ -2130,7 +2275,7 @@ app.get('/painel', (req,res) => {
                 }
     
                 req.session.bookingtype = req.body.bookingtype
-                res.render('reserves/typeevent', {erro: ''})
+                res.redirect('/register_reserve')
             })
         } else {
             connect.query(sql2, [dateconvert], function(err, result){
@@ -2142,16 +2287,16 @@ app.get('/painel', (req,res) => {
                     return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
                 }
 
-                res.render('reserves/typeevent', {erro: ''})
+                res.redirect('/register_reserve')
             })
         }
     } else {
         res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
-});*/
+});
 
 app.post('/register_reserve', (req, res) => {
-    res.send('Página de registro de reservas.')
+    res.render('reserves/registerreserve')
 });
 
 app.post('/bookingdate', (req, res) => {
@@ -2207,7 +2352,38 @@ app.post('/bookingdate', (req, res) => {
 });
 
 app.get('/bookingdate', (req,res) => {
-    res.render('reserves/date_reserve', {erro: ''})
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM address WHERE user_id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('change_data_orc')
+                }
+
+                res.render('reserves/date_reserve', {erro: ''})
+            })
+        })
+    } else {
+        res.redirect('/login')
+    }
 });
 
 app.post('/register', (req,res) => {
