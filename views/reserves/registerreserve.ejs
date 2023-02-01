@@ -15,16 +15,17 @@
     <main>
         <div style="border-radius: 0px 0px 12px 12px; background-color: #ffffff; box-shadow: 3px 3px 20px #ffffff6e; padding: 20px;" class="container">
             <h1 class="text-center">Confirme os dados da reserva</h1>
-            <p><strong>Data: </strong>00/00/0000</p>
+            <p><strong>Data: </strong><%= date %></p>
             <a href="#" class="btn btn-primary btn-sm">Alterar</a>
 
             <p><strong>Tipo de reserva: </strong>Adulto</p>
             <a href="#" class="btn btn-primary btn-sm">Alterar</a>
+
             <p><strong>Tipo de evento: </strong>Aniversário</p>
             <a href="#" class="btn btn-primary btn-sm">Alterar</a>
 
             
-            <form action="" method="post">
+            <form action="/confirm_reserve" method="post">
                 <div class="card" style="margin: 12px;">
                     <div class="card-header">
                         <h3 class="card-title">Descrição</h3>

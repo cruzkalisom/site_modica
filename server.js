@@ -2296,7 +2296,30 @@ app.post('/data', (req,res) => {
 });
 
 app.post('/register_reserve', (req, res) => {
-    res.render('reserves/registerreserve')
+    var sql = `SELECT * FROM session WHERE user_id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            var datereserve = new Date(req.session.bookingdate)
+            datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
+
+            res.render('reserves/registerreserve', {date: datereserve})
+        })
+    } else {
+        res.redirect('login')
+    }
 });
 
 app.post('/bookingdate', (req, res) => {
