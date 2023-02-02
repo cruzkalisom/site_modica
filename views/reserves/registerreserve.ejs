@@ -16,13 +16,11 @@
         <div style="border-radius: 0px 0px 12px 12px; background-color: #ffffff; box-shadow: 3px 3px 20px #ffffff6e; padding: 20px;" class="container">
             <h1 class="text-center">Confirme os dados da reserva</h1>
             <p><strong>Data: </strong><%= date %></p>
-            <a href="#" class="btn btn-primary btn-sm">Alterar</a>
 
             <p><strong>Tipo de reserva: </strong><%= type %></p>
-            <a href="#" class="btn btn-primary btn-sm">Alterar</a>
 
             <p><strong>Tipo de evento: </strong><%= event %></p>
-            <a href="#" class="btn btn-primary btn-sm">Alterar</a>
+            <a href="/bookingdate" class="btn btn-primary btn-sm">Alterar</a>
 
             
             <form action="/confirm_reserve" method="post">

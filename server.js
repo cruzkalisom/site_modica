@@ -2296,9 +2296,62 @@ app.post('/data', (req,res) => {
     }
 });
 
+app.get('/finish_reserve', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+
+    if(req.session.key && req.session.key != undefined){
+        if(!req.session.descriptionreserve || req.session.descriptionreserve == undefined){
+            return res.redirect('/')
+        }
+
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.post('/confirm_reserve', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var dateconfirm = new Date(req.session.bookingdate)
+    var nextday = new Date(dateconfirm.getTime() + 86400000)
+    var dateconfirm = `${dateconfirm.getDate() + 1}/${dateconfirm.getMonth() +1}/${dateconfirm.getFullYear()}`
+    var nextday = `${nextday.getDate() + 1}/${nextday.getMonth() + 1}/${nextday.getFullYear()}`
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            req.session.descriptionreserve = req.body.description
+            res.render('reserves/termsreserve', {day: dateconfirm, nextday: nextday})
+        })
+    } else {
+        res.redirect('login')
+    }
+})
+
 app.post('/register_reserve', (req, res) => {
     var datereserve = new Date(req.session.bookingdate)
-    console.log(datereserve.getDay())
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT monday FROM values_reserve`
     var sql3 = `SELECT tuesday FROM values_reserve`
@@ -2362,7 +2415,7 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].monday
 
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-
+                    req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
@@ -2375,7 +2428,7 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].tuesday
 
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-
+                    req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
@@ -2388,7 +2441,7 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].wednesday
 
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-
+                    req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
@@ -2401,7 +2454,7 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].thursday
 
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-
+                    req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
@@ -2414,7 +2467,7 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].friday
 
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-
+                    req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
@@ -2427,7 +2480,7 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].saturday
 
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-
+                    req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
@@ -2440,7 +2493,7 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].sunday
 
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-
+                    req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
