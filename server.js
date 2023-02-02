@@ -52,6 +52,33 @@ setInterval(function(){
 }, 30*60000)
 
 setInterval(function(){
+    console.log('Checando prazo de pagamento')
+    var sql = `SELECT * FROM reservations`
+    var sql2 = `UPDATE reservations SET auth = 3 WHERE id=?`
+
+    var date_atual = new Date()
+    date_atual = date_atual.getTime()
+
+    connect.query(sql, function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        for(var i = 0; i < result.length; i++){
+            var convert_pag = result[i].timepag*100000
+            if(convert_pag - date_atual <= 0 && result[i].auth == 1){
+                connect.query(sql2, [result[i].id], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+        }
+    })
+
+}, 30*60000)
+
+setInterval(function(){
     console.log('Deletando sessões de Deletes')
     var sql = `DELETE FROM deletes`
 
@@ -2298,9 +2325,16 @@ app.post('/data', (req,res) => {
 
 app.get('/finish_reserve', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM users WHERE id=?`
+    var sql3 = `SELECT * FROM address WHERE user_id=?`
+    var sql4 = `INSERT INTO reservations (type, user_id, auth, timepag, dateres, datereq, description) VALUES (?, ?, 1, ?, ?, ?, ?)`
+    var date = new Date()
+    var date = new Date(date)
+    var timepag = date.getTime() + 86400000
+    timepag = timepag/100000
 
     if(req.session.key && req.session.key != undefined){
-        if(!req.session.descriptionreserve || req.session.descriptionreserve == undefined){
+        if(!req.session.typeevent || req.session.typeevent == undefined){
             return res.redirect('/')
         }
 
@@ -2316,6 +2350,44 @@ app.get('/finish_reserve', (req, res) => {
             if(req.session.key != result[0].voucher){
                 return res.redirect('/login')
             }
+
+            connect.query(sql2, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/')
+                }
+
+                var convertname = `${result[0].name} ${result[0].firstname}`
+                var convertemail = result[0].user
+
+                var dateres = new Date(req.session.bookingdate)
+                dateres = dateres.getTime()/100000
+                var datereq = date.getTime()/100000
+
+                connect.query(sql4, [req.session.bookingtype, result[0].id, timepag, dateres, datereq, req.session.descriptionreserve], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+
+                connect.query(sql3, [req.session.user], function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    if(!result[0]){
+                        return res.redirect('/')
+                    }
+
+                    var convertdate = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+                    var convertaddress = `${result[0].street}, ${result[0].number}, ${result[0].district}, ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+
+                    res.render('reserves/finishreserve', {datereq: convertdate, name: convertname, address: convertaddress, email: convertemail})
+                })
+            })
         })
     } else {
         res.redirect('/login')
