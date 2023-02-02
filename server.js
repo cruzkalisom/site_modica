@@ -2362,30 +2362,45 @@ app.get('/finish_reserve', (req, res) => {
 
                 var convertname = `${result[0].name} ${result[0].firstname}`
                 var convertemail = result[0].user
+                var convertID = result[0].id
 
                 var dateres = new Date(req.session.bookingdate)
+                var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
                 dateres = dateres.getTime()/100000
                 var datereq = date.getTime()/100000
 
-                connect.query(sql4, [req.session.bookingtype, result[0].id, timepag, dateres, datereq, req.session.descriptionreserve], function(err){
-                    if(err){
-                        return console.log(err.message)
-                    }
-                })
-
-                connect.query(sql3, [req.session.user], function(err, result){
+                connect.query(sql4, [req.session.bookingtype, result[0].id, timepag, dateres, datereq, req.session.descriptionreserve], function(err, result){
                     if(err){
                         return console.log(err.message)
                     }
 
-                    if(!result[0]){
-                        return res.redirect('/')
-                    }
+                    var IDinsert = result.insertId
 
-                    var convertdate = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
-                    var convertaddress = `${result[0].street}, ${result[0].number}, ${result[0].district}, ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                    connect.query(sql3, [req.session.user], function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+    
+                        if(!result[0]){
+                            return res.redirect('/')
+                        }
+    
+                        var convertdate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                        var convertaddress = `${result[0].street}, ${result[0].number}, ${result[0].district}, ${result[0].complement}, ${result[0].cep}, ${result[0].city} - ${result[0].state}`
+                        var converttype = ''
 
-                    res.render('reserves/finishreserve', {datereq: convertdate, name: convertname, address: convertaddress, email: convertemail})
+                        if(req.session.bookingtype == 1){
+                            converttype = 'Adulto'
+                        }
+                        if(req.session.bookingtype == 2){
+                            converttype = 'Kids'
+                        }
+                        if(req.session.bookingtype == 3){
+                            converttype = 'Combo'
+                        }
+
+                        res.render('reserves/finishreserve', {subtotal: req.session.valuesess, description:req.session.descriptionreserve, type: converttype, dateres: convertdateres, user_id: convertID, ID: IDinsert, datereq: convertdate, name: convertname, address: convertaddress, email: convertemail})
+                    })
                 })
             })
         })
@@ -2485,7 +2500,7 @@ app.post('/register_reserve', (req, res) => {
                         return console.log(err.message)
                     }
                     valueres = result[0].monday
-
+                    req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
@@ -2498,7 +2513,7 @@ app.post('/register_reserve', (req, res) => {
                         return console.log(err.message)
                     }
                     valueres = result[0].tuesday
-
+                    req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
@@ -2511,7 +2526,7 @@ app.post('/register_reserve', (req, res) => {
                         return console.log(err.message)
                     }
                     valueres = result[0].wednesday
-
+                    req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
@@ -2524,7 +2539,7 @@ app.post('/register_reserve', (req, res) => {
                         return console.log(err.message)
                     }
                     valueres = result[0].thursday
-
+                    req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
@@ -2537,7 +2552,7 @@ app.post('/register_reserve', (req, res) => {
                         return console.log(err.message)
                     }
                     valueres = result[0].friday
-
+                    req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
@@ -2550,7 +2565,7 @@ app.post('/register_reserve', (req, res) => {
                         return console.log(err.message)
                     }
                     valueres = result[0].saturday
-
+                    req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
@@ -2563,7 +2578,7 @@ app.post('/register_reserve', (req, res) => {
                         return console.log(err.message)
                     }
                     valueres = result[0].sunday
-
+                    req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
                     res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
