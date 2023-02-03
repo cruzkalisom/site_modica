@@ -133,6 +133,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/calendar', (req, res) => {
+    res.render('admin/calendar')
+})
+
 app.get('/admin/view_users/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_Id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
