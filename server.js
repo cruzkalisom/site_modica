@@ -1347,7 +1347,7 @@ app.get('/admin', (req, res) => {
                             var timedate = result[i].datereq*100000
                             var timedate = timedate + 259200000
 
-                            if(timedate - daterecent <= 259200000){
+                            if(timedate - daterecent <= 259200000 && timedate - daterecent >= 0){
                                 var converttype = ''
                                 var convertstatus = ''
                                 var badgetype = ''
@@ -1384,7 +1384,7 @@ app.get('/admin', (req, res) => {
                                 recentreserves.push(cachereserve)
                             }
 
-                            if(dateres2.getFullYear() == dateday.getFullYear() && dateres2.getMonth() == dateday.getMonth() && dateres2.getDate() + 1 == dateday.getDate()){
+                            if(dateres2.getFullYear() == dateday.getFullYear() && dateres2.getMonth() == dateday.getMonth() && dateres2.getDate() + 1 == dateday.getDate() && result[i].auth <= 2){
                                 if(result[i].type == 1){
                                     converttype = 'Adulto'
                                 }

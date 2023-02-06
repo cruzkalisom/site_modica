@@ -184,6 +184,53 @@
             <!-- Default box -->
             <div class="card">
               <div class="card-header">
+                <h3 class="card-title">Evento do dia</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <strong>&#8722</strong>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <% if(reserveday.id){ %>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Usuário</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><%= reserveday.id %></th>
+                        <td><%= reserveday.user_id %></td>
+                          <span class="badge <%=reserveday.badge %>"  style="padding: 5px;"><%= reserveday.status %></span>
+                        <td><%= reserveday.type %></td>
+                        <td><%= reserveday.date %></td>
+                        <td>
+                        </td>
+                        <td class="project-actions text-right">
+                          <a href="/admin/view/reserve/<%= reserveday.id %>" class="btn btn-sm btn-primary">Visualizar</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                <% } else { %>
+                  <h5>Nenhum Evento hoje</h5>
+                <% } %>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+              </div>
+              <!-- /.card-footer-->
+            </div>
+
+            <div class="card">
+              <div class="card-header">
                 <h3 class="card-title">Reservas recentes</h3>
 
                 <div class="card-tools">
@@ -233,52 +280,6 @@
               </div>
               <!-- /.card-footer-->
             </div>
-            <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">Evento do dia</h3>
-  
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                      <strong>&#8722</strong>
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <% if(reserveday.id){ %>
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th scope="col">ID</th>
-                          <th scope="col">Usuário</th>
-                          <th scope="col">Tipo</th>
-                          <th scope="col">Data</th>
-                          <th scope="col">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row"><%= reserveday.id %></th>
-                          <td><%= reserveday.user_id %></td>
-                          <td><%= reserveday.type %></td>
-                          <td><%= reserveday.date %></td>
-                          <td>
-                            <span class="badge <%=reserveday.badge %>"  style="padding: 5px;"><%= reserveday.status %></span>
-                          </td>
-                          <td class="project-actions text-right">
-                            <a href="/admin/view/reserve/<%= reserveday.id %>" class="btn btn-sm btn-primary">Visualizar</a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  <% } else { %>
-                    <h5>Nenhum Evento hoje</h5>
-                  <% } %>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                </div>
-                <!-- /.card-footer-->
-              </div>
             <!-- /.card -->
           </div>
         </div>
