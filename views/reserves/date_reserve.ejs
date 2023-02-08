@@ -22,7 +22,7 @@
   <!-- /.login-logo -->
   <div class="card" style="background-color: #ffffffe5;">
     <div class="card-body">
-        <h5 class="login-box-msg">Escolha uma data</h5>
+        <h5 class="login-box-msg">Escolha a data de início e término do evento</h5>
 
         <% if(erro){ %>
           <div class="alert alert-danger" role="alert" style="background-color: #ff0000a6;">
@@ -32,8 +32,11 @@
 
         <form action="/bookingdate" method="post">
             <div class="input-group mb-3">
-                <input name="date" type="date" class="form-control" required>
+                <input name="idate" type="date" class="form-control" required>
             </div>
+            <div class="input-group mb-3">
+              <input name="fdate" type="date" class="form-control" required>
+          </div>
             <button type="submit" class="btn btn-primary btn-block">Verificar</button>
         </form>
     </div>
