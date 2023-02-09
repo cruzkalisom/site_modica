@@ -2273,8 +2273,9 @@ app.get('/painel', (req,res) => {
 
 app.post('/data', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE type=?`
-    var sql2 = `SELECT * FROM reservations WHERE dateres=?`
+    var sql2 = `SELECT * FROM reservations`
     var date = new Date(req.session.bookingdate)
+    var finish_date = new Date(req.session.finish_date)
     var dateconvert = date.getTime()/100000
     var type = Number(req.body.bookingtype)
 
@@ -2295,7 +2296,7 @@ app.post('/data', (req,res) => {
                 }
     
                 for(var i = 0; i < result.length; i++){
-                    if(result[i].dateres == dateconvert && result[i].auth <= 2){
+                    if(result[i].dateres >= date.getTime() && result[i].dateres <= finish_date.getTime() && result[i].auth <= 2){
                         return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
                         break
                     }
@@ -2306,13 +2307,18 @@ app.post('/data', (req,res) => {
             })
 
         } else {
-            connect.query(sql2, [dateconvert], function(err, result){
+            connect.query(sql2, function(err, result){
                 if(err){
                     console.log(err.message)
                 }
 
-                if(result[0]){
-                    return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
+                for(var i = 0; i < result.length; i++){
+                    var date_reserve = new Date(result[i].dateres*100000)
+
+                    if(date_reserve.getTime() >= date.getTime() && date_reserve.getTime() <= finish_date.getTime()  && result[i].auth <= 2){
+                        return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
+                        break
+                    }
                 }
 
                 res.render('reserves/typeevent', {erro: ''})
@@ -2439,6 +2445,7 @@ app.post('/confirm_reserve', (req, res) => {
 
 app.post('/register_reserve', (req, res) => {
     var datereserve = new Date(req.session.bookingdate)
+    var datereservef = new Date(req.session.finish_date)
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT monday FROM values_reserve`
     var sql3 = `SELECT tuesday FROM values_reserve`
@@ -2502,8 +2509,9 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].monday
                     req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
 
@@ -2515,8 +2523,9 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].tuesday
                     req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
 
@@ -2527,9 +2536,10 @@ app.post('/register_reserve', (req, res) => {
                     }
                     valueres = result[0].wednesday
                     req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
 
@@ -2541,8 +2551,9 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].thursday
                     req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
 
@@ -2553,9 +2564,10 @@ app.post('/register_reserve', (req, res) => {
                     }
                     valueres = result[0].friday
                     req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
 
@@ -2566,9 +2578,10 @@ app.post('/register_reserve', (req, res) => {
                     }
                     valueres = result[0].saturday
                     req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}` 
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
 
@@ -2580,8 +2593,9 @@ app.post('/register_reserve', (req, res) => {
                     valueres = result[0].sunday
                     req.session.valuesess = valueres
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {value: valueres, event: convertevent, date: datereserve, type: converttype})
+                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
                 })
             }
         })
@@ -2592,7 +2606,8 @@ app.post('/register_reserve', (req, res) => {
 
 app.post('/bookingdate', (req, res) => {
     var date = new Date()
-    var confirm_date = new Date(req.body.date)
+    var confirm_date = new Date(req.body.idate)
+    var finish_date = new Date(req.body.fdate)
     var valid_date = date.getTime() - confirm_date.getTime()
     var sql = `SELECT * FROM reservations`
     var type_one = ''
@@ -2612,7 +2627,7 @@ app.post('/bookingdate', (req, res) => {
         for(var i = 0; i < result.length; i++){
             var cachedate = new Date(result[i].dateres*100000)
 
-            if(cachedate.getDate() + 1 == confirm_date.getDate() + 1 && cachedate.getMonth() + 1 == confirm_date.getMonth() + 1 && cachedate.getFullYear() == confirm_date.getFullYear()){
+            if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
                 if(result[i].type == 1 && result[i].auth <= 2){
                     type_one = 'indisponível'
                     combo_type = 'indisponível'
@@ -2637,7 +2652,8 @@ app.post('/bookingdate', (req, res) => {
         if(type_one == 'indisponível' && type_two == 'indisponível'){
             return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
         }
-        req.session.bookingdate = req.body.date
+        req.session.finish_date = req.body.fdate
+        req.session.bookingdate = req.body.idate
         res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
     })
 });
