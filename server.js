@@ -2436,7 +2436,7 @@ app.post('/confirm_reserve', (req, res) => {
             }
 
             req.session.descriptionreserve = req.body.description
-            res.render('reserves/termsreserve', {day: dateconfirm, nextday: nextday})
+            res.render('reserves/termsreserve')
         })
     } else {
         res.redirect('login')
