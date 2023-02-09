@@ -2296,7 +2296,14 @@ app.post('/data', (req,res) => {
                 }
     
                 for(var i = 0; i < result.length; i++){
-                    if(result[i].dateres >= date.getTime() && result[i].dateres <= finish_date.getTime() && result[i].auth <= 2){
+                    var convertdateres = result[i].dateres*100000
+                    var fdate = result[i].datef*100000
+                    if(convertdateres >= date.getTime() && convertdateres <= finish_date.getTime() && result[i].auth <= 2){
+                        return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
+                        break
+                    }
+
+                    if(date.getTime() >= convertdateres && date.getTime() <= fdate && result[i].auth <= 2){
                         return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
                         break
                     }
@@ -2333,7 +2340,7 @@ app.get('/finish_reserve', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM users WHERE id=?`
     var sql3 = `SELECT * FROM address WHERE user_id=?`
-    var sql4 = `INSERT INTO reservations (type, user_id, auth, timepag, dateres, datereq, description) VALUES (?, ?, 1, ?, ?, ?, ?)`
+    var sql4 = `INSERT INTO reservations (datef, type, user_id, auth, timepag, dateres, datereq, description) VALUES (?, ?, ?, 1, ?, ?, ?, ?)`
     var date = new Date()
     var date = new Date(date)
     var timepag = date.getTime() + 86400000
@@ -2371,11 +2378,13 @@ app.get('/finish_reserve', (req, res) => {
                 var convertID = result[0].id
 
                 var dateres = new Date(req.session.bookingdate)
+                var datef = new Date(req.session.finish_date)
                 var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
                 dateres = dateres.getTime()/100000
+                datef = datef.getTime()/100000
                 var datereq = date.getTime()/100000
 
-                connect.query(sql4, [req.session.bookingtype, result[0].id, timepag, dateres, datereq, req.session.descriptionreserve], function(err, result){
+                connect.query(sql4, [datef, req.session.bookingtype, result[0].id, timepag, dateres, datereq, req.session.descriptionreserve], function(err, result){
                     if(err){
                         return console.log(err.message)
                     }
@@ -2626,8 +2635,26 @@ app.post('/bookingdate', (req, res) => {
 
         for(var i = 0; i < result.length; i++){
             var cachedate = new Date(result[i].dateres*100000)
+            var fdate = new Date(result[i].datef*100000)
 
             if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
+                if(result[i].type == 1 && result[i].auth <= 2){
+                    type_one = 'indisponível'
+                    combo_type = 'indisponível'
+                }
+    
+                if(result[i].type == 2 && result[i].auth <= 2){
+                    type_two = 'indisponível'
+                    combo_type = 'indisponível'
+                }
+    
+                if(result[i].type == 3 && result[i].auth <= 2){
+                    type_tree = 'indisponível'
+                    break
+                }
+            }
+
+            if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
                 if(result[i].type == 1 && result[i].auth <= 2){
                     type_one = 'indisponível'
                     combo_type = 'indisponível'
