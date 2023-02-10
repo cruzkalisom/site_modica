@@ -2456,13 +2456,7 @@ app.post('/register_reserve', (req, res) => {
     var datereserve = new Date(req.session.bookingdate)
     var datereservef = new Date(req.session.finish_date)
     var sql = `SELECT * FROM session WHERE user_id=?`
-    var sql2 = `SELECT monday FROM values_reserve`
-    var sql3 = `SELECT tuesday FROM values_reserve`
-    var sql4 = `SELECT wednesday FROM values_reserve`
-    var sql5 = `SELECT thursday FROM values_reserve`
-    var sql6 = `SELECT friday FROM values_reserve`
-    var sql7 = `SELECT saturday FROM values_reserve`
-    var sql8 = `SELECT sunday FROM values_reserve`
+    var sql2 = `SELECT * FROM values_reserve`
     var converttype = ''
     var convertevent = ''
     var valueres = 0
@@ -2510,103 +2504,50 @@ app.post('/register_reserve', (req, res) => {
                 convertevent = 'Outros'
             }
 
-            if(datereserve.getDay() == 0){
-                connect.query(sql2, function(err, result){
-                    if(err){
-                        return console.log(err.message)
-                    }
-                    valueres = result[0].monday
-                    req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
-                })
-            }
+            connect.query(sql2, function(err, result2){
+                if(err){
+                    return console.log(err.message)
+                }
 
-            if(datereserve.getDay() == 1){
-                connect.query(sql3, function(err, result){
-                    if(err){
-                        return console.log(err.message)
+                var value_cont = 0
+                for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
+                    var reserve_cont_date = new Date(i)
+    
+                    if(reserve_cont_date.getDay() == 0){
+                        value_cont += result2[0].monday
                     }
-                    valueres = result[0].tuesday
-                    req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
-                })
-            }
 
-            if(datereserve.getDay() == 2){
-                connect.query(sql4, function(err, result){
-                    if(err){
-                        return console.log(err.message)
+                    if(reserve_cont_date.getDay() == 1){
+                        value_cont += result2[0].tuesday
                     }
-                    valueres = result[0].wednesday
-                    req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}` 
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
-                })
-            }
 
-            if(datereserve.getDay() == 3){
-                connect.query(sql5, function(err, result){
-                    if(err){
-                        return console.log(err.message)
+                    if(reserve_cont_date.getDay() == 2){
+                        value_cont += result2[0].wednesday
                     }
-                    valueres = result[0].thursday
-                    req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
-                })
-            }
 
-            if(datereserve.getDay() == 4){
-                connect.query(sql6, function(err, result){
-                    if(err){
-                        return console.log(err.message)
+                    if(reserve_cont_date.getDay() == 3){
+                        value_cont += result2[0].thursday
                     }
-                    valueres = result[0].friday
-                    req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}` 
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
-                })
-            }
 
-            if(datereserve.getDay() == 5){
-                connect.query(sql7, function(err, result){
-                    if(err){
-                        return console.log(err.message)
+                    if(reserve_cont_date.getDay() == 4){
+                        value_cont += result2[0].friday
                     }
-                    valueres = result[0].saturday
-                    req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}`
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}` 
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
-                })
-            }
 
-            if(datereserve.getDay() == 6){
-                connect.query(sql8, function(err, result){
-                    if(err){
-                        return console.log(err.message)
+                    if(reserve_cont_date.getDay() == 5){
+                        value_cont += result2[0].saturday
                     }
-                    valueres = result[0].sunday
-                    req.session.valuesess = valueres
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: valueres, event: convertevent, date: datereserve, type: converttype})
-                })
-            }
+
+                    if(reserve_cont_date.getDay() == 6){
+                        value_cont += result2[0].sunday
+                    }
+                }
+
+                req.session.valuesess = value_cont
+                datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
+                req.session.typeevent = req.body.bookingtype
+                res.render('reserves/registerreserve', {datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+            })
         })
     } else {
         res.redirect('login')
