@@ -78,17 +78,6 @@ setInterval(function(){
 
 }, 30*60000)
 
-setInterval(function(){
-    console.log('Deletando sessões de Deletes')
-    var sql = `DELETE FROM deletes`
-
-    connect.query(sql, function(err){
-        if(err){
-            return console.log(err.message)
-        }
-    })
-}, 5*60000);
-
 connect.connect(function(err){
     if(err){
         console.log('Erro de conexão: ' + err);
@@ -1726,60 +1715,6 @@ app.get('/logout', (req, res) =>{
     req.session.user = 0
     req.sessionID.key = 0
     res.redirect('/')
-});
-
-app.get('/delete', (req, res) =>{
-    var sql = `SELECT * FROM deletes WHERE user_id=?`
-    var sql2 = `DELETE FROM users WHERE id=?`
-    var sql3 = `DELETE FROM address WHERE user_id=?`
-    var sql4 = `DELETE FROM permissions WHERE user_id=?`
-
-    if(req.session.user && req.session.user != undefined){
-        connect.query(sql, [req.session.user], function(err, result){
-            if(err){
-                return console.log(err.message)
-            }
-
-            if(!result[0]){
-                return res.redirect('/')
-            }
-
-            connect.query(sql2, [req.session.user], function(err){
-                if(err){
-                    return console.log(err.message)
-                }
-            })
-
-            connect.query(sql3, [req.session.user], function(err){
-                if(err){
-                    return console.log(err.message)
-                }
-            })
-
-            connect.query(sql4, [req.session.user], function(err){
-                if(err){
-                    return console.log(err.message)
-                }
-            })
-        })
-
-        res.redirect('/')
-    }
-});
-
-app.get('/delete_account', (req, res) => {
-    var sql = 'INSERT INTO deletes (user_id) VALUES (?)'
-    if(req.session.key && req.session.key != undefined){
-        connect.query(sql, [req.session.user], function(err){
-            if(err){
-                return console.log(err.message)
-            }
-        })
-
-        res.render('user/deleteaccount')
-    } else {
-        res.redirect('/')
-    }
 });
 
 app.post('/changedata', (req, res) => {
