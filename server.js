@@ -1493,6 +1493,7 @@ app.post('/my_reservations', (req, res) => {
                         var convertstatus2 = ''
                         var badgetype2 = ''
                         var date = new Date(result[i].dateres*100000)
+                        var fdate = new Date(result[i].datef*100000)
 
                         if(result[i].type == 1){
                             converttype2 = 'Adulto'
@@ -1521,8 +1522,9 @@ app.post('/my_reservations', (req, res) => {
                             badgetype2 = 'badge-secondary'
                         }
 
-                        var dateconvert2 = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-                        var cachereserve2 = {id: result[i].id, type: converttype2, date: dateconvert2, status: convertstatus2, badge: badgetype2}
+                        var dateconvert2 = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+                        var dateconvert2f = `${fdate.getDate() + 1}/${fdate.getMonth() + 1}/${fdate.getFullYear()}`
+                        var cachereserve2 = {datef: dateconvert2f, id: result[i].id, type: converttype2, date: dateconvert2, status: convertstatus2, badge: badgetype2}
                         dataresult2.push(cachereserve2)
                     }
                 })
@@ -1568,8 +1570,10 @@ app.post('/my_reservations', (req, res) => {
                             }
                             
                             var date = new Date(result[0].dateres*100000)
-                            var dateconvert = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-                            dataresult = {status: convertstatus, badge: badgetype, id: result[0].id, type: converttype, date: dateconvert}
+                            var fdate = new Date(result[0].datef*100000)
+                            var dateconvertf = `${fdate.getDate() + 1}/${fdate.getMonth() + 1}/${fdate.getFullYear()}`
+                            var dateconvert = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+                            dataresult = {datef: dateconvertf, status: convertstatus, badge: badgetype, id: result[0].id, type: converttype, date: dateconvert}
                         }
 
                         connect.query(sql3, [req.session.user], function(err, result){
@@ -1660,6 +1664,7 @@ app.get('/my_reservations', (req, res) => {
                         var convertstatus = ''
                         var badgetype = ''
                         var date = new Date(result[i].dateres*100000)
+                        var fdate = new Date(result[i].datef*100000)
 
                         if(result[i].type == 1){
                             converttype = 'Adulto'
@@ -1689,7 +1694,8 @@ app.get('/my_reservations', (req, res) => {
                         }
 
                         var dateconvert = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-                        var cachereserve = {id: result[i].id, type: converttype, date: dateconvert, status: convertstatus, badge: badgetype}
+                        var dateconvertf = `${fdate.getDate() + 1}/${fdate.getMonth() + 1}/${fdate.getFullYear()}`
+                        var cachereserve = {datef: dateconvertf, id: result[i].id, type: converttype, date: dateconvert, status: convertstatus, badge: badgetype}
                         dataresult2.push(cachereserve)
                     }
                 })

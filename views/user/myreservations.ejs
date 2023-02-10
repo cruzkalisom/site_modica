@@ -146,7 +146,8 @@
                       <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Tipo</th>
-                        <th scope="col">Data</th>
+                        <th scope="col">Início</th>
+                        <th scope="col">Término</th>
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
@@ -155,6 +156,7 @@
                         <th scope="row"><%= data.id %></th>
                         <td><%= data.type %></td>
                         <td><%= data.date %></td>
+                        <td><%= data.datef %></td>
                         <td>
                           <span class="badge <%= data.badge %>"  style="padding: 5px;"><%=data.status %></span>
                         </td>
@@ -185,7 +187,8 @@
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Tipo</th>
-                          <th scope="col">Data</th>
+                          <th scope="col">Início</th>
+                          <th scope="col">Término</th>
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
@@ -195,6 +198,7 @@
                             <th scope="row"><%= data2[i].id %></th>
                             <td><%= data2[i].type %></td>
                             <td><%= data2[i].date %></td>
+                            <td><%= data2[i].datef %></td>
                             <td>
                               <span class="badge <%= data2[i].badge %>"  style="padding: 5px;"><%=data2[i].status %></span>
                             </td>
