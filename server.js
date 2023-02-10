@@ -2380,6 +2380,7 @@ app.get('/finish_reserve', (req, res) => {
                 var dateres = new Date(req.session.bookingdate)
                 var datef = new Date(req.session.finish_date)
                 var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
+                var convertdatef = `${datef.getDate() + 1}/${datef.getMonth() + 1}/${datef.getFullYear()}`
                 dateres = dateres.getTime()/100000
                 datef = datef.getTime()/100000
                 var datereq = date.getTime()/100000
@@ -2414,7 +2415,7 @@ app.get('/finish_reserve', (req, res) => {
                             converttype = 'Combo'
                         }
 
-                        res.render('reserves/finishreserve', {subtotal: req.session.valuesess, description:req.session.descriptionreserve, type: converttype, dateres: convertdateres, user_id: convertID, ID: IDinsert, datereq: convertdate, name: convertname, address: convertaddress, email: convertemail})
+                        res.render('reserves/finishreserve', {datef: convertdatef, subtotal: req.session.valuesess, description:req.session.descriptionreserve, type: converttype, dateres: convertdateres, user_id: convertID, ID: IDinsert, datereq: convertdate, name: convertname, address: convertaddress, email: convertemail})
                     })
                 })
             })
