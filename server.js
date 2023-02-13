@@ -125,65 +125,103 @@ app.use(express.static(__dirname+'/public'));
 app.post('/salon_create', (req,res) => {
     var sql = `SELECT * FROM reservations WHERE type=?`
     var sql2 = `SELECT * FROM reservations`
+    var sql3 = `SELECT * FROM session WHERE user_id=?`
+    var sql4 = `SELECT * FROM permissions WHERE user_id=?`
     var date = new Date(req.session.bookingdate)
     var finish_date = new Date(req.session.finish_date)
     var type = Number(req.body.bookingtype)
+    var admin = false
 
-    if(!type || type == undefined) {
-        return res.render('reserves/date_reserve', {erro: 'Opção inválida!'})
+    if(!req.session.key || req.session.key == undefined){
+        return res.redirect('/login')
     }
 
-    if(req.session.bookingdate && req.session.bookingdate != undefined){
-        if(type != 3){
-            connect.query(sql, [type], function(err, result){
-                if(err){
-                    return console.log(err.message)
-                }
-    
-                if(!result[0]){
-                    req.session.bookingtype = req.body.bookingtype
-                    return res.render('admin/typeevent', {erro: ''})
-                }
-    
-                for(var i = 0; i < result.length; i++){
-                    var convertdateres = result[i].dateres*100000
-                    var fdate = result[i].datef*100000
-                    if(convertdateres >= date.getTime() && convertdateres <= finish_date.getTime() && result[i].auth <= 2){
-                        return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
-                        break
-                    }
-
-                    if(date.getTime() >= convertdateres && date.getTime() <= fdate && result[i].auth <= 2){
-                        return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
-                        break
-                    }
-                }
-    
-                req.session.bookingtype = req.body.bookingtype
-                res.render('admin/typeevent', {erro: ''})
-            })
-
-        } else {
-            connect.query(sql2, function(err, result){
-                if(err){
-                    console.log(err.message)
-                }
-
-                for(var i = 0; i < result.length; i++){
-                    var date_reserve = new Date(result[i].dateres*100000)
-
-                    if(date_reserve.getTime() >= date.getTime() && date_reserve.getTime() <= finish_date.getTime()  && result[i].auth <= 2){
-                        return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
-                        break
-                    }
-                }
-
-                res.render('admin/typeevent', {erro: ''})
-            })
+    connect.query(sql3, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
         }
-    } else {
-        res.render('admin/date_create', {erro: 'Data inválida!'})
-    }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        if(!type || type == undefined) {
+            return res.render('reserves/date_reserve', {erro: 'Opção inválida!'})
+        }
+
+        connect.query(sql4, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+
+            if(req.session.bookingdate && req.session.bookingdate != undefined){
+                if(type != 3){
+                    connect.query(sql, [type], function(err, result){
+                        if(err){
+                            return console.log(err.message)
+                        }
+            
+                        if(!result[0]){
+                            req.session.bookingtype = req.body.bookingtype
+                            return res.render('admin/typeevent', {erro: ''})
+                        }
+            
+                        for(var i = 0; i < result.length; i++){
+                            var convertdateres = result[i].dateres*100000
+                            var fdate = result[i].datef*100000
+                            if(convertdateres >= date.getTime() && convertdateres <= finish_date.getTime() && result[i].auth <= 2){
+                                return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
+                                break
+                            }
+        
+                            if(date.getTime() >= convertdateres && date.getTime() <= fdate && result[i].auth <= 2){
+                                return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
+                                break
+                            }
+                        }
+            
+                        req.session.bookingtype = req.body.bookingtype
+                        res.render('admin/typeevent', {erro: ''})
+                    })
+        
+                } else {
+                    connect.query(sql2, function(err, result){
+                        if(err){
+                            console.log(err.message)
+                        }
+        
+                        for(var i = 0; i < result.length; i++){
+                            var date_reserve = new Date(result[i].dateres*100000)
+        
+                            if(date_reserve.getTime() >= date.getTime() && date_reserve.getTime() <= finish_date.getTime()  && result[i].auth <= 2){
+                                return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
+                                break
+                            }
+                        }
+        
+                        res.render('admin/typeevent', {erro: ''})
+                    })
+                }
+            } else {
+                res.render('admin/date_create', {erro: 'Data inválida!'})
+            }
+        })
+    })
 });
 
 app.post('/date_create', (req, res) => {
