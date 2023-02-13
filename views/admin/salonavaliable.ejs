@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DUO EVENTOS | Reservas</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="css/login/all.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="css/login/icheck-bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="css/login/adminlte.min.css">
+</head>
+<body class="hold-transition register-page" style="background-image: url('img/home/logoduo.png'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+<div class="register-box">
+  <div class="register-logo">
+    <a href="/"><b>DUO</b>Eventos</a>
+  </div>
+
+  <div class="card" style="background-color: #ffffffe5;">
+    <div class="card-body">
+      <h5 class="login-box-msg">Escolha um tipo de reserva</h5>
+
+      <% if(erro){ %>
+        <div class="alert alert-danger" role="alert" style="background-color: #ff0000a6;">
+          <%= erro %>
+        </div>
+      <% } %>
+
+      <form action="/salon_create" method="post">
+        <select name="bookingtype" class="form-control" aria-label="Default select example" required>
+            <option value="1">Adulto
+                <%if (typeone){ %>
+                    (<%= typeone %>)
+                <% } %>
+            </option>
+            <option value="2">Kids
+                <%if (typetwo){ %>
+                    (<%= typetwo %>)
+                <% } %>
+            </option>
+            <option value="3">Combo
+                <%if (combotype){ %>
+                    (<%= combotype %>)
+                <% } %>
+            </option>
+        </select>
+
+        <div class="row" style="margin-top: 12px;">
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block" id="button_register">Registrar</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery -->
+<script src="jquery/login/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="jquery/login/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="jquery/login/adminlte.min.js"></script>
+</body>
+</html>
