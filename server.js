@@ -234,7 +234,7 @@ app.post('/admin_register_reserve', (req, res) => {
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
                     req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+                    res.render('admin/registerreserve', {datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
                 })
             })
         })
