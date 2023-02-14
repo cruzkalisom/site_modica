@@ -36,13 +36,6 @@ INSERT INTO `address` (`user_id`, `street`, `number`, `complement`, `district`, 
 	(1, 'Maranhão', 423, 'Próximo ao Posto 93', 'Mimoso 1', 47850200, 'Luís Eduardo Magalhães', 'BA'),
 	(2, 'RUA PAULO AFONSO', 1465, '', 'SANTA CRUZ', 47850000, 'LUIS EDUARDO MAGALHAES', 'BA');
 
--- Copiando estrutura para tabela test.deletes
-CREATE TABLE IF NOT EXISTS `deletes` (
-  `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Copiando dados para a tabela test.deletes: ~0 rows (aproximadamente)
-
 -- Copiando estrutura para tabela test.permissions
 CREATE TABLE IF NOT EXISTS `permissions` (
   `name` varchar(30) NOT NULL,
@@ -62,12 +55,15 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `auth` int(11) NOT NULL,
   `timepag` int(11) NOT NULL,
   `dateres` int(11) NOT NULL,
+  `datef` int(11) NOT NULL,
   `datereq` int(11) NOT NULL,
   `description` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.reservations: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.reservations: ~1 rows (aproximadamente)
+INSERT INTO `reservations` (`id`, `type`, `user_id`, `auth`, `timepag`, `dateres`, `datef`, `datereq`, `description`) VALUES
+	(10, 1, 1, 2, 16764603, 16768512, 16771968, 16763739, '');
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
@@ -75,11 +71,9 @@ CREATE TABLE IF NOT EXISTS `session` (
   `voucher` int(11) NOT NULL AUTO_INCREMENT,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`voucher`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela test.session: ~1 rows (aproximadamente)
-INSERT INTO `session` (`user_id`, `voucher`, `date`) VALUES
-	(1, 38, 16760403);
 
 -- Copiando estrutura para tabela test.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -116,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `values_reserve` (
 
 -- Copiando dados para a tabela test.values_reserve: ~0 rows (aproximadamente)
 INSERT INTO `values_reserve` (`monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`) VALUES
-	(25, 10000, 5000, 6000, 7000, 8000, 9000);
+	(10000, 10000, 10000, 10000, 10000, 10000, 10000);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
