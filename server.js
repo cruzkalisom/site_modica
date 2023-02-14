@@ -125,6 +125,7 @@ app.use(express.static(__dirname+'/public'));
 app.post('/admin_confirm_reserve', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `INSERT INTO reservations (type, user_id, auth, timepag, dateres, datef, datereq, description, rate, discounts) VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, ?)`
     var admin = false
 
     if(!req.session.key || req.session.key == undefined){
@@ -160,7 +161,17 @@ app.post('/admin_confirm_reserve', (req, res) => {
                 return res.redirect('/')
             }
 
-            res.send('Página de finalização de reserva')
+            var date = new Date()
+            date = new Date(date)
+            var timepag = date.getTime() + 86400000
+            timepag = timepag/100000
+            var datereq = date.getTime()/100000
+
+            connect.query(sql3, [req.session.bookingtype, req.body.nuser, timepag, req.session.bookingdate, req.session.finish_date, datereq, req.body.description, req.body.rate, req.body.discount], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+            })
         })
     })
 })
