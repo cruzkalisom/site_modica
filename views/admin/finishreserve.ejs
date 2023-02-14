@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DUO Eventos | Pagamento</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Fatura</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    <i class="fas fa-globe"></i> DUO Eventos
+                    <small class="float-right">Data: <%= datereq %></small>
+                  </h4>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  De
+                  <address>
+                    <strong>Módica Empreendimentos</strong><br>
+                    Rua Burle Marx, nº 661, Andar 01, Sala 10,<br>
+                    Jardim Paraiso, CEP 47-855.680,<br>
+                    Luís Eduardo Magalhães-BA <br>
+                    E-mail: duoeventoslem@gmail.com
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  Para
+                  <address>
+                    <strong><%= name %></strong><br>
+                    <%= address %> <br>
+                    Email: <%= email %>
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <b>ID da reserva: <%= ID %></b><br>
+                  <br>
+                  <b>ID do usuário: <%= user_id %></b><br>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Quantidade</th>
+                      <th>Tipo</th>
+                      <th>Início</th>
+                      <th>Término</th>
+                      <th>Descrição</th>
+                      <th>Subtotal</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td><%= type %></td>
+                      <td><%= dateres %></td>
+                      <td><%= datef %></td>
+                      <td><%= description %></td>
+                      <td>R$<%= subtotal %>,00</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-6">
+                  <p class="lead"><strong>CONTA CORRENTE SANTANDER</strong><br>
+                    <strong>CNPJ: </strong>46.723.981/0001-04 <br>
+                    <strong>AGÊNCIA: </strong>1788 <br>
+                    <strong>CONTA:</strong>00013002784-7  <br>
+                    <strong>MODICA PERSTAÇÃO DE SERVIÇOS</strong>  
+                  </p>
+                  <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                    O valor deverá ser enviado <strong>MANUALMENTE</strong> para a conta da chave PIX acima. Caso queira pagar de outra forma ou tirar dúvidas sobre a reserva, entre em contato com a equipe clicando <a href="https://api.whatsapp.com/send?phone=5577999886660&text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20DUO%20Eventos." target="_blank">aqui</a>.
+                  </p>
+                </div>
+                <!-- /.col -->
+                <div class="col-6">
+                  <p class="lead">Valor devido em <%= datereq %></p>
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th style="width:50%">Subtotal:</th>
+                        <td>R$<%= subtotal %>,00</td>
+                      </tr>
+                      <tr>
+                        <th>Taxa</th>
+                        <td>R$:0,00</td>
+                      </tr>
+                      <tr>
+                        <th>Desconto</th>
+                        <td>R$:0,00</td>
+                      </tr>
+                      <tr>
+                        <th>Total:</th>
+                        <td>R$<%= subtotal %>,00</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- this row will not appear when printing -->
+              <div class="row no-print">
+                <div class="col-12">
+                  <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                  <a href="https://api.whatsapp.com/send?phone=5577999886660&text=Ol%C3%A1!%20Segue%20O%20comprovante%20de%20pagamento." target="_blank" class="btn btn-success float-right">Enviar comprovante</a> 
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+</body>
+</html>
