@@ -2898,34 +2898,62 @@ app.post('/bookingdate', (req, res) => {
 
             if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
                 if(result[i].type == 1 && result[i].auth <= 2){
-                    type_one = 'indisponível'
-                    combo_type = 'indisponível'
+                    if(result[i].auth == 1){
+                        type_one = 'Pendente'
+                        combo_type = 'Pendente'
+                    } else {
+                        type_one = 'Indisponível'
+                        combo_type = 'Indisponível'
+                    }
                 }
     
                 if(result[i].type == 2 && result[i].auth <= 2){
-                    type_two = 'indisponível'
-                    combo_type = 'indisponível'
+                    if(result[i].auth == 1){
+                        type_two = 'Pendente'
+                        combo_type = 'Pendente'
+                    } else {
+                        type_two = 'Indisponível'
+                        combo_type = 'Indisponível'
+                    }
                 }
     
                 if(result[i].type == 3 && result[i].auth <= 2){
-                    type_tree = 'indisponível'
+                    if(result[i].auth == 1){
+                        type_tree = 'Pendente'
+                    } else {
+                        type_tree = 'Indisponível'
+                    }
                     break
                 }
             }
 
             if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
                 if(result[i].type == 1 && result[i].auth <= 2){
-                    type_one = 'indisponível'
-                    combo_type = 'indisponível'
+                    if(result[i].auth == 1){
+                        type_one = 'Pendente'
+                        combo_type = 'Pendente'
+                    } else {
+                        type_one = 'Indisponível'
+                        combo_type = 'Indisponível'
+                    }
                 }
     
                 if(result[i].type == 2 && result[i].auth <= 2){
-                    type_two = 'indisponível'
-                    combo_type = 'indisponível'
+                    if(result[i].auth == 1){
+                        type_two = 'Pendente'
+                        combo_type = 'Pendente'
+                    } else {
+                        type_two = 'Indisponível'
+                        combo_type = 'Indisponível'
+                    }
                 }
     
                 if(result[i].type == 3 && result[i].auth <= 2){
-                    type_tree = 'indisponível'
+                    if(result[i].auth == 1){
+                        type_tree = 'Pendente'
+                    } else {
+                        type_tree = 'Indisponível'
+                    }
                     break
                 }
             }
