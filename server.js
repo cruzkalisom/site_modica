@@ -126,6 +126,8 @@ app.post('/admin_confirm_reserve', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
     var sql3 = `INSERT INTO reservations (type, user_id, auth, timepag, dateres, datef, datereq, description, rate, discounts) VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, ?)`
+    var sql4 = `SELECT * FROM users WHERE id=?`
+    var sql5 = `SELECT * FROM address WHERE user_id=?`
     var admin = false
 
     if(!req.session.key || req.session.key == undefined){
@@ -166,11 +168,61 @@ app.post('/admin_confirm_reserve', (req, res) => {
             var timepag = date.getTime() + 86400000
             timepag = timepag/100000
             var datereq = date.getTime()/100000
+            var initdate = new Date(req.session.bookingdate)
+            initdate = initdate.getTime()/100000
+            var finish_date = new Date(req.session.finish_date)
+            finish_date = finish_date.getTime()/100000
 
-            connect.query(sql3, [req.session.bookingtype, req.body.nuser, timepag, req.session.bookingdate, req.session.finish_date, datereq, req.body.description, req.body.rate, req.body.discount], function(err, result){
+            connect.query(sql3, [req.session.bookingtype, req.body.nuser, timepag, initdate, finish_date, datereq, req.body.description, req.body.rate, req.body.discounts], function(err, result){
                 if(err){
                     return console.log(err.message)
                 }
+
+                var insertid = result.insertId
+                connect.query(sql4, [req.body.nuser], function(err, result2){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                
+                    if(!result2[0]){
+                        return res.redirect('/admin_register_reserve')
+                    }
+
+                    var name = `${result2[0].name} ${result2[0].firstname}`
+                    var user_id = result2[0].id
+                    var email = result2[0].user
+                    var dateres = new Date(req.session.bookingdate)
+                    var datef = new Date(req.session.finish_date)
+                    var convertdatef = `${datef.getDate() + 1}/${datef.getMonth() + 1}/${datef.getFullYear()}`
+                    var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
+                    var convertdatereq = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                    var converttype = ``
+                    var totalcalc = parseInt(req.body.rate) + parseInt(req.body.discounts) + req.session.valuesess
+
+                    if(req.session.bookingtype == 1){
+                        converttype = 'Adulto'
+                    }
+                    if(req.session.bookingtype == 2){
+                        converttype = 'Kids'
+                    }
+                    if(req.session.bookingtype == 3){
+                        converttype = 'Combo'
+                    }
+
+                    connect.query(sql5, [req.body.nuser], function(err, result3){
+                        if(err){
+                            return console.log(err.message)
+                        }
+
+                        if(!result3[0]){
+                            console.log('foi')
+                            return res.render('admin/finishreserve', {user_id: user_id, ID: insertid, subtotal: req.session.valuesess, description: req.body.description, datef: convertdatef, dateres: convertdateres, type: converttype, email:email, datereq: convertdatereq, name: name, address: ''})
+                        }
+
+                        var address = `${result3[0].street}, ${result3[0].number}, ${result3[0].district} ${result3[0].complement}, ${result3[0].cep}, ${result3[0].city} - ${result3[0].state}`
+                        res.render('admin/finishreserve', {rate: req.body.rate, discount: req.body.discounts, total: totalcalc, user_id: user_id, ID: insertid, subtotal: req.session.valuesess, description: req.body.description, datef: convertdatef, dateres: convertdateres, type: converttype, email:email, datereq: convertdatereq, name: name, address: address})
+                    })
+                })
             })
         })
     })
