@@ -122,6 +122,127 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/admin_register_reserve', (req, res) => {
+    var datereserve = new Date(req.session.bookingdate)
+    var datereservef = new Date(req.session.finish_date)
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM values_reserve`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var converttype = ''
+    var convertevent = ''
+    var valueres = 0
+    var admin = false
+
+    if(req.session.key && req.session.key != undefined){
+        connect.query(sql, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            if(!result[0]){
+                return res.redirect('/login')
+            }
+
+            if(req.session.key != result[0].voucher){
+                return res.redirect('/login')
+            }
+
+            connect.query(sql3, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                for(var i = 0; i < result.length; i++){
+                    if(result[i].name == 'admin'){
+                        admin = true
+                        break
+                    }
+                }
+
+                if(!admin){
+                    return res.redirect('/')
+                }
+
+                if(req.session.bookingtype == 1){
+                    converttype = 'Adulto'
+                }
+                if(req.session.bookingtype == 2){
+                    converttype = 'Kids'
+                }
+                if(req.session.bookingtype == 3){
+                    converttype = 'Combo'
+                }
+    
+                if(req.body.bookingtype == 1){
+                    convertevent = 'Aniversário'
+                }
+                if(req.body.bookingtype == 2){
+                    convertevent = 'Confraternização'
+                }
+                if(req.body.bookingtype == 3){
+                    convertevent = 'Show'
+                }
+                if(req.body.bookingtype == 4){
+                    convertevent = 'Casamento'
+                }
+                if(req.body.bookingtype == 5){
+                    convertevent = 'Chá de Revelação'
+                }
+                if(req.body.bookingtype == 6){
+                    convertevent = 'Outros'
+                }
+    
+                connect.query(sql2, function(err, result2){
+                    if(err){
+                        return console.log(err.message)
+                    }
+    
+                    var value_cont = 0
+                    for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
+                        var reserve_cont_date = new Date(i)
+        
+                        if(reserve_cont_date.getDay() == 0){
+                            value_cont += result2[0].monday
+                        }
+    
+                        if(reserve_cont_date.getDay() == 1){
+                            value_cont += result2[0].tuesday
+                        }
+    
+                        if(reserve_cont_date.getDay() == 2){
+                            value_cont += result2[0].wednesday
+                        }
+    
+                        if(reserve_cont_date.getDay() == 3){
+                            value_cont += result2[0].thursday
+                        }
+    
+                        if(reserve_cont_date.getDay() == 4){
+                            value_cont += result2[0].friday
+                        }
+    
+                        if(reserve_cont_date.getDay() == 5){
+                            value_cont += result2[0].saturday
+                        }
+    
+                        if(reserve_cont_date.getDay() == 6){
+                            value_cont += result2[0].sunday
+                        }
+                    }
+    
+                    req.session.valuesess = value_cont
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
+                    req.session.typeevent = req.body.bookingtype
+                    res.render('admin/registerreserve', {erro: 'Usuário inválido!', datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+                })
+            })
+        })
+    } else {
+        res.redirect('login')
+    }
+});
+
 app.post('/admin_confirm_reserve', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
@@ -173,41 +294,42 @@ app.post('/admin_confirm_reserve', (req, res) => {
             var finish_date = new Date(req.session.finish_date)
             finish_date = finish_date.getTime()/100000
 
-            connect.query(sql3, [req.session.bookingtype, req.body.nuser, timepag, initdate, finish_date, datereq, req.body.description, req.body.rate, req.body.discounts], function(err, result){
+            connect.query(sql4, [req.body.nuser], function(err, result2){
                 if(err){
                     return console.log(err.message)
                 }
+            
+                if(!result2[0]){
+                    return res.redirect('/admin_register_reserve')
+                }
 
-                var insertid = result.insertId
-                connect.query(sql4, [req.body.nuser], function(err, result2){
+                var name = `${result2[0].name} ${result2[0].firstname}`
+                var user_id = result2[0].id
+                var email = result2[0].user
+                var dateres = new Date(req.session.bookingdate)
+                var datef = new Date(req.session.finish_date)
+                var convertdatef = `${datef.getDate() + 1}/${datef.getMonth() + 1}/${datef.getFullYear()}`
+                var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
+                var convertdatereq = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                var converttype = ``
+                var totalcalc = parseInt(req.body.rate) + parseInt(req.body.discounts) + req.session.valuesess
+
+                if(req.session.bookingtype == 1){
+                    converttype = 'Adulto'
+                }
+                if(req.session.bookingtype == 2){
+                    converttype = 'Kids'
+                }
+                if(req.session.bookingtype == 3){
+                    converttype = 'Combo'
+                }
+
+                connect.query(sql3, [req.session.bookingtype, req.body.nuser, timepag, initdate, finish_date, datereq, req.body.description, req.body.rate, req.body.discounts], function(err, result){
                     if(err){
                         return console.log(err.message)
                     }
-                
-                    if(!result2[0]){
-                        return res.redirect('/admin_register_reserve')
-                    }
-
-                    var name = `${result2[0].name} ${result2[0].firstname}`
-                    var user_id = result2[0].id
-                    var email = result2[0].user
-                    var dateres = new Date(req.session.bookingdate)
-                    var datef = new Date(req.session.finish_date)
-                    var convertdatef = `${datef.getDate() + 1}/${datef.getMonth() + 1}/${datef.getFullYear()}`
-                    var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
-                    var convertdatereq = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-                    var converttype = ``
-                    var totalcalc = parseInt(req.body.rate) + parseInt(req.body.discounts) + req.session.valuesess
-
-                    if(req.session.bookingtype == 1){
-                        converttype = 'Adulto'
-                    }
-                    if(req.session.bookingtype == 2){
-                        converttype = 'Kids'
-                    }
-                    if(req.session.bookingtype == 3){
-                        converttype = 'Combo'
-                    }
+    
+                    var insertid = result.insertId
 
                     connect.query(sql5, [req.body.nuser], function(err, result3){
                         if(err){
@@ -340,7 +462,7 @@ app.post('/admin_register_reserve', (req, res) => {
                     datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
                     datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
                     req.session.typeevent = req.body.bookingtype
-                    res.render('admin/registerreserve', {datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+                    res.render('admin/registerreserve', {erro: '', datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
                 })
             })
         })

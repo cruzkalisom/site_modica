@@ -45,6 +45,12 @@
                                 <p>Informe o nome do aniversariante caso o tipo de evento seja "Aniversário"</p>
                             </div>
                         </div>
+
+                        <% if(erro){ %>
+                            <div class="alert alert-danger col-6" role="alert" style="background-color: #ff0000a6;">
+                              <%= erro %>
+                            </div>
+                        <% } %>
                         <div class="form-floating">
                             <input required type="number" name="nuser" id="nuser" placeholder="..." class="form-control-sm form-control col-2">
                             <label for="nuser" class="form-label">ID do usuário:</label>
