@@ -161,7 +161,20 @@ app.get('/create_users', (req, res) => {
                 return res.redirect('/')
             }
 
-            res.send('Página do administrador para criar usuários')
+            connect.query(sql3, [req.session.user], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(!result[0]){
+                    return res.redirect('/')
+                }
+
+                var name = result[0].name
+                var firstname =  result[0].firstname
+
+                res.send('Página do administrador para registrar usuários')
+            })
         })
     })
 })
