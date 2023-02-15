@@ -125,6 +125,7 @@ app.use(express.static(__dirname+'/public'));
 app.get('/create_users', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `SELECT * FROM users WHERE id=?` 
     var admin = false
 
     if(!req.session.key || req.session.key == undefined){
