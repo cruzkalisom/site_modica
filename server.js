@@ -170,6 +170,10 @@ app.post('/create_users', (req, res) => {
                     return res.redirect('/create_users')
                 }
 
+                if(req.body.password != req.body.confirm_password){
+                    return res.redirect('/create_users')
+                }
+
                 res.send('Rota para registro de usuário')
             })
         })
