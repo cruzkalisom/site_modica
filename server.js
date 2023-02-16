@@ -174,7 +174,14 @@ app.post('/create_users', (req, res) => {
                     return res.redirect('/create_users')
                 }
 
-                res.send('Rota para registro de usuário')
+                var age = new Date(req.body.age)
+                connect.query(sql4, [req.body.name, req.body.contact, req.body.firstname, req.body.cpf, req.body.rg, age.getTime()/100000, req.body.genre, req.body.marital, req.body.email, req.body.password], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    res.redirect('/users')
+                })
             })
         })
     })
