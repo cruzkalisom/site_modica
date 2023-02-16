@@ -173,7 +173,7 @@ app.get('/create_users', (req, res) => {
                 var name = result[0].name
                 var firstname =  result[0].firstname
 
-                res.send('Página do administrador para registrar usuários')
+                res.render('admin/adminchange', {name: name, firstname: firstname})
             })
         })
     })
