@@ -122,6 +122,48 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/create_users', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var admin = false
+
+    if(!req.session.key || req.session.key == undefined){
+        return res.redirect('/login')
+    }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+            res.send('Rota para registro de usuário')
+        })
+    })
+})
+
 app.get('/create_users', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
