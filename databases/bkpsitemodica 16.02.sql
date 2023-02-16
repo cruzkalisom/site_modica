@@ -58,12 +58,16 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `datef` int(11) NOT NULL,
   `datereq` int(11) NOT NULL,
   `description` varchar(1000) NOT NULL,
-  `rate` int(11) NOT NULL,
-  `discounts` int(11) NOT NULL,
+  `rate` int(11) NOT NULL DEFAULT 0,
+  `discounts` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.reservations: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.reservations: ~3 rows (aproximadamente)
+INSERT INTO `reservations` (`id`, `type`, `user_id`, `auth`, `timepag`, `dateres`, `datef`, `datereq`, `description`, `rate`, `discounts`) VALUES
+	(17, 1, 1, 3, 16765484, 16768512, 16771968, 16764620, '', 0, 0),
+	(18, 1, 1, 3, 16765493, 16768512, 16771968, 16764629, '', 0, 0),
+	(19, 1, 1, 3, 16765493, 16768512, 16771968, 16764629, '', 0, 0);
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
@@ -71,9 +75,11 @@ CREATE TABLE IF NOT EXISTS `session` (
   `voucher` int(11) NOT NULL AUTO_INCREMENT,
   `date` int(11) NOT NULL,
   PRIMARY KEY (`voucher`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.session: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.session: ~1 rows (aproximadamente)
+INSERT INTO `session` (`user_id`, `voucher`, `date`) VALUES
+	(1, 43, 16766551);
 
 -- Copiando estrutura para tabela test.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -81,21 +87,20 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(100) NOT NULL,
   `contact` varchar(30) NOT NULL,
   `firstname` varchar(100) NOT NULL,
-  `cpf` varchar(30) DEFAULT NULL,
-  `rg` varchar(30) DEFAULT NULL,
-  `genre` enum('M','F') DEFAULT NULL,
+  `cpf` varchar(30) NOT NULL,
+  `rg` varchar(30) NOT NULL,
+  `age` int(11) NOT NULL,
+  `genre` enum('M','F') NOT NULL,
   `nationality` varchar(20) DEFAULT 'Brasil',
-  `marital` varchar(20) DEFAULT NULL,
+  `marital` varchar(20) NOT NULL,
   `user` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.users: ~0 rows (aproximadamente)
-INSERT INTO `users` (`id`, `name`, `contact`, `firstname`, `cpf`, `rg`, `genre`, `nationality`, `marital`, `user`, `password`) VALUES
-	(1, 'Kalisom', '63991112944', 'Cruz', '07695471178', '1455938', 'M', 'Brasil', 'Solteiro', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003'),
-	(2, 'DEISIELLE ', '73999130611', 'ALMEIDA LACERDA DOS SANTOS', '056728985058', '1618833383', 'F', 'Brasil', 'Solteiro', 'deisielle.lacerda@outlook.com', '248299'),
-	(3, 'Daniel Vitor ', '', 'Nunes', NULL, NULL, NULL, 'Brasil', NULL, 'dhanyelvitor10nda@gmail.com', '102030');
+-- Copiando dados para a tabela test.users: ~1 rows (aproximadamente)
+INSERT INTO `users` (`id`, `name`, `contact`, `firstname`, `cpf`, `rg`, `age`, `genre`, `nationality`, `marital`, `user`, `password`) VALUES
+	(1, 'Kalisom', '', 'Cruz', '', '', 0, 'M', 'Brasil', '', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003');
 
 -- Copiando estrutura para tabela test.values_reserve
 CREATE TABLE IF NOT EXISTS `values_reserve` (

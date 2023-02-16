@@ -125,6 +125,8 @@ app.use(express.static(__dirname+'/public'));
 app.post('/create_users', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `SELECT * FROM users WHERE user=?`
+    var sql4 = `INSERT INTO users (name, contact, firstname, cpf, rg, age, genre, marital, user, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     var admin = false
 
     if(!req.session.key || req.session.key == undefined){
@@ -159,7 +161,17 @@ app.post('/create_users', (req, res) => {
                 return res.redirect('/')
             }
 
-            res.send('Rota para registro de usuário')
+            connect.query(sql3, [req.body.email], function(err, result){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                if(result[0]){
+                    return res.redirect('/create_users')
+                }
+
+                res.send('Rota para registro de usuário')
+            })
         })
     })
 })
