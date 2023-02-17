@@ -212,7 +212,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Por data</h3>
+                <h3 class="card-title">Por temporada</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -222,7 +222,14 @@
               </div>
               <div class="card-body">
                 <form action="" method="post">
-                  
+                  <label for="init" class="form-label">De:</label>
+                  <input required type="date" name="init" id="init" class="form-control form-control-sm col-3">
+                
+                  <label for="finish" class="form-label">Até:</label>
+                  <input required type="date" name="finish" id="finish" class="form-control form-control-sm col-3">
+                
+                  <label for="value_date" class="form-label">Valor:</label>
+                  <input required type="number" name="value_date" id="value_date" class="form-control form-control-sm col-3">
                 </form>
               </div>
               <!-- /.card-body -->
