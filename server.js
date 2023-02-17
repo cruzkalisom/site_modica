@@ -127,7 +127,58 @@ app.post('/admin/value_date', (req, res) => {
 })
 
 app.post('/admin/value_temp', (req, res) => {
-    res.send('página para adicionar valor por temporada')
+    var sql = `INSERT INTO values_temp (init, finish, value_temp) VALUES (?, ?, ?)`
+    var sql2 = `SELECT * FROM session WHERE user_id=?`
+    var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var admin = false
+
+    if(!req.session.key || req.session.key == undefined){
+        return res.redirect('/login')
+    }
+
+    connect.query(sql2, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        connect.query(sql3, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                    break
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+            var date_init = new Date(req.body.init)
+            var date_finish = new Date(req.body.finish)
+            date_init = date_init.getTime()/100000
+            date_finish = date_finish.getTime()/100000
+
+            connect.query(sql, [date_init, date_finish, req.body.value], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                res.send('Sucesso!')
+            })
+        })
+    })
 })
 
 app.post('/create_users', (req, res) => {
@@ -162,6 +213,7 @@ app.post('/create_users', (req, res) => {
             for(var i = 0; i < result.length; i++){
                 if(result[i].name == 'admin'){
                     admin = true
+                    break
                 }
             }
 
