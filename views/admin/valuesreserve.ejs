@@ -221,7 +221,7 @@
                 </div>
               </div>
               <div class="card-body">
-                <form action="" method="post">
+                <form action="/admin/value_temp" method="post">
                   <label for="init" class="form-label">De:</label>
                   <input required type="date" name="init" id="init" class="form-control form-control-sm col-3">
                 
@@ -230,6 +230,35 @@
                 
                   <label for="value_date" class="form-label">Valor:</label>
                   <input required type="number" name="value_date" id="value_date" class="form-control form-control-sm col-3">
+                  <br>
+                  <button type="submit" class="btn btn-sm btn-primary">Adicionar</button>
+                </form>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+              </div>
+              <!-- /.card-footer-->
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Por data</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <strong>&#8722</strong>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <form action="/admin/value_temp" method="post">
+                  <label for="date" class="form-label">Data:</label>
+                  <input required type="date" name="date" id="date" class="form-control form-control-sm col-3">
+
+                  <label for="value" class="form-label">Valor:</label>
+                  <input required type="number" name="value" id="value" class="form-control form-control-sm col-3">
+                  <br>
+                  <button type="submit" class="btn btn-sm btn-primary">Adicionar</button>
                 </form>
               </div>
               <!-- /.card-body -->

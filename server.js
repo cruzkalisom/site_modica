@@ -122,6 +122,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.post('/admin/value_date', (req, res) => {
+    res.send('Página para adicionar valor por data')
+})
+
+app.post('/admin/value_temp', (req, res) => {
+    res.send('página para adicionar valor por temporada')
+})
+
 app.post('/create_users', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
