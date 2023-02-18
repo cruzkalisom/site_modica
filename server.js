@@ -78,6 +78,116 @@ setInterval(function(){
 
 }, 30*60000)
 
+setInterval(function(){
+    console.log('Checando valores por temporada')
+    var sql = `SELECT * FROM values_temp`
+    var sql2 = `UPDATE values_reserve SET monday=?`
+    var sql3 = `UPDATE values_reserve SET tuesday=?`
+    var sql4 = `UPDATE values_reserve SET wednesday=?`
+    var sql5 = `UPDATE values_reserve SET thursday=?`
+    var sql6 = `UPDATE values_reserve SET friday=?`
+    var sql7 = `UPDATE values_reserve SET saturday=?`
+    var sql8 = `UPDATE values_reserve SET sunday=?`
+    var sql9 = `DELETE FROM values_temp WHERE id=?`
+    var sql10 = `SELECT * FROM values_reserve_temp`
+    var sql11 = `UPDATE values_reserve SET monday=?, tuesday=?, wednesday=?, thursday=?, friday=?, saturday=?, sunday=?`
+
+    var date = new Date()
+    date = new Date(date)
+
+    connect.query(sql, function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        for(var i = 0; i < result.length; i++){
+            if(date.getTime() > result[i].finish*100000){
+                connect.query(sql9, [result[i].id], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(date.getTime() >= result[i].init*100000 && date.getTime() <= result[i].finish*100000){
+                if(date.getDay() == 0){
+                    connect.query(sql2, [result[i].value_temp], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 1){
+                    connect.query(sql3, [result[i].value_temp], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 2){
+                    connect.query(sql4, [result[i].value_temp], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 3){
+                    connect.query(sql5, [result[i].value_temp], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 4){
+                    connect.query(sql6, [result[i].value_temp], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 5){
+                    connect.query(sql7, [result[i].value_temp], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 6){
+                    connect.query(sql8, [result[i].value_temp], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                break
+            }
+
+            if(i == result.length){
+                connect.query(sql10, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    connect.query(sql11, [result[0].monday, result[0].tuesday, result[0].wednesday, result[0].thursday, result[0].friday, result[0].saturday, result[0].sunday], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                })
+
+                break
+            }
+        }
+    })
+}, 30*60000)
+
 connect.connect(function(err){
     if(err){
         console.log('Erro de conexão: ' + err);
@@ -1558,6 +1668,14 @@ app.post('/admin/edit/value/:day', (req, res) => {
     var sql_saturday = `UPDATE values_reserve SET saturday=?`
     var sql_sunday = `UPDATE values_reserve SET sunday=?`
 
+    var sql_monday_temp = `UPDATE values_reserve_temp SET monday=?`
+    var sql_tuesday_temp = `UPDATE values_reserve_temp SET tuesday=?`
+    var sql_wednesday_temp = `UPDATE values_reserve_temp SET wednesday=?`
+    var sql_thursday_temp = `UPDATE values_reserve_temp SET thursday=?`
+    var sql_friday_temp = `UPDATE values_reserve_temp SET friday=?`
+    var sql_saturday_temp = `UPDATE values_reserve_temp SET saturday=?`
+    var sql_sunday_temp = `UPDATE values_reserve_temp SET sunday=?`
+
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
             if(err){
@@ -1581,6 +1699,12 @@ app.post('/admin/edit/value/:day', (req, res) => {
                         return console.log(err.message)
                     }
                 })
+
+                connect.query(sql_monday_temp, [req.body.monday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
             }
 
             if(req.params.day == 'tuesday'){
@@ -1588,6 +1712,12 @@ app.post('/admin/edit/value/:day', (req, res) => {
                     return
                 }
                 connect.query(sql_tuesday, [req.body.tuesday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+
+                connect.query(sql_tuesday_temp, [req.body.tuesday], function(err){
                     if(err){
                         return console.log(err.message)
                     }
@@ -1603,6 +1733,13 @@ app.post('/admin/edit/value/:day', (req, res) => {
                         return console.log(err.message)
                     }
                 })
+
+                connect.query(sql_wednesday_temp, [req.body.wednesday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+
             }
 
             if(req.params.day == 'thursday'){
@@ -1610,6 +1747,12 @@ app.post('/admin/edit/value/:day', (req, res) => {
                     return
                 }
                 connect.query(sql_thursday, [req.body.thursday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+
+                connect.query(sql_thursday_temp, [req.body.thursday], function(err){
                     if(err){
                         return console.log(err.message)
                     }
@@ -1625,6 +1768,12 @@ app.post('/admin/edit/value/:day', (req, res) => {
                         return console.log(err.message)
                     }
                 })
+
+                connect.query(sql_friday_temp, [req.body.friday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
             }
 
             if(req.params.day == 'saturday'){
@@ -1636,6 +1785,12 @@ app.post('/admin/edit/value/:day', (req, res) => {
                         return console.log(err.message)
                     }
                 })
+
+                connect.query(sql_saturday_temp, [req.body.saturday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
             }
 
             if(req.params.day == 'sunday'){
@@ -1643,6 +1798,12 @@ app.post('/admin/edit/value/:day', (req, res) => {
                     return
                 }
                 connect.query(sql_sunday, [req.body.sunday], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+
+                connect.query(sql_sunday_temp, [req.body.sunday], function(err){
                     if(err){
                         return console.log(err.message)
                     }
