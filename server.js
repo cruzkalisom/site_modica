@@ -1963,8 +1963,11 @@ app.get('/values', (req, res) => {
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
     var sql3 = `SELECT * FROM users WHERE id=?`
     var sql4 = `SELECT * FROM values_reserve`
+    var sql5 = `SELECT * FROM values_temp`
 
     var admin = false
+
+    var values_data = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -2016,7 +2019,24 @@ app.get('/values', (req, res) => {
                             return console.log(err.message)
                         }
 
-                        res.render('admin/valuesreserve', {name: name, firstname: firstname, values: result})
+                        connect.query(sql5, function(err, result2){
+                            if(err){
+                                return console.log(err.message)
+                            }
+
+                            for(var i = 0; i < result2.length; i++){
+                                var date_from = new Date(result2[i].init*100000)
+                                var date_to = new Date(result2[i].finish*100000)
+                                var value = result2[i].value_temp
+
+                                date_from = `${date_from.getDate() + 1}/${date_from.getMonth() + 1}/${date_from.getFullYear()}`
+                                date_to = `${date_to.getDate() + 1}/${date_to.getMonth() + 1}/${date.getFullYear()}`
+                                var values_cache = {init: date_from, finish: date_to, value: value}
+                                values_data.push(values_cache)
+                            }
+
+                            res.render('admin/valuesreserve', {values_temp: values_data, name: name, firstname: firstname, values: result})
+                        })
                     })
                 })
             })
