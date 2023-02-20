@@ -237,32 +237,29 @@
                     </form>
                   </div>
                   <div class="col mb-12">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th scope="col">De</th>
-                          <th scope="col">Até</th>
-                          <th scope="col">Valor</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>12/12/2023</td>
-                          <td>25/12/2023</td>
-                          <td>R$:40000,00</td>
-                        </tr>
-                        <tr>
-                          <td>12/12/2023</td>
-                          <td>25/12/2023</td>
-                          <td>R$:40000,00</td>
-                        </tr>
-                        <tr>
-                          <td>12/12/2023</td>
-                          <td>25/12/2023</td>
-                          <td>R$:40000,00</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <% if(values_temp[0]){ %>
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">De</th>
+                            <th scope="col">Até</th>
+                            <th scope="col">Valor</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for(var i = 0; i < values_temp.length; i++){ %>
+                            <tr>
+                              <td><%= values_temp[i].init %></td>
+                              <td><%= values_temp[i].finish %></td>
+                              <td>R$: <%= values_temp[i].value %>,00</td>
+                              <td class="project-actions text-right">
+                                <a class="btn btn-sm btn-danger" href="/admin/delete/value_temp/<%= values_temp[i].id %>">Excluir</a>
+                              </td>
+                            </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    <% } %>
                   </div>
                 </div>
                 

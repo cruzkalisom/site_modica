@@ -1958,6 +1958,57 @@ app.post('/admin/edit/value/:day', (req, res) => {
     }
 });
 
+app.get('/admin/delete/value_temp/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `DELETE FROM values_temp WHERE id=?`
+
+    var admin = false
+
+    if(!req.session.key || req.session.key == undefined){
+        return res.redirect('/login')
+    }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                    break
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+            connect.query(sql3, [parseInt(req.params.id)], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                res.redirect('/values')
+            })
+        })
+    })
+})
+
 app.get('/values', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
@@ -2030,8 +2081,8 @@ app.get('/values', (req, res) => {
                                 var value = result2[i].value_temp
 
                                 date_from = `${date_from.getDate() + 1}/${date_from.getMonth() + 1}/${date_from.getFullYear()}`
-                                date_to = `${date_to.getDate() + 1}/${date_to.getMonth() + 1}/${date.getFullYear()}`
-                                var values_cache = {init: date_from, finish: date_to, value: value}
+                                date_to = `${date_to.getDate() + 1}/${date_to.getMonth() + 1}/${date_to.getFullYear()}`
+                                var values_cache = {init: date_from, finish: date_to, value: value, id: result2[i].id}
                                 values_data.push(values_cache)
                             }
 
