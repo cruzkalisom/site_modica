@@ -92,6 +92,7 @@ setInterval(function(){
     var sql10 = `SELECT * FROM values_reserve_temp`
     var sql11 = `UPDATE values_reserve SET monday=?, tuesday=?, wednesday=?, thursday=?, friday=?, saturday=?, sunday=?`
 
+    var sql12 = `SELECT * FROM values_date`
     var date = new Date()
     date = new Date(date)
 
@@ -186,6 +187,98 @@ setInterval(function(){
             }
         }
     })
+
+    connect.query(sql12, function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        for(var i = 0; i < result.length; i++){
+            if(date.getTime() > result[i].date*100000){
+                connect.query(sql9, [result[i].id], function(err){
+                    if(err){
+                        return console.log(err.message)
+                    }
+                })
+            }
+
+            if(date.getTime() == result[i].date*100000){
+                if(date.getDay() == 0){
+                    connect.query(sql2, [result[i].value_date], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 1){
+                    connect.query(sql3, [result[i].value_date], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 2){
+                    connect.query(sql4, [result[i].value_date], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 3){
+                    connect.query(sql5, [result[i].value_date], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 4){
+                    connect.query(sql6, [result[i].value_date], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 5){
+                    connect.query(sql7, [result[i].value_date], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                if(date.getDay() == 6){
+                    connect.query(sql8, [result[i].value_date], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                }
+
+                break
+            }
+
+            if(i == result.length){
+                connect.query(sql10, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+
+                    connect.query(sql11, [result[0].monday, result[0].tuesday, result[0].wednesday, result[0].thursday, result[0].friday, result[0].saturday, result[0].sunday], function(err){
+                        if(err){
+                            return console.log(err.message)
+                        }
+                    })
+                })
+
+                break
+            }
+        }
+    })
 }, 30*60000)
 
 connect.connect(function(err){
@@ -233,7 +326,55 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.post('/admin/value_date', (req, res) => {
-    res.send('Página para adicionar valor por data')
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `INSERT INTO values_date (date, value_date) VALUES (?,?)`
+    var admin = false
+
+    if(!req.session.key || req.session.key == undefined){
+        res.redirect('/login')
+    }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                    break
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+            var date = new Date(req.body.date)
+            date = date.getTime()/100000
+            connect.query(sql3, [date, req.body.value], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                res.redirect('/values')
+            })
+        })
+    })
 })
 
 app.post('/admin/value_temp', (req, res) => {
@@ -285,7 +426,7 @@ app.post('/admin/value_temp', (req, res) => {
                     return console.log(err.message)
                 }
 
-                res.send('Sucesso!')
+                res.redirect('/values')
             })
         })
     })
