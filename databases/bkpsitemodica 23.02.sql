@@ -36,6 +36,18 @@ INSERT INTO `address` (`user_id`, `street`, `number`, `complement`, `district`, 
 	(1, 'Maranhão', 423, 'Próximo ao Posto 93', 'Mimoso 1', 47850200, 'Luís Eduardo Magalhães', 'BA'),
 	(2, 'RUA PAULO AFONSO', 1465, '', 'SANTA CRUZ', 47850000, 'LUIS EDUARDO MAGALHAES', 'BA');
 
+-- Copiando estrutura para tabela test.block_date
+CREATE TABLE IF NOT EXISTS `block_date` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `init` int(11) NOT NULL,
+  `finish` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Copiando dados para a tabela test.block_date: ~0 rows (aproximadamente)
+INSERT INTO `block_date` (`id`, `init`, `finish`) VALUES
+	(1, 16771968, 16773696);
+
 -- Copiando estrutura para tabela test.permissions
 CREATE TABLE IF NOT EXISTS `permissions` (
   `name` varchar(30) NOT NULL,
@@ -61,13 +73,11 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `rate` int(11) NOT NULL DEFAULT 0,
   `discounts` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.reservations: ~3 rows (aproximadamente)
+-- Copiando dados para a tabela test.reservations: ~1 rows (aproximadamente)
 INSERT INTO `reservations` (`id`, `type`, `user_id`, `auth`, `timepag`, `dateres`, `datef`, `datereq`, `description`, `rate`, `discounts`) VALUES
-	(17, 1, 1, 3, 16765484, 16768512, 16771968, 16764620, '', 0, 0),
-	(18, 1, 1, 3, 16765493, 16768512, 16771968, 16764629, '', 0, 0),
-	(19, 1, 1, 3, 16765493, 16768512, 16771968, 16764629, '', 0, 0);
+	(20, 1, 1, 1, 16772696, 16771968, 16773696, 16771832, '', 0, 0);
 
 -- Copiando estrutura para tabela test.session
 CREATE TABLE IF NOT EXISTS `session` (
@@ -102,18 +112,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `name`, `contact`, `firstname`, `cpf`, `rg`, `age`, `genre`, `nationality`, `marital`, `user`, `password`) VALUES
 	(1, 'Kalisom', '', 'Cruz', '', '', 0, 'M', 'Brasil', '', 'kalisom.cruz@vumer.com.br', 'kalisomsoares003'),
 	(2, 'Kalisom', '63991112944', 'Soares', '07695471178', '1455938', 10396512, 'M', 'Brasil', 'Solteiro', 'kalisomsoaresdacruz@gmail.com', 'kalisomsoares');
-
--- Copiando estrutura para tabela test.values_date
-CREATE TABLE IF NOT EXISTS `values_date` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` int(11) NOT NULL,
-  `value_date` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- Copiando dados para a tabela test.values_date: ~1 rows (aproximadamente)
-INSERT INTO `values_date` (`id`, `date`, `value_date`) VALUES
-	(4, 16771104, 50000);
 
 -- Copiando estrutura para tabela test.values_reserve
 CREATE TABLE IF NOT EXISTS `values_reserve` (
@@ -152,11 +150,12 @@ CREATE TABLE IF NOT EXISTS `values_temp` (
   `finish` int(11) NOT NULL,
   `value_temp` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela test.values_temp: ~1 rows (aproximadamente)
 INSERT INTO `values_temp` (`id`, `init`, `finish`, `value_temp`) VALUES
-	(3, 16775424, 16778880, 50000);
+	(38, 16752096, 16775424, 30000),
+	(43, 16776288, 16776288, 60000);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
