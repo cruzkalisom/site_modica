@@ -78,7 +78,7 @@ setInterval(function(){
 
 }, 30*60000)
 
-setInterval(function(){
+/*setInterval(function(){
     console.log('Checando valores por temporada')
     var sql = `SELECT * FROM values_temp`
     var sql2 = `UPDATE values_reserve SET monday=?`
@@ -264,7 +264,7 @@ setInterval(function(){
             }
         }
     })
-}, 5000)
+}, 5000)*/
 
 connect.connect(function(err){
     if(err){
@@ -546,6 +546,7 @@ app.get('/admin_register_reserve', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM values_reserve`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM values_temp`
     var converttype = ''
     var convertevent = ''
     var valueres = 0
@@ -616,43 +617,73 @@ app.get('/admin_register_reserve', (req, res) => {
                     }
     
                     var value_cont = 0
-                    for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
-                        var reserve_cont_date = new Date(i)
-        
-                        if(reserve_cont_date.getDay() == 0){
-                            value_cont += result2[0].monday
+
+                    connect.query(sql4, function(err, result3){
+                        if(err){
+                            return console.log(err.message)
                         }
+
+                        var value_temp = 0
+                        for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
+                            var reserve_cont_date = new Date(i)
+            
+                            for(var a = 0; a < result3.length; a++){
+                                var date = new Date(result3[a].finish*100000)
+                                console.log(reserve_cont_date.getTime())
+                                console.log(result3[a].init*100000)
+                                if(reserve_cont_date.getTime() >= result3[a].init*100000 && reserve_cont_date.getTime() <= result3[a].finish*100000){
+                                    
+                                    value_temp += result3[a].value_temp
+                                    break
+                                }
     
-                        if(reserve_cont_date.getDay() == 1){
-                            value_cont += result2[0].tuesday
+                                if(reserve_cont_date.getDate() == date.getDate() && reserve_cont_date.getMonth() == date.getMonth() && reserve_cont_date.getFullYear == date.getFullYear()){
+                                    value_temp += result3[a].value_temp
+                                    break
+                                }
+                            }
+
+                            if(value_temp > 0){
+                                value_cont += value_temp
+                                value_temp = 0
+                            } else {
+                                console.log('foi')
+                                if(reserve_cont_date.getDay() == 0){
+                                    value_cont += result2[0].monday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 1){
+                                    value_cont += result2[0].tuesday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 2){
+                                    value_cont += result2[0].wednesday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 3){
+                                    value_cont += result2[0].thursday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 4){
+                                    value_cont += result2[0].friday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 5){
+                                    value_cont += result2[0].saturday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 6){
+                                    value_cont += result2[0].sunday
+                                }
+                            }
                         }
-    
-                        if(reserve_cont_date.getDay() == 2){
-                            value_cont += result2[0].wednesday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 3){
-                            value_cont += result2[0].thursday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 4){
-                            value_cont += result2[0].friday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 5){
-                            value_cont += result2[0].saturday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 6){
-                            value_cont += result2[0].sunday
-                        }
-                    }
-    
-                    req.session.valuesess = value_cont
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('admin/registerreserve', {erro: 'Usuário inválido!', datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+
+                        req.session.valuesess = value_cont
+                        datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                        datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
+                        req.session.typeevent = req.body.bookingtype
+                        res.render('admin/registerreserve', {erro: 'Usuário inválido!', datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype}) 
+                    })
                 })
             })
         })
@@ -774,6 +805,7 @@ app.post('/admin_register_reserve', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM values_reserve`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM values_temp`
     var converttype = ''
     var convertevent = ''
     var valueres = 0
@@ -844,43 +876,66 @@ app.post('/admin_register_reserve', (req, res) => {
                     }
     
                     var value_cont = 0
-                    for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
-                        var reserve_cont_date = new Date(i)
-        
-                        if(reserve_cont_date.getDay() == 0){
-                            value_cont += result2[0].monday
+
+                    connect.query(sql4, function(err, result3){
+                        if(err){
+                            return console.log(err.message)
                         }
-    
-                        if(reserve_cont_date.getDay() == 1){
-                            value_cont += result2[0].tuesday
+
+                        var value_temp = 0
+                        for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
+                            var reserve_cont_date = new Date(i)
+            
+                            for(var a = 0; a < result3.length; a++){
+                                var date = new Date(result3[a].finish*100000)
+                                if(reserve_cont_date.getTime() >= result3[a].init*100000 && reserve_cont_date.getTime() <= result3[a].finish*100000){
+                                    
+                                    value_temp += result3[a].value_temp
+                                    break
+                                }
+                            }
+
+                            if(value_temp > 0){
+                                value_cont += value_temp
+                                value_temp = 0
+                            } else {
+                                console.log('foi')
+                                if(reserve_cont_date.getDay() == 0){
+                                    value_cont += result2[0].monday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 1){
+                                    value_cont += result2[0].tuesday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 2){
+                                    value_cont += result2[0].wednesday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 3){
+                                    value_cont += result2[0].thursday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 4){
+                                    value_cont += result2[0].friday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 5){
+                                    value_cont += result2[0].saturday
+                                }
+            
+                                if(reserve_cont_date.getDay() == 6){
+                                    value_cont += result2[0].sunday
+                                }
+                            }
                         }
-    
-                        if(reserve_cont_date.getDay() == 2){
-                            value_cont += result2[0].wednesday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 3){
-                            value_cont += result2[0].thursday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 4){
-                            value_cont += result2[0].friday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 5){
-                            value_cont += result2[0].saturday
-                        }
-    
-                        if(reserve_cont_date.getDay() == 6){
-                            value_cont += result2[0].sunday
-                        }
-                    }
-    
-                    req.session.valuesess = value_cont
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('admin/registerreserve', {erro: '', datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+
+                        req.session.valuesess = value_cont
+                        datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                        datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
+                        req.session.typeevent = req.body.bookingtype
+                        res.render('admin/registerreserve', {erro: '', datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype}) 
+                    })
                 })
             })
         })
@@ -1681,6 +1736,58 @@ app.post('/reserves', (req, res) => {
     }
 });
 
+app.post('/admin/add/block_date', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `INSERT INTO block_date (init, finish) VALUES (?,?)`
+    var admin = false
+
+    if(!req.session.key || req.session.key == undefined){
+        return res.redirect('/login')
+    }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console,log(err.message)
+        }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                    break
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+            var init = new Date(req.body.init)
+            var finish = new Date(req.body.finish)
+            connect.query(sql3, [init.getTime()/100000, finish.getTime()/100000], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                res.redirect('/reserves')
+            })
+        })
+    })
+})
+
 app.get('/reserves', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
@@ -1781,10 +1888,12 @@ app.get('/reserves', (req, res) => {
                             }
 
                             for(var i = 0; i < result.length; i++){
-                                var date = new Date(result[i].date*100000)
+                                var init = new Date(result[i].init*100000)
+                                var finish = new Date(result[i].finish*100000)
                                 
-                                date = `${date.getDate() + 1}/${date.getMonth() +1}/${date.getFullYear()}`
-                                var block_temp = {date: date, id: result[i].id}
+                                init = `${init.getDate() + 1}/${init.getMonth() +1}/${init.getFullYear()}`
+                                finish = `${finish.getDate() + 1}/${finish.getMonth() +1}/${finish.getFullYear()}`
+                                var block_temp = {finish: finish, init: init, id: result[i].id}
                                 block_date.push(block_temp)
                             }
 
@@ -3558,6 +3667,7 @@ app.post('/register_reserve', (req, res) => {
     var datereservef = new Date(req.session.finish_date)
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM values_reserve`
+    var sql3 = `SELECT * FROM values_temp`
     var converttype = ''
     var convertevent = ''
     var valueres = 0
@@ -3611,43 +3721,66 @@ app.post('/register_reserve', (req, res) => {
                 }
 
                 var value_cont = 0
-                for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
-                    var reserve_cont_date = new Date(i)
-    
-                    if(reserve_cont_date.getDay() == 0){
-                        value_cont += result2[0].monday
+
+                connect.query(sql3, function(err, result3){
+                    if(err){
+                        return console.log(err.message)
                     }
 
-                    if(reserve_cont_date.getDay() == 1){
-                        value_cont += result2[0].tuesday
+                    var value_temp = 0
+                    for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
+                        var reserve_cont_date = new Date(i)
+        
+                        for(var a = 0; a < result3.length; a++){
+                            var date = new Date(result3[a].finish*100000)
+                            if(reserve_cont_date.getTime() >= result3[a].init*100000 && reserve_cont_date.getTime() <= result3[a].finish*100000){
+                                
+                                value_temp += result3[a].value_temp
+                                break
+                            }
+                        }
+
+                        if(value_temp > 0){
+                            value_cont += value_temp
+                            value_temp = 0
+                        } else {
+                            console.log('foi')
+                            if(reserve_cont_date.getDay() == 0){
+                                value_cont += result2[0].monday
+                            }
+        
+                            if(reserve_cont_date.getDay() == 1){
+                                value_cont += result2[0].tuesday
+                            }
+        
+                            if(reserve_cont_date.getDay() == 2){
+                                value_cont += result2[0].wednesday
+                            }
+        
+                            if(reserve_cont_date.getDay() == 3){
+                                value_cont += result2[0].thursday
+                            }
+        
+                            if(reserve_cont_date.getDay() == 4){
+                                value_cont += result2[0].friday
+                            }
+        
+                            if(reserve_cont_date.getDay() == 5){
+                                value_cont += result2[0].saturday
+                            }
+        
+                            if(reserve_cont_date.getDay() == 6){
+                                value_cont += result2[0].sunday
+                            }
+                        }
                     }
 
-                    if(reserve_cont_date.getDay() == 2){
-                        value_cont += result2[0].wednesday
-                    }
-
-                    if(reserve_cont_date.getDay() == 3){
-                        value_cont += result2[0].thursday
-                    }
-
-                    if(reserve_cont_date.getDay() == 4){
-                        value_cont += result2[0].friday
-                    }
-
-                    if(reserve_cont_date.getDay() == 5){
-                        value_cont += result2[0].saturday
-                    }
-
-                    if(reserve_cont_date.getDay() == 6){
-                        value_cont += result2[0].sunday
-                    }
-                }
-
-                req.session.valuesess = value_cont
-                datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
-                req.session.typeevent = req.body.bookingtype
-                res.render('reserves/registerreserve', {datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+                    req.session.valuesess = value_cont
+                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
+                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
+                    req.session.typeevent = req.body.bookingtype
+                    res.render('reserves/registerreserve', {datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
+                })
             })
         })
     } else {

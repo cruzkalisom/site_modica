@@ -257,9 +257,11 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <form action="#" method="post">
-                        <label for="date" class="form-label">Data:</label>
-                        <input type="date" name="date" id="date" class="form-control form-control-sm col-3">
+                      <form action="/admin/add/block_date" method="post">
+                        <label for="init" class="form-label">De:</label>
+                        <input type="date" name="init" id="init" class="form-control form-control-sm col-3">
+                        <label for="finish" class="form-label">Até:</label>
+                        <input type="date" name="finish" id="finish" class="form-control form-control-sm col-3">
                         <br>
                         <button type="submit" class="btn btn-sm btn-primary">Bloquear</button>
                       </form>
@@ -267,9 +269,23 @@
                     <div class="col">
                       <% if(block_date[0]){ %>
                         <table class="table table-hover">
-                          <tr>
-                            <th scope="col">Data</th>
-                          </tr>
+                          <thead>
+                            <tr>
+                              <th scope="col">De</th>
+                              <th scope="col">Até</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% for(var i = 0; i < block_date.length; i++){ %> 
+                              <tr>
+                                <td><%= block_date[i].init %></td>
+                                <td><%= block_date[i].finish %></td>
+                                <td class="project-actions text-right">
+                                  <a href="#" class="btn btn-sm btn-danger">Excluir</a>
+                                </td>
+                              </tr>
+                            <% } %>
+                          </tbody>
                         </table>
                       <% } %>
                     </div>
