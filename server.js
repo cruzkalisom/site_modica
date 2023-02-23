@@ -892,6 +892,7 @@ app.post('/date_create', (req, res) => {
     var sql = `SELECT * FROM reservations`
     var sql2 = `SELECT * FROM session WHERE user_id=?`
     var sql3 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql4 = `SELECT * FROM block_date`
     var type_one = ''
     var type_two = ''
     var type_tree = ''
@@ -935,60 +936,114 @@ app.post('/date_create', (req, res) => {
                 return res.render('admin/date_create', {erro: 'Data inválida!'})
             }
         
-            connect.query(sql, function(err, result){
+            connect.query(sql4, function(err, result){
+                var block_date = false
                 if(err){
                     return console.log(err.message)
                 }
         
                 for(var i = 0; i < result.length; i++){
-                    var cachedate = new Date(result[i].dateres*100000)
-                    var fdate = new Date(result[i].datef*100000)
+                    var iblock = new Date(result[i].init*100000)
+                    var fblock = new Date(result[i].finish*100000)
         
-                    if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
-                        if(result[i].type == 1 && result[i].auth <= 2){
-                            type_one = 'indisponível'
-                            combo_type = 'indisponível'
-                        }
-            
-                        if(result[i].type == 2 && result[i].auth <= 2){
-                            type_two = 'indisponível'
-                            combo_type = 'indisponível'
-                        }
-            
-                        if(result[i].type == 3 && result[i].auth <= 2){
-                            type_tree = 'indisponível'
-                            break
-                        }
+                    if(iblock.getTime() >= confirm_date.getTime() && iblock <= finish_date.getTime()){
+                        block_date = true
+                        break
                     }
         
-                    if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
-                        if(result[i].type == 1 && result[i].auth <= 2){
-                            type_one = 'indisponível'
-                            combo_type = 'indisponível'
-                        }
-            
-                        if(result[i].type == 2 && result[i].auth <= 2){
-                            type_two = 'indisponível'
-                            combo_type = 'indisponível'
-                        }
-            
-                        if(result[i].type == 3 && result[i].auth <= 2){
-                            type_tree = 'indisponível'
-                            break
-                        }
+                    if(confirm_date.getTime() >= iblock.getTime() && confirm_date.getTime() <= fblock.getTime()){
+                        block_date = true
+                        break
                     }
                 }
         
-                if(type_tree == 'indisponível'){
-                    return res.render('admin/date_create', {erro: 'Reservas indisponíveis para a data escolhida!'})
+                if(block_date){
+                    return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
                 }
         
-                if(type_one == 'indisponível' && type_two == 'indisponível'){
-                    return res.render('admin/date_create', {erro: 'Reservas indisponíveis para a data escolhida!'})
-                }
-                req.session.finish_date = req.body.fdate
-                req.session.bookingdate = req.body.idate
-                res.render('admin/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
+                connect.query(sql, function(err, result){
+                    if(err){
+                        return console.log(err.message)
+                    }
+            
+                    for(var i = 0; i < result.length; i++){
+                        var cachedate = new Date(result[i].dateres*100000)
+                        var fdate = new Date(result[i].datef*100000)
+            
+                        if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
+                            if(result[i].type == 1 && result[i].auth <= 2){
+                                if(result[i].auth == 1){
+                                    type_one = 'Pendente'
+                                    combo_type = 'Pendente'
+                                } else {
+                                    type_one = 'Indisponível'
+                                    combo_type = 'Indisponível'
+                                }
+                            }
+                
+                            if(result[i].type == 2 && result[i].auth <= 2){
+                                if(result[i].auth == 1){
+                                    type_two = 'Pendente'
+                                    combo_type = 'Pendente'
+                                } else {
+                                    type_two = 'Indisponível'
+                                    combo_type = 'Indisponível'
+                                }
+                            }
+                
+                            if(result[i].type == 3 && result[i].auth <= 2){
+                                if(result[i].auth == 1){
+                                    type_tree = 'Pendente'
+                                } else {
+                                    type_tree = 'Indisponível'
+                                }
+                                break
+                            }
+                        }
+            
+                        if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
+                            if(result[i].type == 1 && result[i].auth <= 2){
+                                if(result[i].auth == 1){
+                                    type_one = 'Pendente'
+                                    combo_type = 'Pendente'
+                                } else {
+                                    type_one = 'Indisponível'
+                                    combo_type = 'Indisponível'
+                                }
+                            }
+                
+                            if(result[i].type == 2 && result[i].auth <= 2){
+                                if(result[i].auth == 1){
+                                    type_two = 'Pendente'
+                                    combo_type = 'Pendente'
+                                } else {
+                                    type_two = 'Indisponível'
+                                    combo_type = 'Indisponível'
+                                }
+                            }
+                
+                            if(result[i].type == 3 && result[i].auth <= 2){
+                                if(result[i].auth == 1){
+                                    type_tree = 'Pendente'
+                                } else {
+                                    type_tree = 'Indisponível'
+                                }
+                                break
+                            }
+                        }
+                    }
+            
+                    if(type_tree == 'indisponível'){
+                        return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+                    }
+            
+                    if(type_one == 'indisponível' && type_two == 'indisponível'){
+                        return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+                    }
+                    req.session.finish_date = req.body.fdate
+                    req.session.bookingdate = req.body.idate
+                    res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
+                })
             })
         })
     })
@@ -3700,6 +3755,7 @@ app.post('/bookingdate', (req, res) => {
     var finish_date = new Date(req.body.fdate)
     var valid_date = date.getTime() - confirm_date.getTime()
     var sql = `SELECT * FROM reservations`
+    var sql2 = `SELECT * FROM block_date`
     var type_one = ''
     var type_two = ''
     var type_tree = ''
@@ -3709,88 +3765,114 @@ app.post('/bookingdate', (req, res) => {
         return res.render('reserves/date_reserve', {erro: 'Data inválida!'})
     }
 
-    connect.query(sql, function(err, result){
+    connect.query(sql2, function(err, result){
+        var block_date = false
         if(err){
             return console.log(err.message)
         }
 
         for(var i = 0; i < result.length; i++){
-            var cachedate = new Date(result[i].dateres*100000)
-            var fdate = new Date(result[i].datef*100000)
+            var iblock = new Date(result[i].init*100000)
+            var fblock = new Date(result[i].finish*100000)
 
-            if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
-                if(result[i].type == 1 && result[i].auth <= 2){
-                    if(result[i].auth == 1){
-                        type_one = 'Pendente'
-                        combo_type = 'Pendente'
-                    } else {
-                        type_one = 'Indisponível'
-                        combo_type = 'Indisponível'
-                    }
-                }
-    
-                if(result[i].type == 2 && result[i].auth <= 2){
-                    if(result[i].auth == 1){
-                        type_two = 'Pendente'
-                        combo_type = 'Pendente'
-                    } else {
-                        type_two = 'Indisponível'
-                        combo_type = 'Indisponível'
-                    }
-                }
-    
-                if(result[i].type == 3 && result[i].auth <= 2){
-                    if(result[i].auth == 1){
-                        type_tree = 'Pendente'
-                    } else {
-                        type_tree = 'Indisponível'
-                    }
-                    break
-                }
+            if(iblock.getTime() >= confirm_date.getTime() && iblock <= finish_date.getTime()){
+                block_date = true
+                break
             }
 
-            if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
-                if(result[i].type == 1 && result[i].auth <= 2){
-                    if(result[i].auth == 1){
-                        type_one = 'Pendente'
-                        combo_type = 'Pendente'
-                    } else {
-                        type_one = 'Indisponível'
-                        combo_type = 'Indisponível'
-                    }
-                }
-    
-                if(result[i].type == 2 && result[i].auth <= 2){
-                    if(result[i].auth == 1){
-                        type_two = 'Pendente'
-                        combo_type = 'Pendente'
-                    } else {
-                        type_two = 'Indisponível'
-                        combo_type = 'Indisponível'
-                    }
-                }
-    
-                if(result[i].type == 3 && result[i].auth <= 2){
-                    if(result[i].auth == 1){
-                        type_tree = 'Pendente'
-                    } else {
-                        type_tree = 'Indisponível'
-                    }
-                    break
-                }
+            if(confirm_date.getTime() >= iblock.getTime() && confirm_date.getTime() <= fblock.getTime()){
+                block_date = true
+                break
             }
         }
 
-        if(type_tree == 'indisponível'){
+        if(block_date){
             return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
         }
 
-        if(type_one == 'indisponível' && type_two == 'indisponível'){
-            return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
-        }
-        req.session.finish_date = req.body.fdate
-        req.session.bookingdate = req.body.idate
-        res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
+        connect.query(sql, function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+    
+            for(var i = 0; i < result.length; i++){
+                var cachedate = new Date(result[i].dateres*100000)
+                var fdate = new Date(result[i].datef*100000)
+    
+                if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
+                    if(result[i].type == 1 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_one = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_one = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 2 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_two = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_two = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 3 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_tree = 'Pendente'
+                        } else {
+                            type_tree = 'Indisponível'
+                        }
+                        break
+                    }
+                }
+    
+                if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
+                    if(result[i].type == 1 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_one = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_one = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 2 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_two = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_two = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 3 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_tree = 'Pendente'
+                        } else {
+                            type_tree = 'Indisponível'
+                        }
+                        break
+                    }
+                }
+            }
+    
+            if(type_tree == 'indisponível'){
+                return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+            }
+    
+            if(type_one == 'indisponível' && type_two == 'indisponível'){
+                return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+            }
+            req.session.finish_date = req.body.fdate
+            req.session.bookingdate = req.body.idate
+            res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
+        })
     })
 });
 
