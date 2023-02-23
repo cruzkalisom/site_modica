@@ -191,27 +191,6 @@
             </div>
 
             <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Bloquear data</h3>
-
-                <div class="card-tools">
-
-                  <button type="button" class="btn btn-lg" data-card-widget="collapse" title="Collapse">
-                    <strong>&#8722</strong>
-                  </button>
-
-                </div>
-              </div>
-              <div class="card-body">
-                  
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-              </div>
-              <!-- /.card-footer-->
-          </div>
-
-            <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">Todas</h3>
                     
@@ -256,6 +235,45 @@
                     <% } else { %>
                         <h5>Nenhuma reserva</h5>
                     <% } %>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                </div>
+                <!-- /.card-footer-->
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Bloquear data</h3>
+  
+                  <div class="card-tools">
+  
+                    <button type="button" class="btn btn-lg" data-card-widget="collapse" title="Collapse">
+                      <strong>&#8722</strong>
+                    </button>
+  
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <form action="#" method="post">
+                        <label for="date" class="form-label">Data:</label>
+                        <input type="date" name="date" id="date" class="form-control form-control-sm col-3">
+                        <br>
+                        <button type="submit" class="btn btn-sm btn-primary">Bloquear</button>
+                      </form>
+                    </div>
+                    <div class="col">
+                      <% if(block_date[0]){ %>
+                        <table class="table table-hover">
+                          <tr>
+                            <th scope="col">Data</th>
+                          </tr>
+                        </table>
+                      <% } %>
+                    </div>
+                  </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
