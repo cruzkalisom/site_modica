@@ -78,193 +78,31 @@ setInterval(function(){
 
 }, 30*60000)
 
-/*setInterval(function(){
+setInterval(function(){
     console.log('Checando valores por temporada')
     var sql = `SELECT * FROM values_temp`
-    var sql2 = `UPDATE values_reserve SET monday=?`
-    var sql3 = `UPDATE values_reserve SET tuesday=?`
-    var sql4 = `UPDATE values_reserve SET wednesday=?`
-    var sql5 = `UPDATE values_reserve SET thursday=?`
-    var sql6 = `UPDATE values_reserve SET friday=?`
-    var sql7 = `UPDATE values_reserve SET saturday=?`
-    var sql8 = `UPDATE values_reserve SET sunday=?`
     var sql9 = `DELETE FROM values_temp WHERE id=?`
-    var sql10 = `SELECT * FROM values_reserve_temp`
-    var sql11 = `UPDATE values_reserve SET monday=?, tuesday=?, wednesday=?, thursday=?, friday=?, saturday=?, sunday=?`
     var date = new Date()
     date = new Date(date)
-
-    var not_date = true
 
     connect.query(sql, function(err, result){
         if(err){
             return console.log(err.message)
         }
 
-        if(!result[0]){
-            connect.query(sql10, function(err, result){
-                if(err){
-                    return console.log(err.message)
-                }
-
-                connect.query(sql11, [result[0].monday, result[0].tuesday, result[0].wednesday, result[0].thursday, result[0].friday, result[0].saturday, result[0].sunday], function(err){
-                    if(err){
-                        return console.log(err.message)
-                    }
-                })
-            })
-        }
-
         for(var i = 0; i < result.length; i++){
             var date_reserve = new Date(result[i].finish*100000)
 
             if(date.getTime() > date_reserve.getTime() + 86400000){
-                console.log('foi')
                 connect.query(sql9, [result[i].id], function(err){
                     if(err){
                         return console.log(err.message)
                     }
                 })
             }
-
-            if(date.getTime() >= result[i].init*100000 && date.getTime() <= result[i].finish*100000){
-                not_date = false
-                if(date.getDay() - 1 == 0){
-                    connect.query(sql2, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 1){
-                    connect.query(sql3, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 2){
-                    connect.query(sql4, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay()  - 1 == 3){
-                    connect.query(sql5, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-
-                    })
-                }
-
-                if(date.getDay() - 1 == 4){
-                    connect.query(sql6, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 5){
-                    connect.query(sql7, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 6){
-                    connect.query(sql8, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-            }
-
-            if(date.getDate() == date_reserve.getDate() + 1 && date.getMonth() == date_reserve.getMonth() && date.getFullYear() == date_reserve.getFullYear()){
-                not_date = false
-                if(date.getDay() - 1 == 0){
-                    connect.query(sql2, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 1){
-                    connect.query(sql3, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 2){
-                    connect.query(sql4, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay()  - 1 == 3){
-                    connect.query(sql5, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-
-                    })
-                }
-
-                if(date.getDay() - 1 == 4){
-                    connect.query(sql6, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 5){
-                    connect.query(sql7, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-
-                if(date.getDay() - 1 == 6){
-                    connect.query(sql8, [result[i].value_temp], function(err){
-                        if(err){
-                            return console.log(err.message)
-                        }
-                    })
-                }
-            }
-
-            if(i + 1 == result.length){
-                if(not_date){
-                    connect.query(sql10, function(err, result){
-                        if(err){
-                            return console.log(err.message)
-                        }
-    
-                        connect.query(sql11, [result[0].monday, result[0].tuesday, result[0].wednesday, result[0].thursday, result[0].friday, result[0].saturday, result[0].sunday], function(err){
-                            if(err){
-                                return console.log(err.message)
-                            }
-                        })
-                    })
-                }
-            }
         }
     })
-}, 5000)*/
+}, 30*60000)
 
 connect.connect(function(err){
     if(err){
@@ -1592,8 +1430,10 @@ app.post('/reserves', (req, res) => {
     var sql3 = `SELECT * FROM users WHERE id=?`
     var sql4 = `SELECT * FROM reservations`
     var sql5 = `SELECT * FROM reservations WHERE id=?`
+    var sql6 = `SELECT * FROM block_date`
     var admin = false
     var dataresult = []
+    var block_date = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -1719,13 +1559,29 @@ app.post('/reserves', (req, res) => {
                                     badgetype2 = 'badge-secondary'
                                 }
 
-                                var convertdate2 = new Date(result[0].dateres*100000)
-                                convertdate2 = `${convertdate2.getDate() + 1}/${convertdate2.getMonth() + 1}/${convertdate2.getFullYear()}`
-                                var cachedata2 = {id: result[0].id, user_id: result[0].user_id, type: converttype2, date: convertdate2, status: convertstatus2, badge: badgetype2}
-                                res.render('admin/reserves', {data: cachedata2, all: dataresult, name: name, firstname: firstname})
+                                connect.query(sql6, function(err, result2){
+                                    if(err){
+                                        return console.log(err.message)
+                                    }
+        
+                                    for(var i = 0; i < result2.length; i++){
+                                        var init = new Date(result2[i].init*100000)
+                                        var finish = new Date(result2[i].finish*100000)
+                                        
+                                        init = `${init.getDate() + 1}/${init.getMonth() +1}/${init.getFullYear()}`
+                                        finish = `${finish.getDate() + 1}/${finish.getMonth() +1}/${finish.getFullYear()}`
+                                        var block_temp = {finish: finish, init: init, id: result2[i].id}
+                                        block_date.push(block_temp)
+                                    }
+
+                                    var convertdate2 = new Date(result[0].dateres*100000)
+                                    convertdate2 = `${convertdate2.getDate() + 1}/${convertdate2.getMonth() + 1}/${convertdate2.getFullYear()}`
+                                    var cachedata2 = {id: result[0].id, user_id: result[0].user_id, type: converttype2, date: convertdate2, status: convertstatus2, badge: badgetype2}
+                                    res.render('admin/reserves', {block_date: block_date, data: cachedata2, all: dataresult, name: name, firstname: firstname})
+                                })
                             })
                         } else {
-                            res.render('admin/reserves', {data: [], all: dataresult, name: name, firstname: firstname})
+                            res.render('admin/reserves', {block_date: block_date, data: [], all: dataresult, name: name, firstname: firstname})
                         }
                     })
                 })
@@ -1735,6 +1591,56 @@ app.post('/reserves', (req, res) => {
         res.redirect('/login')
     }
 });
+
+app.get('/admin/delete/block_date/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `DELETE FROM block_date WHERE id=?`
+    var admin = false
+
+    if(!req.session.key || req.session.key == undefined){
+        return res.redirect('/login')
+    }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                    break
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+            connect.query(sql3, [req.params.id], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                return res.redirect('/reserves')
+            })
+        })
+    })
+})
 
 app.post('/admin/add/block_date', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
