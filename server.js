@@ -1958,6 +1958,56 @@ app.post('/admin/edit/value/:day', (req, res) => {
     }
 });
 
+app.get('/admin/delete/value_date/:id', (req, res) => {
+    var sql = `SELECT * FROM session WHERE user_id=?`
+    var sql2 = `SELECT * FROM permissions WHERE user_id=?`
+    var sql3 = `DELETE FROM values_date WHERE id=?`
+    var admin = false
+
+    if(!req.session.key || req.session.key == undefined){
+        return res.redirect('/login')
+    }
+
+    connect.query(sql, [req.session.user], function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        if(!result[0]){
+            return res.redirect('/login')
+        }
+
+        if(req.session.key != result[0].voucher){
+            return res.redirect('/login')
+        }
+
+        connect.query(sql2, [req.session.user], function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result.length; i++){
+                if(result[i].name == 'admin'){
+                    admin = true
+                    break
+                }
+            }
+
+            if(!admin){
+                return res.redirect('/')
+            }
+
+            connect.query(sql3, [req.params.id], function(err){
+                if(err){
+                    return console.log(err.message)
+                }
+
+                res.redirect('/values')
+            })
+        })
+    })
+})
+
 app.get('/admin/delete/value_temp/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
@@ -2015,10 +2065,12 @@ app.get('/values', (req, res) => {
     var sql3 = `SELECT * FROM users WHERE id=?`
     var sql4 = `SELECT * FROM values_reserve`
     var sql5 = `SELECT * FROM values_temp`
+    var sql6 = `SELECT * FROM values_date`
 
     var admin = false
 
     var values_data = []
+    var values_data2 = []
 
     if(req.session.key && req.session.key != undefined){
         connect.query(sql, [req.session.user], function(err, result){
@@ -2086,7 +2138,23 @@ app.get('/values', (req, res) => {
                                 values_data.push(values_cache)
                             }
 
-                            res.render('admin/valuesreserve', {values_temp: values_data, name: name, firstname: firstname, values: result})
+                            connect.query(sql6, function(err, result3){
+                                if(err){
+                                    return console.log(err.message)
+                                }
+
+                                for(var i = 0; i < result3.length; i++){
+                                    var date = new Date(result3[i].date*100000)
+                                    var value = result3[i].value_date
+
+                                    date = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`
+
+                                    var values_cache = {date: date, value: value, id: result3[i].id}
+                                    values_data2.push(values_cache)
+                                }
+
+                                res.render('admin/valuesreserve', {values_date: values_data2, values_temp: values_data, name: name, firstname: firstname, values: result})
+                            })
                         })
                     })
                 })
