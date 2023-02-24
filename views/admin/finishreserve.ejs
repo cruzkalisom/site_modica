@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DUO Eventos | Pagamento</title>
+  <title>DUO Eventos | Fatura</title>
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -44,7 +44,7 @@
                 <div class="col-sm-4 invoice-col">
                   De
                   <address>
-                    <strong>Módica Empreendimentos</strong><br>
+                    <strong>Módica Prestação de Serviços</strong><br>
                     Rua Burle Marx, nº 661, Andar 01, Sala 10,<br>
                     Jardim Paraiso, CEP 47-855.680,<br>
                     Luís Eduardo Magalhães-BA <br>
@@ -62,9 +62,9 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
-                  <b>ID da reserva: <%= ID %></b><br>
+                  <b>Número da reserva: <%= ID %></b><br>
                   <br>
-                  <b>ID do usuário: <%= user_id %></b><br>
+                  <b>Código do usuário: <%= user_id %></b><br>
                 </div>
                 <!-- /.col -->
               </div>
@@ -110,7 +110,7 @@
                     <strong>MODICA PERSTAÇÃO DE SERVIÇOS</strong>  
                   </p>
                   <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                    O valor deverá ser enviado <strong>MANUALMENTE</strong> para a conta da chave PIX acima. Caso queira pagar de outra forma ou tirar dúvidas sobre a reserva, entre em contato com a equipe clicando <a href="https://api.whatsapp.com/send?phone=5577999886660&text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20DUO%20Eventos." target="_blank">aqui</a>.
+                    O valor deverá ser enviado <strong>MANUALMENTE</strong> para a conta da chave PIX acima. Caso queira pagar de outra forma ou tirar dúvidas sobre a reserva, entre em contato com a equipe clicando <a class="btn btn-danger" href="https://api.whatsapp.com/send?phone=5577999886660&text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20DUO%20Eventos." target="_blank">aqui</a>.
                   </p>
                 </div>
                 <!-- /.col -->
@@ -145,7 +145,6 @@
               <!-- this row will not appear when printing -->
               <div class="row no-print">
                 <div class="col-12">
-                  <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                   <a href="/reserves" class="btn btn-primary float-right">Voltar</a> 
                   </button>
                 </div>
