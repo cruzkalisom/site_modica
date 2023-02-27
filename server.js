@@ -149,7 +149,57 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/calendar', (req, res) => {
-    res.render('reserves/calendar')
+    var sql = `SELECT * FROM reservations`
+    var reserves = []
+
+    connect.query(sql, function(err, result){
+        if(err){
+            return console.log(err.message)
+        }
+
+        
+
+        for(var i = 0; i < result.length; i++){
+            var background = ''
+            var border = ''
+            var title = ''
+            var iy = null
+            var im = null
+            var id = null
+            var fy = null
+            var fm = null
+            var fd = null
+
+            var idate = new Date(parseInt(result[i].dateres))
+            var fdate = new Date(parseInt(result[i].datef))
+            if(result[i].auth <= 2){
+                id = idate.getDate() + 1
+                im = idate.getMonth() + 1
+                iy = idate.getFullYear()
+
+                fd = fdate.getDate() + 1
+                fm = fdate.getMonth() + 1
+                fy = fdate.getFullYear()
+
+                if(result[i].auth == 1){
+                    title = 'Pendente'
+                    background = '#DAA520'
+                    border = '#FFFF00'
+                }
+
+                if(result[i].auth == 2){
+                    title = 'Indisponível'
+                    background = '#f56954'
+                    border = 'red'
+                }
+
+                var cache_reserves = {iy: iy, im: im, id: id, fy: fy, fm: fm, fd: fd, background: background, border: border, title: title, init: idate, finish: fdate}
+                reserves.push(cache_reserves)
+            }
+        }
+
+        res.render('reserves/calendar', {reserves: reserves})
+    })
 })
 
 app.post('/admin/value_date', (req, res) => {
@@ -3450,7 +3500,7 @@ app.post('/data', (req,res) => {
     var sql2 = `SELECT * FROM reservations`
     var date = new Date(req.session.bookingdate)
     var finish_date = new Date(req.session.finish_date)
-    var dateconvert = date.getTime()/100000
+    var dateconvert = date.getTime() + 86400000
     var type = Number(req.body.bookingtype)
 
     if(!type || type == undefined) {
@@ -3470,14 +3520,14 @@ app.post('/data', (req,res) => {
                 }
     
                 for(var i = 0; i < result.length; i++){
-                    var convertdateres = result[i].dateres*100000
-                    var fdate = result[i].datef*100000
-                    if(convertdateres >= date.getTime() && convertdateres <= finish_date.getTime() && result[i].auth <= 2){
+                    var convertdateres = parseInt(result[i].dateres)
+                    var fdate = parseInt(result[i].datef)
+                    if(convertdateres >= date.getTime() + 86400000 && convertdateres <= finish_date.getTime() + 86400000 && result[i].auth <= 2){
                         return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
                         break
                     }
 
-                    if(date.getTime() >= convertdateres && date.getTime() <= fdate && result[i].auth <= 2){
+                    if(date.getTime() + 86400000 >= convertdateres && date.getTime() + 86400000 <= fdate && result[i].auth <= 2){
                         return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
                         break
                     }
@@ -3494,7 +3544,7 @@ app.post('/data', (req,res) => {
                 }
 
                 for(var i = 0; i < result.length; i++){
-                    var date_reserve = new Date(result[i].dateres*100000)
+                    var date_reserve = new Date(parseInt(result[i].dateres) + 86400000)
 
                     if(date_reserve.getTime() >= date.getTime() && date_reserve.getTime() <= finish_date.getTime()  && result[i].auth <= 2){
                         return res.render('reserves/date_reserve', {erro: 'Indisponível para a data escolhida!'})
@@ -3555,8 +3605,8 @@ app.get('/finish_reserve', (req, res) => {
                 var datef = new Date(req.session.finish_date)
                 var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
                 var convertdatef = `${datef.getDate() + 1}/${datef.getMonth() + 1}/${datef.getFullYear()}`
-                dateres = dateres.getTime()/100000
-                datef = datef.getTime()/100000
+                dateres = dateres.getTime() + 86400000
+                datef = datef.getTime() + 86400000
                 var datereq = date.getTime()/100000
 
                 connect.query(sql4, [datef, req.session.bookingtype, result[0].id, timepag, dateres, datereq, req.session.descriptionreserve], function(err, result){
@@ -3627,132 +3677,6 @@ app.post('/confirm_reserve', (req, res) => {
     }
 })
 
-app.post('/register_reserve', (req, res) => {
-    var datereserve = new Date(req.session.bookingdate)
-    var datereservef = new Date(req.session.finish_date)
-    var sql = `SELECT * FROM session WHERE user_id=?`
-    var sql2 = `SELECT * FROM values_reserve`
-    var sql3 = `SELECT * FROM values_temp`
-    var converttype = ''
-    var convertevent = ''
-    var valueres = 0
-
-    if(req.session.key && req.session.key != undefined){
-        connect.query(sql, [req.session.user], function(err, result){
-            if(err){
-                return console.log(err.message)
-            }
-
-            if(!result[0]){
-                return res.redirect('/login')
-            }
-
-            if(req.session.key != result[0].voucher){
-                return res.redirect('/login')
-            }
-
-            if(req.session.bookingtype == 1){
-                converttype = 'Adulto'
-            }
-            if(req.session.bookingtype == 2){
-                converttype = 'Kids'
-            }
-            if(req.session.bookingtype == 3){
-                converttype = 'Combo'
-            }
-
-            if(req.body.bookingtype == 1){
-                convertevent = 'Aniversário'
-            }
-            if(req.body.bookingtype == 2){
-                convertevent = 'Confraternização'
-            }
-            if(req.body.bookingtype == 3){
-                convertevent = 'Show'
-            }
-            if(req.body.bookingtype == 4){
-                convertevent = 'Casamento'
-            }
-            if(req.body.bookingtype == 5){
-                convertevent = 'Chá de Revelação'
-            }
-            if(req.body.bookingtype == 6){
-                convertevent = 'Outros'
-            }
-
-            connect.query(sql2, function(err, result2){
-                if(err){
-                    return console.log(err.message)
-                }
-
-                var value_cont = 0
-
-                connect.query(sql3, function(err, result3){
-                    if(err){
-                        return console.log(err.message)
-                    }
-
-                    var value_temp = 0
-                    for(var i = datereserve.getTime(); i <= datereservef.getTime(); i += 86400000){
-                        var reserve_cont_date = new Date(i)
-        
-                        for(var a = 0; a < result3.length; a++){
-                            var date = new Date(result3[a].finish*100000)
-                            if(reserve_cont_date.getTime() >= result3[a].init*100000 && reserve_cont_date.getTime() <= result3[a].finish*100000){
-                                
-                                value_temp += result3[a].value_temp
-                                break
-                            }
-                        }
-
-                        if(value_temp > 0){
-                            value_cont += value_temp
-                            value_temp = 0
-                        } else {
-                            console.log('foi')
-                            if(reserve_cont_date.getDay() == 0){
-                                value_cont += result2[0].monday
-                            }
-        
-                            if(reserve_cont_date.getDay() == 1){
-                                value_cont += result2[0].tuesday
-                            }
-        
-                            if(reserve_cont_date.getDay() == 2){
-                                value_cont += result2[0].wednesday
-                            }
-        
-                            if(reserve_cont_date.getDay() == 3){
-                                value_cont += result2[0].thursday
-                            }
-        
-                            if(reserve_cont_date.getDay() == 4){
-                                value_cont += result2[0].friday
-                            }
-        
-                            if(reserve_cont_date.getDay() == 5){
-                                value_cont += result2[0].saturday
-                            }
-        
-                            if(reserve_cont_date.getDay() == 6){
-                                value_cont += result2[0].sunday
-                            }
-                        }
-                    }
-
-                    req.session.valuesess = value_cont
-                    datereserve = `${datereserve.getDate() + 1}/${datereserve.getMonth() + 1}/${datereserve.getFullYear()}` 
-                    datereservef = `${datereservef.getDate() + 1}/${datereservef.getMonth() + 1}/ ${datereservef.getFullYear()}`    
-                    req.session.typeevent = req.body.bookingtype
-                    res.render('reserves/registerreserve', {datef: datereservef, value: value_cont, event: convertevent, date: datereserve, type: converttype})
-                })
-            })
-        })
-    } else {
-        res.redirect('login')
-    }
-});
-
 app.post('/bookingdate', (req, res) => {
     var date = new Date()
     var confirm_date = new Date(req.body.idate)
@@ -3800,10 +3724,10 @@ app.post('/bookingdate', (req, res) => {
             }
     
             for(var i = 0; i < result.length; i++){
-                var cachedate = new Date(result[i].dateres*100000)
-                var fdate = new Date(result[i].datef*100000)
+                var cachedate = new Date(parseInt(result[i].dateres))
+                var fdate = new Date(parseInt(result[i].datef))
     
-                if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
+                if(cachedate.getTime() >= confirm_date.getTime() + 86400000 && cachedate.getTime() <= finish_date.getTime() + 86400000){
                     if(result[i].type == 1 && result[i].auth <= 2){
                         if(result[i].auth == 1){
                             type_one = 'Pendente'
@@ -3834,7 +3758,7 @@ app.post('/bookingdate', (req, res) => {
                     }
                 }
     
-                if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
+                if(confirm_date.getTime() + 86400000 >= cachedate.getTime() && confirm_date.getTime() + 86400000 <= fdate.getTime()){
                     if(result[i].type == 1 && result[i].auth <= 2){
                         if(result[i].auth == 1){
                             type_one = 'Pendente'

@@ -1,3 +1,5 @@
 Alterar imagens do carrossel
 Alterar link de e-mail
 Adicionar opção na barra da viewreserve, editreserve e adminpanel
+
+alterar data bloqueada

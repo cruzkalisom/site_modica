@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Calendar</title>
+  <title>DUO Eventos | Reservas</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -13,19 +13,36 @@
         document.addEventListener('DOMContentLoaded', function(){
             var calendarEl = document.getElementById('calendar')
 
+            
+            
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: 650,
                 locale: 'pt-br',
                 themeSystem: 'bootstrap',
 
+                headerToolbar: {
+                    left  : 'prev,next today',
+                    center: 'title',
+                    right : 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+
+                buttonText: {
+                    today: 'Hoje',
+                    month: 'Mês',
+                    week: 'Semanda',
+                    day: 'Dia',
+                }, 
+
                 events: [
-                    {
-                        title: 'Indisponível',
-                        start: '2023-02-27',
-                        end: '2023-03-03',
-                        backgroundColor: 'red', //red
-                        borderColor: 'red', //red
-                        url: '/admin'
-                    }
+                     <% for(var i = 0; i < reserves.length; i++){ %>
+                        {
+                            title: '<%= reserves[i].title %>',
+                            start: new Date('<%= reserves[i].init %>'),
+                            end: new Date('<%= reserves[i].finish %>'),
+                            backgroundColor: '<%= reserves[i].background %>',
+                            borderColor: '<%= reserves[i].border %>'
+                        },
+                    <% } %>
                 ]
             });
 
@@ -34,68 +51,75 @@
     </script>
 </head>
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
+    <div class="wrapper">
 
-    <!-- Content Header (Page header) -->
+        <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Calendar</h1>
+                        <h1>Calendário</h1>
                     </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="sticky-top mb-3">
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title">Draggable Events</h4>
-                </div>
-                <div class="card-body">
-                  <!-- the events -->
-                  <div id="external-events">
-                    <div class="external-event bg-success">Lunch</div>
-                    <div class="external-event bg-warning">Go home</div>
-                    <div class="external-event bg-info">Do homework</div>
-                    <div class="external-event bg-primary">Work on UI design</div>
-                    <div class="external-event bg-danger">Sleep tight</div>
-                    <div class="checkbox">
-                      <label for="drop-remove">
-                        <input type="checkbox" id="drop-remove">
-                        remove after drop
-                      </label>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="sticky-top mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Escolher datas</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/bookingdate" method="post">
+                                        <label for="idate" class="form-label">De:</label>
+                                        <input required type="date" name="idate" id="idate" class="form-control form-control-sm">
+
+                                        <label for="fdate" class="form-label">Até:</label>
+                                        <input required type="date" name="fdate" id="fdate" class="form-control form-control-sm">
+                                        <br>
+                                        <button class="form-control btn-primary btn" type="submit">Solicitar Reserva</button>
+                                    </form>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Saiba mais</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5>Clique no botão abaixo para tirar dúvidas</h5>
+                                    <br>
+                                    <a href="#!" class="btn btn-success">Whatsapp</a>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                    <!-- /.col -->
+                    <div class="col-md-9">
+                        <div class="card card-primary">
+                            <div class="card-body p-0">
+                            <!-- THE CALENDAR -->
+                                <div id="calendar"></div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- /.card-body -->
-              </div>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-md-9">
-            <div class="card card-primary">
-              <div class="card-body p-0">
-                <!-- THE CALENDAR -->
-                <div id="calendar"></div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-</div>
-<!-- ./wrapper -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- ./wrapper -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
