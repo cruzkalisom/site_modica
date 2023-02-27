@@ -148,6 +148,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/calendar', (req, res) => {
+    res.render('reserves/calendar')
+})
+
 app.post('/admin/value_date', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
     var sql2 = `SELECT * FROM permissions WHERE user_id=?`
