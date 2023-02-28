@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `block_date` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela test.block_date: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela test.block_date: ~1 rows (aproximadamente)
 INSERT INTO `block_date` (`id`, `init`, `finish`) VALUES
 	(1, 16771968, 16773696);
 

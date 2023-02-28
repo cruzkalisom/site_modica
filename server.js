@@ -150,7 +150,9 @@ app.use(express.static(__dirname+'/public'));
 //Rotas
 app.get('/calendar', (req, res) => {
     var sql = `SELECT * FROM reservations`
+    var sql2 = `SELECT * FROM block_date`
     var reserves = []
+    var block_date = []
 
     connect.query(sql, function(err, result){
         if(err){
@@ -163,42 +165,82 @@ app.get('/calendar', (req, res) => {
             var background = ''
             var border = ''
             var title = ''
-            var iy = null
-            var im = null
-            var id = null
-            var fy = null
-            var fm = null
-            var fd = null
 
             var idate = new Date(parseInt(result[i].dateres))
             var fdate = new Date(parseInt(result[i].datef))
-            if(result[i].auth <= 2){
-                id = idate.getDate() + 1
-                im = idate.getMonth() + 1
-                iy = idate.getFullYear()
-
-                fd = fdate.getDate() + 1
-                fm = fdate.getMonth() + 1
-                fy = fdate.getFullYear()
-
-                if(result[i].auth == 1){
-                    title = 'Pendente'
-                    background = '#DAA520'
-                    border = '#FFFF00'
+            if(result[i].type == 1){
+                if(result[i].auth <= 2){
+                    if(result[i].auth == 1){
+                        title = 'Salão adulto pendente'
+                        background = '#DAA520'
+                        border = '#FFFF00'
+                    }
+    
+                    if(result[i].auth == 2){
+                        title = 'Salão Adulto indisponível'
+                        background = '#f56954'
+                        border = 'red'
+                    }
+    
+                    var cache_reserves = {background: background, border: border, title: title, init: idate, finish: fdate}
+                    reserves.push(cache_reserves)
                 }
+            }
 
-                if(result[i].auth == 2){
-                    title = 'Indisponível'
-                    background = '#f56954'
-                    border = 'red'
+            if(result[i].type == 2){
+                if(result[i].auth <= 2){
+                    if(result[i].auth == 1){
+                        title = 'Salão Kids pendente'
+                        background = '#DAA520'
+                        border = '#FFFF00'
+                    }
+    
+                    if(result[i].auth == 2){
+                        title = 'Salão Kids indisponível'
+                        background = '#f56954'
+                        border = 'red'
+                    }
+    
+                    var cache_reserves = {background: background, border: border, title: title, init: idate, finish: fdate}
+                    reserves.push(cache_reserves)
                 }
+            }
 
-                var cache_reserves = {iy: iy, im: im, id: id, fy: fy, fm: fm, fd: fd, background: background, border: border, title: title, init: idate, finish: fdate}
-                reserves.push(cache_reserves)
+            if(result[i].type == 3){
+                if(result[i].auth <= 2){
+                    if(result[i].auth == 1){
+                        title = 'Pendente'
+                        background = '#DAA520'
+                        border = '#FFFF00'
+                    }
+    
+                    if(result[i].auth == 2){
+                        title = 'Indisponível'
+                        background = '#f56954'
+                        border = 'red'
+                    }
+    
+                    var cache_reserves = {background: background, border: border, title: title, init: idate, finish: fdate}
+                    reserves.push(cache_reserves)
+                }
             }
         }
 
-        res.render('reserves/calendar', {reserves: reserves})
+        connect.query(sql2, function(err, result2){
+            if(err){
+                return console.log(err.message)
+            }
+
+            for(var i = 0; i < result2.length; i++){
+                var iblock = new Date(parseInt(result2[i].init))
+                var fblock = new Date(parseInt(result2[i].finish))
+
+                var cache_block = {init: iblock, finish: fblock}
+                block_date.push(cache_block)
+            }
+
+            res.render('reserves/calendar', {reserves: reserves, block_date: block_date})
+        })
     })
 })
 
@@ -1792,7 +1834,7 @@ app.post('/admin/add/block_date', (req, res) => {
 
             var init = new Date(req.body.init)
             var finish = new Date(req.body.finish)
-            connect.query(sql3, [init.getTime()/100000, finish.getTime()/100000], function(err){
+            connect.query(sql3, [init.getTime() + 86400000, finish.getTime() + 86400000], function(err){
                 if(err){
                     return console.log(err.message)
                 }
@@ -3700,15 +3742,15 @@ app.post('/bookingdate', (req, res) => {
         }
 
         for(var i = 0; i < result.length; i++){
-            var iblock = new Date(result[i].init*100000)
-            var fblock = new Date(result[i].finish*100000)
+            var iblock = new Date(parseInt(result[i].init))
+            var fblock = new Date(parseInt(result[i].finish))
 
-            if(iblock.getTime() >= confirm_date.getTime() && iblock <= finish_date.getTime()){
+            if(iblock.getTime() >= confirm_date.getTime() + 86400000 && iblock <= finish_date.getTime() + 86400000){
                 block_date = true
                 break
             }
 
-            if(confirm_date.getTime() >= iblock.getTime() && confirm_date.getTime() <= fblock.getTime()){
+            if(confirm_date.getTime() + 86400000 >= iblock.getTime() && confirm_date.getTime() + 86400000 <= fblock.getTime()){
                 block_date = true
                 break
             }
@@ -3797,6 +3839,7 @@ app.post('/bookingdate', (req, res) => {
             if(type_one == 'indisponível' && type_two == 'indisponível'){
                 return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
             }
+
             req.session.finish_date = req.body.fdate
             req.session.bookingdate = req.body.idate
             res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})

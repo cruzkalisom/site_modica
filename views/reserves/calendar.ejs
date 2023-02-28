@@ -20,17 +20,8 @@
                 locale: 'pt-br',
                 themeSystem: 'bootstrap',
 
-                headerToolbar: {
-                    left  : 'prev,next today',
-                    center: 'title',
-                    right : 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-
                 buttonText: {
-                    today: 'Hoje',
-                    month: 'Mês',
-                    week: 'Semanda',
-                    day: 'Dia',
+                    today: 'Hoje'
                 }, 
 
                 events: [
@@ -41,6 +32,16 @@
                             end: new Date('<%= reserves[i].finish %>'),
                             backgroundColor: '<%= reserves[i].background %>',
                             borderColor: '<%= reserves[i].border %>'
+                        },
+                    <% } %>
+
+                    <% for(var i = 0; i < block_date.length; i++){ %>
+                        {
+                            title: 'Indisponível',
+                            start: new Date('<%= block_date[i].init %>'),
+                            end: new Date('<%= block_date[i].finish %>'),
+                            backgroundColor: '#f56954',
+                            borderColor    : '#f56954'
                         },
                     <% } %>
                 ]
@@ -95,7 +96,7 @@
                                 <div class="card-body text-center">
                                     <h5>Clique no botão abaixo para tirar dúvidas</h5>
                                     <br>
-                                    <a href="#!" class="btn btn-success">Whatsapp</a>
+                                    <a href="https://api.whatsapp.com/send?phone=5577999886660&text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20a%20DUO%20Eventos." target="_blank" class="btn btn-success">Whatsapp</a>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
