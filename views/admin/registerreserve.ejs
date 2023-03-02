@@ -70,8 +70,10 @@
                     </div>
 
                     <div class="card-body">
-                        <p aria-describedby="valuehelp"><strong>R$: </strong><%= value %>,00</p>
-                        <div id="valuehelp" class="form-text">Valor baseado na data escolhida para o envento.</div>
+                        <div class="form-floating">
+                            <input required value="0" type="number" name="value" id="value" class="form-control col-3" placeholder="...">
+                            <label for="value" class="form-label form-label-sm">Subtotal:</label>
+                        </div>
                         <br>
                         <div class="form-floating">
                             <input value="0" type="number" name="rate" id="rate" class="form-control col-3" placeholder="...">

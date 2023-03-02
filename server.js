@@ -148,6 +148,153 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/not_date', (req, res) => {
+    res.render('reserves/not_date')
+})
+
+app.get('/invalid_date', (req, res) => {
+    res.render('reserves/invalid_date')
+})
+
+app.get('/invalid_fdate', (req, res) => {
+    res.render('reserves/invalid_fdate')
+})
+
+app.post('/request_reservation', (req, res) => {
+    var date = new Date()
+    var confirm_date = new Date(req.body.idate)
+    var finish_date = new Date(req.body.fdate)
+    var valid_date = date.getTime() - confirm_date.getTime()
+    var sql = `SELECT * FROM reservations`
+    var sql2 = `SELECT * FROM block_date`
+    var type_one = ''
+    var type_two = ''
+    var type_tree = ''
+    var combo_type = ''
+
+    if(valid_date > 0){
+        return res.redirect('/invalid_date')
+    }
+
+    if(confirm_date.getTime() > finish_date.getTime()){
+        return res.redirect('/invalid_fdate')
+    }
+
+    connect.query(sql2, function(err, result){
+        var block_date = false
+        if(err){
+            return console.log(err.message)
+        }
+
+        for(var i = 0; i < result.length; i++){
+            var iblock = new Date(parseInt(result[i].init))
+            var fblock = new Date(parseInt(result[i].finish))
+
+            if(iblock.getTime() >= confirm_date.getTime() + 86400000 && iblock <= finish_date.getTime() + 86400000){
+                block_date = true
+                break
+            }
+
+            if(confirm_date.getTime() + 86400000 >= iblock.getTime() && confirm_date.getTime() + 86400000 <= fblock.getTime()){
+                block_date = true
+                break
+            }
+        }
+
+        if(block_date){
+            return res.redirect('/not_date')
+        }
+
+        connect.query(sql, function(err, result){
+            if(err){
+                return console.log(err.message)
+            }
+    
+            for(var i = 0; i < result.length; i++){
+                var cachedate = new Date(parseInt(result[i].dateres))
+                var fdate = new Date(parseInt(result[i].datef))
+    
+                if(cachedate.getTime() >= confirm_date.getTime() + 86400000 && cachedate.getTime() <= finish_date.getTime() + 86400000){
+                    if(result[i].type == 1 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_one = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_one = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 2 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_two = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_two = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 3 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_tree = 'Pendente'
+                        } else {
+                            type_tree = 'Indisponível'
+                        }
+                        break
+                    }
+                }
+    
+                if(confirm_date.getTime() + 86400000 >= cachedate.getTime() && confirm_date.getTime() + 86400000 <= fdate.getTime()){
+                    if(result[i].type == 1 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_one = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_one = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 2 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_two = 'Pendente'
+                            combo_type = 'Pendente'
+                        } else {
+                            type_two = 'Indisponível'
+                            combo_type = 'Indisponível'
+                        }
+                    }
+        
+                    if(result[i].type == 3 && result[i].auth <= 2){
+                        if(result[i].auth == 1){
+                            type_tree = 'Pendente'
+                        } else {
+                            type_tree = 'Indisponível'
+                        }
+                        break
+                    }
+                }
+            }
+    
+            if(type_tree == 'indisponível'){
+                return res.redirect('/not_date')
+            }
+    
+            if(type_one == 'indisponível' && type_two == 'indisponível'){
+                return res.redirect('/not_date')
+            }
+
+            var convert_idate = new Date(confirm_date.getTime() + 86400000)
+            var convert_fdate = new Date(finish_date.getTime() + 86400000)
+
+            convert_idate = `${convert_idate.getDate()}/${convert_idate.getMonth() + 1}/${convert_idate.getFullYear()}`
+            convert_fdate = `${convert_fdate.getDate()}/${convert_fdate.getMonth() + 1}/${convert_fdate.getFullYear()}`
+            res.redirect(`https://api.whatsapp.com/send?phone=5577999886660&text=Ol%C3%A1!%20Gostaria%20de%20fazer%20um%20or%C3%A7amento%20de%20reserva%20entre%20as%20datas%20${convert_idate}%20e%20${convert_fdate}`)
+        })
+    })
+})
+
 app.get('/calendar', (req, res) => {
     var sql = `SELECT * FROM reservations`
     var sql2 = `SELECT * FROM block_date`
@@ -906,7 +1053,7 @@ app.post('/salon_create', (req,res) => {
         }
 
         if(!type || type == undefined) {
-            return res.render('reserves/date_reserve', {erro: 'Opção inválida!'})
+            return res.render('admin/date_create', {erro: 'Opção inválida!'})
         }
 
         connect.query(sql4, [req.session.user], function(err, result){
@@ -938,14 +1085,14 @@ app.post('/salon_create', (req,res) => {
                         }
             
                         for(var i = 0; i < result.length; i++){
-                            var convertdateres = result[i].dateres*100000
-                            var fdate = result[i].datef*100000
-                            if(convertdateres >= date.getTime() && convertdateres <= finish_date.getTime() && result[i].auth <= 2){
+                            var convertdateres = parseInt(result[i].dateres)
+                            var fdate = parseInt(result[i].datef)
+                            if(convertdateres >= date.getTime() + 86400000 && convertdateres <= finish_date.getTime() + 86400000 && result[i].auth <= 2){
                                 return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
                                 break
                             }
         
-                            if(date.getTime() >= convertdateres && date.getTime() <= fdate && result[i].auth <= 2){
+                            if(date.getTime() + 86400000 >= convertdateres && date.getTime() + 86400000 <= fdate && result[i].auth <= 2){
                                 return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
                                 break
                             }
@@ -962,9 +1109,9 @@ app.post('/salon_create', (req,res) => {
                         }
         
                         for(var i = 0; i < result.length; i++){
-                            var date_reserve = new Date(result[i].dateres*100000)
+                            var date_reserve = new Date(parseInt(result[i].dateres))
         
-                            if(date_reserve.getTime() >= date.getTime() && date_reserve.getTime() <= finish_date.getTime()  && result[i].auth <= 2){
+                            if(date_reserve.getTime() >= date.getTime() + 86400000 && date_reserve.getTime() <= finish_date.getTime() + 86400000  && result[i].auth <= 2){
                                 return res.render('admin/date_create', {erro: 'Indisponível para a data escolhida!'})
                                 break
                             }
@@ -1039,22 +1186,22 @@ app.post('/date_create', (req, res) => {
                 }
         
                 for(var i = 0; i < result.length; i++){
-                    var iblock = new Date(result[i].init*100000)
-                    var fblock = new Date(result[i].finish*100000)
+                    var iblock = new Date(parseInt(result[i].init))
+                    var fblock = new Date(parseInt(result[i].finish))
         
-                    if(iblock.getTime() >= confirm_date.getTime() && iblock <= finish_date.getTime()){
+                    if(iblock.getTime() >= confirm_date.getTime() + 86400000 && iblock <= finish_date.getTime() + 86400000){
                         block_date = true
                         break
                     }
         
-                    if(confirm_date.getTime() >= iblock.getTime() && confirm_date.getTime() <= fblock.getTime()){
+                    if(confirm_date.getTime() + 86400000 >= iblock.getTime() && confirm_date.getTime() + 86400000 <= fblock.getTime()){
                         block_date = true
                         break
                     }
                 }
         
                 if(block_date){
-                    return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+                    return res.render('admin/date_create', {erro: 'Reservas indisponíveis para a data escolhida!'})
                 }
         
                 connect.query(sql, function(err, result){
@@ -1063,10 +1210,10 @@ app.post('/date_create', (req, res) => {
                     }
             
                     for(var i = 0; i < result.length; i++){
-                        var cachedate = new Date(result[i].dateres*100000)
-                        var fdate = new Date(result[i].datef*100000)
+                        var cachedate = new Date(parseInt(result[i].dateres))
+                        var fdate = new Date(parseInt(result[i].datef))
             
-                        if(cachedate.getTime() >= confirm_date.getTime() && cachedate.getTime() <= finish_date.getTime()){
+                        if(cachedate.getTime() >= confirm_date.getTime() + 86400000 && cachedate.getTime() <= finish_date.getTime() + 86400000){
                             if(result[i].type == 1 && result[i].auth <= 2){
                                 if(result[i].auth == 1){
                                     type_one = 'Pendente'
@@ -1097,7 +1244,7 @@ app.post('/date_create', (req, res) => {
                             }
                         }
             
-                        if(confirm_date.getTime() >= cachedate.getTime() && confirm_date.getTime() <= fdate.getTime()){
+                        if(confirm_date.getTime() + 86400000 >= cachedate.getTime() && confirm_date.getTime() + 86400000 <= fdate.getTime()){
                             if(result[i].type == 1 && result[i].auth <= 2){
                                 if(result[i].auth == 1){
                                     type_one = 'Pendente'
@@ -1130,15 +1277,15 @@ app.post('/date_create', (req, res) => {
                     }
             
                     if(type_tree == 'indisponível'){
-                        return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+                        return res.render('admin/date_create', {erro: 'Reservas indisponíveis para a data escolhida!'})
                     }
             
                     if(type_one == 'indisponível' && type_two == 'indisponível'){
-                        return res.render('reserves/date_reserve', {erro: 'Reservas indisponíveis para a data escolhida!'})
+                        return res.render('admin/date_create', {erro: 'Reservas indisponíveis para a data escolhida!'})
                     }
                     req.session.finish_date = req.body.fdate
                     req.session.bookingdate = req.body.idate
-                    res.render('reserves/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
+                    res.render('admin/salonavaliable', {erro: '', typeone: type_one, typetwo: type_two, combotype: combo_type})
                 })
             })
         })
@@ -1186,7 +1333,7 @@ app.get('/createreserve', (req, res) => {
             res.render('admin/date_create', {erro: ''})
         })
     })
-})
+});
 
 app.get('/admin/view_users/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_Id=?`
@@ -1297,7 +1444,7 @@ app.get('/admin/view_users/:id', (req, res) => {
     } else {
         res.redirect('/login')
     }
-})
+});
 
 app.get('/admin/to_remove_admin/:id', (req, res) => {
     var sql = `SELECT * FROM session WHERE user_id=?`
@@ -4103,10 +4250,11 @@ app.get('/', (req,res) => {
 });
 
 app.get('/devtest', (req,res) => {
-    var date = new Date()
+    /*var date = new Date()
     var date2 = new Date(date).getTime() + 86400000
 
-    res.send(`${String(date2/100000)}, ${String(date.getTime()/100000)}`)
+    res.send(`${String(date2/100000)}, ${String(date.getTime()/100000)}`)*/
+    res.redirect('https://www.google.com')
 });
 
 //Conexão
