@@ -79,14 +79,14 @@
             </a>
           </li>
 
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a href="/values" class="nav-link">
               <i class="nav-icon fas">&#36</i>
               <p>
                 Valores
               </p>
             </a>
-          </li>
+          </li>-->
 
           <li class="nav-item">
             <a href="/users" class="nav-link">
@@ -161,7 +161,8 @@
                                 <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">Tipo</th>
-                                    <th scope="col">Data</th>
+                                    <th scope="col">De</th>
+                                    <th scope="col">Até</th>
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
@@ -170,6 +171,7 @@
                                     <th scope="row"><%= data.id %></th>
                                     <td><%= data.type %></td>
                                     <td><%= data.date %></td>
+                                    <td><%= data.fdate %></td>
                                     <td>
                                         <span class="badge <%= data.badge %>"  style="padding: 5px;"><%=data.status %></span>
                                     </td>
@@ -208,7 +210,8 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Usuário</th>
                                     <th scope="col">Tipo</th>
-                                    <th scope="col">Data</th>
+                                    <th scope="col">De</th>
+                                    <th scope="col">Até</th>
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>
@@ -219,6 +222,7 @@
                                         <td><%= all[i].user_id %></td>
                                         <td><%= all[i].type %></td>
                                         <td><%= all[i].date %></td>
+                                        <td><%= all[i].fdate %></td>
                                         <td>
                                             <span class="badge <%=all[i].badge %>"  style="padding: 5px;"><%= all[i].status %></span>
                                         </td>
