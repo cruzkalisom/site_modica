@@ -149,7 +149,7 @@ app.use(express.static(__dirname+'/public'));
 
 //Rotas
 app.get('/values_reserves', (req, res) => {
-    res.send('Página de acesso a valores de reservas')
+    res.render('values')
 })
 
 app.get('/not_date', (req, res) => {
