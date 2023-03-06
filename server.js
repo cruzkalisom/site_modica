@@ -148,6 +148,10 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/values_reserves', (req, res) => {
+    res.send('Página de acesso a valores de reservas')
+})
+
 app.get('/not_date', (req, res) => {
     res.render('reserves/not_date')
 })
