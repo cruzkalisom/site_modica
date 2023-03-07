@@ -23,7 +23,7 @@ setInterval(function(){
 var connect = db.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'test'
+    database: 'duoeventosdb'
 });
 
 setInterval(function(){
