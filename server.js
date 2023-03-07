@@ -22,8 +22,9 @@ setInterval(function(){
 //Banco de dados
 var connect = db.createConnection({
     host: 'localhost',
-    user: 'root',
-    database: 'duoeventosdb'
+    user: 'duol_admin',
+    password: 'PvBm5sm+8f!35rIu',
+    database: 'duol_duolem'
 });
 
 setInterval(function(){
@@ -141,7 +142,7 @@ app.use(session({
 }))
 
 //Configs
-var port = 50553
+var port = 8080
 
 /*Engine*/
 app.set('view engine', 'ejs');
