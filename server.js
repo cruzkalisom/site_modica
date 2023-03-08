@@ -157,6 +157,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
 
 //Rotas
+app.get('/more_kids', (req, res) => {
+    res.render('more_kids')
+})
+
+app.get('/more_adult', (req, res) => {
+    res.render('more_adult')
+})
+
 app.get('/values_reserves', (req, res) => {
     res.render('values')
 })
