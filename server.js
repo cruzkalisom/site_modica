@@ -27,6 +27,12 @@ var connect = db.createConnection({
     database: 'duol_duolem'
 });
 
+/*var connect = db.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'duoeventosdb'
+});*/
+
 setInterval(function(){
     console.log('Checando Session')
     var sql = `SELECT * FROM session`
@@ -142,6 +148,8 @@ app.use(session({
 }))
 
 //Configs
+//var port = 50553
+
 var port = 8080
 
 /*Engine*/
