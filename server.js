@@ -862,7 +862,7 @@ app.post('/admin_confirm_reserve', (req, res) => {
                 var convertdateres = `${dateres.getDate() + 1}/${dateres.getMonth() + 1}/${dateres.getFullYear()}`
                 var convertdatereq = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
                 var converttype = ``
-                var totalcalc = parseInt(req.body.rate) + parseInt(req.body.discounts) + parseInt(req.body.value)
+                var totalcalc = parseInt(req.body.value) + parseInt(req.body.rate) - parseInt(req.body.discounts) 
 
                 if(req.session.bookingtype == 1){
                     converttype = 'Adulto'
@@ -2644,7 +2644,7 @@ app.post('/edit/reserve/:id', (req, res) => {
 
     var datenow = new Date(req.body.date)
     datenow = datenow.getTime()
-     var newdatenow = datenow/100000
+    var newdatenow = datenow + 86400000
     connect.query(sql, [req.body.type, newdatenow, req.body.status, req.params.id], function(err){
         if(err){
             return console.log(err.message)
@@ -2720,8 +2720,8 @@ app.get('/admin/edit/reserve/:id', (req, res) => {
                         var status = result[0].auth
                         var id = result[0].id
 
-                        var convertdate = new Date(result[0].dateres*100000)
-                        convertdate = `${convertdate.getDate() + 1}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
+                        var convertdate = new Date(parseInt(result[0].dateres))
+                        convertdate = `${convertdate.getDate()}/${convertdate.getMonth() + 1}/${convertdate.getFullYear()}`
 
                         connect.query(sql2, [result[0].user_id], function(err, result){
                             if(err){
